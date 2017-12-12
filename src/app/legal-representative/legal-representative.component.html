@@ -1,0 +1,264 @@
+<div [ngBusy]="busy"></div>
+<!-- <div class="container"> -->
+<!-- <div class="animated fadeIn"> -->
+<form name="legal-representative-form" autocomplete="off" role="form" (ngSubmit)="partialSave()"
+      [formGroup]="formGroup">
+  <div class="container-fluid animated fadeIn">
+    <div class="panel panel-custom">
+      <div class="panel-heading">
+        <h2 [translate]="'legal-representative.title'">{{'legal-representative.title' | translate}}</h2>
+      </div>
+      <div class="panel-body">
+        <div class="row" *ngIf="validateUseRepresentative()">
+          <div class="col-lg-12">
+            <div class="form-group">
+             <label class="control control--checkbox">
+               <input formControlName="useRepresentative" type="checkbox" id="useRepresentative" name="useRepresentative"
+                [(ngModel)]="usaRepresentante" (ngModelChange)="changeRepresentative()"/>
+               <label [translate]="'legal-representative.use-representative'" for="useRepresentative">{{'legal-representative.use-representative' | translate}}</label>
+               <div class="control__indicator"></div>
+             </label>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="usaRepresentante && editMode || !validateUseRepresentative() && editMode">
+          <div class="col-lg-12">
+            <div class="form-group">
+              <label class="control-label" [translate]="'general-data-natural.dependent.name'">{{'general-data-natural.dependent.name'
+                | translate}}</label>
+                <div>
+                <input formControlName="name" type="text" class="form-control"
+                       [(ngModel)]="client.representanteLegalTutor.nombre"
+                       [(uppercase)]='client.representanteLegalTutor.nombre'/>
+                <pl-errors-message [control]="name"></pl-errors-message>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="usaRepresentante || !validateUseRepresentative()">
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label class="control-label" [translate]="'general-data-natural.surname'">{{'general-data-natural.surname'
+                | translate}}</label>
+              <div class="{{validateField() ? 'required' : ''}}" [ngClass]="{'has-error': surname.touched && surname.invalid}">
+                <input formControlName="surname" type="text" name="surname" class="form-control"
+                       [(ngModel)]="client.representanteLegalTutor.primerApellido"
+                       placeholder="{{'general-data-natural.surname' | translate}}" [maxLength]="15"
+                       [(uppercase)]='client.representanteLegalTutor.primerApellido'/>
+                <pl-errors-message [control]="surname"></pl-errors-message>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group"
+                 [ngClass]="{'has-error': secondSurname.touched && secondSurname.invalid}">
+              <label class="control-label" [translate]="'general-data-natural.second-surname'">{{'general-data-natural.second-surname'
+                | translate}}</label>
+              <input formControlName="secondSurname" type="text" name="secondSurname" class="form-control"
+                     [(ngModel)]="client.representanteLegalTutor.segundoApellido"
+                     placeholder="{{'general-data-natural.second-surname' | translate}}"
+                     [maxLength]="15" [(uppercase)]='client.representanteLegalTutor.segundoApellido'/>
+              <pl-errors-message [control]="secondSurname"></pl-errors-message>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group"
+                 [ngClass]="{'has-error': marriedSurname.touched && marriedSurname.invalid}">
+              <label class="control-label" [translate]="'general-data-natural.married-surname'">{{'general-data-natural.married-surname'
+                | translate}}</label>
+              <input formControlName="marriedSurname" type="text" name="marriedSurname" class="form-control"
+                     [(ngModel)]="client.representanteLegalTutor.apellidoCasada"
+                     placeholder="{{'general-data-natural.married-surname' | translate}}"
+                     [maxLength]="15" [(uppercase)]='client.representanteLegalTutor.apellidoCasada'/>
+              <pl-errors-message [control]="marriedSurname"></pl-errors-message>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="usaRepresentante || !validateUseRepresentative()">
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label class="control-label" [translate]="'general-data-natural.first-name'">{{'general-data-natural.first-name'
+                | translate}}</label>
+              <div class="{{validateField() ? 'required' : ''}}" [ngClass]="{'has-error': firstName.touched && firstName.invalid}">
+                <input formControlName="firstName" type="text" name="firstName" class="form-control"
+                       [(ngModel)]="client.representanteLegalTutor.primerNombre"
+                       placeholder="{{'general-data-natural.first-name' | translate}}"
+                       [maxLength]="15" [(uppercase)]='client.representanteLegalTutor.primerNombre'/>
+                <pl-errors-message [control]="firstName"></pl-errors-message>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group"
+                 [ngClass]="{'has-error': secondName.touched && secondName.invalid}">
+              <label class="control-label" [translate]="'general-data-natural.second-name'">{{'general-data-natural.second-name'
+                | translate}}</label>
+              <input formControlName="secondName" type="text" name="secondName" class="form-control"
+                     [(ngModel)]="client.representanteLegalTutor.segundoNombre"
+                     placeholder="{{'general-data-natural.second-name' | translate}}"
+                     [maxLength]="15" [(uppercase)]='client.representanteLegalTutor.segundoNombre'/>
+              <pl-errors-message [control]="secondName"></pl-errors-message>
+            </div>
+          </div>
+
+        </div>
+        <div class="row" [ngClass]="navigationService?.client?.thirdOld || navigationService?.client?.minorOld || client?.tipoPersona === 'J' ? '' : !usaRepresentante ? 'component' : '' ">
+          <div class="col-lg-6">
+            <div class="row">
+              <div class="col-lg-12">
+                <label class="control-label" [translate]="'legal-representative.identification'">t</label>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group {{validateField() ? 'required' : ''}}">
+<!--                   <pl-type-document-select id="typedocId" #docType [controlName]="'documentIdentification'" -->
+<!--                                              [formGroup]="formGroup" -->
+<!--                                              [documentIdentification]="client?.tipoIdentificacion" -->
+<!--                                              (changeTypeDocument)="selectDocumentoIdentificacion($event)" -->
+<!--                                              [autocomplete]="false" [modeView]="modeView"></pl-type-document-select> -->
+                  <pl-type-document-select id="typedocId" #docType [controlName]="'identificationType'"
+                   [formGroup]="formGroup"
+                   [documentIdentification]="client?.representanteLegalTutor?.tipoIdentificacion"
+                   (changeTypeDocument)="selectTypedoc($event)"
+                   [autocomplete]="false" [modeView]="modeView"></pl-type-document-select>
+                    <pl-errors-message [control]="identificationType"></pl-errors-message>
+                </div>
+              </div>
+              <div class="col-lg-6" *ngIf="usaRepresentante || !validateUseRepresentative()">
+                <div class="form-group {{validateField() ? 'required' : ''}}" [ngClass]="{'has-error': identificacion.touched && identificacion.invalid}">
+<!--                   <input style="text-transform: uppercase;" *ngIf="!serviceData" -->
+<!--                            [textMask]="{mask: tipeDoc.mascara , guide: true, modelClean: true, placeholderChar : tipeDoc.maskCharacter}" -->
+<!--                            id="identificacion" class="form-control" -->
+<!--                            name="identificacion" formControlName="identificacion" -->
+<!--                            (ngModelChange)="valuechange($event,guide)" -->
+<!--                            (blur)="onBlurIdentification($event)" -->
+<!--                            [(ngModel)]="tempIdentificiacion" -->
+<!--                            placeholder="{{tipeDoc.placeHolder}}" model-view-value="true" -->
+<!--                            aria-describedby="identificacion-validator-help"/> -->
+                  <input style="text-transform: uppercase;"
+                           [textMask]="{mask: tipeDoc.mascara , guide: true, modelClean: true,placeholderChar : tipeDoc.maskCharacter}"
+                           id="identificacion" class="form-control"
+                           name="identificacion" formControlName="identificacion"
+                           (ngModelChange)="valuechange($event,guide)"
+                           (blur)="onBlurIdentification($event)"
+                           [(ngModel)]="tempIdentificiacion"
+                           placeholder="{{tipeDoc.placeHolder}}" model-view-value="true"/>
+                  <pl-errors-message [control]="identificacion" [customPatter]="true">
+                    <div *ngIf="identificacion?.hasError('pattern')">
+                      <span>{{'messages.error-mask' | translate}}</span>
+                    </div>
+                  </pl-errors-message>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6" *ngIf="usaRepresentante || !validateUseRepresentative()">
+            <div class="row">
+              <div class="col-lg-12">
+                <label class="control-label" [translate]="'legal-representative.phone'">t</label>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group {{validateField() ? 'required' : ''}}" [ngClass]="{ 'has-error': phone.touched && phone.invalid}">
+                  <input formControlName="phone" type="text" name="telefono" class="form-control"
+                         [(ngModel)]="client.representanteLegalTutor.telefono1"
+                         [maxLength]="12" numberOnly/>
+                  <pl-errors-message [control]="phone" [integer]="true"></pl-errors-message>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group" [ngClass]="{ 'has-error': phone2.touched && phone2.invalid}">
+                  <input formControlName="phone2" type="text" name="telefono2" class="form-control"
+                         [(ngModel)]="client.representanteLegalTutor.telefono2"
+                         [maxLength]="12" numberOnly/>
+                  <pl-errors-message [control]="phone2" [integer]="true"></pl-errors-message>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="usaRepresentante || !validateUseRepresentative()">
+          <div class="col-lg-6">
+            <label class="control-label" [translate]="'legal-representative.address'">t</label>
+            <div class="form-group required" [ngClass]="{ 'has-error': address.touched && address.invalid}">
+              <input formControlName="address" type="text" name="direccion" class="form-control"
+                     [(ngModel)]="client.representanteLegalTutor.direccion" [maxLength]="300"
+                     [(uppercase)]='client.representanteLegalTutor.direccion'/>
+              <pl-errors-message [control]="address"></pl-errors-message>
+            </div>
+          </div>
+          <div class="col-lg-6">
+             <label class="control-label" [translate]="'legal-representative.profession'">{{'legal-representative.profession' | translate}}</label>
+             <div class="form-group required" [ngClass]="{ 'has-error': profession.touched && profession.invalid}">
+               <pl-profession-select id="professionSelected" [formGroup]="formGroup"
+                 [profession]="client.representanteLegalTutor.profesion"
+                 (changeProfession)="selectProfession($event)" [autocomplete]="true"></pl-profession-select>
+               <pl-errors-message [control]="profession"></pl-errors-message>
+             </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="usaRepresentante || !validateUseRepresentative()">
+          <div class="col-lg-6">
+            <label class="control-label" [translate]="'legal-representative.date-appointment'">{{'legal-representative.date-appointment'
+              | translate}}</label>
+            <div class="form-group form-inline" id="dateRangePicker2"
+                 [ngClass]="{'has-error': appointmentDates.touched && appointmentDates.invalid}">
+              <div class="input-group">
+                <sa-datepicker [(ngModel)]="bornDate" (ngModelChange)="changeDate($event)" name="appointmentDates"
+                               formControlName="appointmentDates"
+                               [maxDate]="maxDate" [minDate]="minDate"></sa-datepicker>
+                <pl-errors-message [control]="appointmentDates"></pl-errors-message>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer text-right col-lg-10">
+        <div class="row">
+          <span data-toggle="tooltip" data-placement="left" title=""
+                attr.data-original-title="{{'buttons.cancel' | translate}}" *ngIf="useRepresentative.disabled">
+            <a class="btn btn-warning btn-raised btn-fab" (click)="changeControl()">
+                <i class="material-icons md-18">create</i> {{'buttons.update' | translate}}
+                <div class="ripple-container"></div>
+            </a>
+          </span>
+          <span data-toggle="tooltip" data-placement="left" title="" *ngIf="useRepresentative.enabled"
+                attr.data-original-title="{{'buttons.cancel' | translate}}">
+            <a class="btn btn-danger btn-raised btn-fab" (click)="editMode? cancelLegal() : cancel()">
+                <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+                <div class="ripple-container"></div>
+            </a>
+          </span>
+          <span data-toggle="tooltip" data-placement="left" title="" *ngIf="useRepresentative.enabled && isCopy && isValidCopy() && !editMode"
+                attr.data-original-title="{{'buttons.cancel' | translate}}">
+            <a class="btn btn-primary btn-raised btn-fab" (click)="copyClient()">
+                <i class="material-icons md-18">content_copy</i> {{'buttons.copy' | translate}}
+                <div class="ripple-container"></div>
+            </a>
+          </span>
+          <button type="submit" class="btn btn-success" [disabled]="editMode? isValidCancel() : !formGroup.valid"
+                  data-toggle="tooltip" data-placement="left" *ngIf="useRepresentative.enabled"
+                  attr.data-original-title="{{'buttons.continue' | translate}}">
+            {{'buttons.continue' | translate}} <i class="material-icons md-18">chevron_right</i>
+            <div class="ripple-container"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="modal fade" id="authorizationModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><i class="material-icons md-18">check_circle</i>
+          {{'authorization.title' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <pl-authorization [authorization]="authorization"
+                          (changeAuthorization)="changeAuthorization($event)"></pl-authorization>
+      </div>
+    </div>
+  </div>
+</div>
+<cancel-confirmation></cancel-confirmation>

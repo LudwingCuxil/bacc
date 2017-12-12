@@ -1,0 +1,19 @@
+<div [formGroup]="formGroup">
+  <select id="productTypeSelected" [formControlName]="controlName" [(ngModel)]="productType"  (ngModelChange)="onChangeObj($event)" class="form-control" [disabled]="modeView || modeDelete || disabled" required *ngIf="!autocomplete && selectMode">
+    <option *ngFor="let p of productTypes" [ngValue]="p">{{p.nombre}}</option>
+  </select>
+
+  <input auto-complete [(ngModel)]="productType.nombre" select-value-of="id" max-num-List="20" [source]="productTypes" class="form-control" [formControlName]="controlName"
+         required *ngIf="autocomplete && selectMode" list-formatter="nombre" (valueChanged)="onChangeObj($event)" [disabled]="modeView || modeDelete || disabled"/>
+
+  <div *ngIf="radioMode" class="radio">
+    <div *ngFor="let p of productTypes; let idx = index">
+      <label class="control control--radio">
+        <input type="radio" id="radio-{{p.descripcion}}" [checked]="p.codigo === productType.codigo || p.codigo === productTypeSelected" [formControlName]="controlName" name="{{controlName}}" [disabled]="disabled"
+               [(ngModel)] ="productType" [value]="p" (change)="onChangeObj(p)" class="radio">
+        <label for="radio-{{p.descripcion}}">{{p.descripcion}}</label>
+        <div class="control__indicator"></div>
+      </label>
+    </div>
+  </div>
+</div>

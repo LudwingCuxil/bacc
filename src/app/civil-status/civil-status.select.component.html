@@ -1,0 +1,7 @@
+<div [formGroup]="formGroup">
+  <select id="civilStatusSelected" [formControlName]="controlName" [(ngModel)]="civilStatus" (ngModelChange)="onChangeObj($event)" class="form-control" *ngIf="!autocomplete">
+    <option *ngFor="let p of civilStatusList" [ngValue]="p">{{p.descripcion}}</option>
+  </select>
+
+  <input auto-complete [formControlName]="controlName" [(ngModel)]="civilStatus.descripcion" select-value-of="id" max-num-List="20" [source]="civilStatusList" class="form-control" *ngIf="autocomplete" list-formatter="descripcion" (valueChanged)="onChangeObj($event)"/>
+</div>

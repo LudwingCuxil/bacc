@@ -1,0 +1,8 @@
+export enum TypeReference {
+ 
+  PROVEEDORES,
+  COMERCIANTE,
+  LABORALES,
+  DEPENDIENTES,
+  PARENTESCO_EMPLEADOS
+}

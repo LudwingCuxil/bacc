@@ -1,0 +1,169 @@
+<div class="bs-component">
+  <div class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header" *ngFor="let menu of menus">
+        <span *ngIf="menu.type == menuType.navHome">
+          <a class="navbar-brand" routerLinkActive="active" (click)="initializeMaterialStyle()"
+             routerLink="{{menu.path}}"><i class="material-icons fa fa-fw fa-{{menu.iconClass}}">{{menu.iconClass}}</i> {{menu.title | translate}}</a>
+        </span>
+      </div>
+      <div class="user-actions" *ngIf="validateLogin()">
+
+        <!-- MENU BUTTON -->
+
+        <ul class="nav navbar-nav navbar-right menu-wrapper" *ngIf="validateLogin()">
+          <li>
+            <div class="material-menu-wrapper">
+              <div class="material-menu">
+                <div class="material-btn" (click)="toogleMenu()">
+                  <div class="material-hamburger">
+                    <div class="material-patty"></div>
+                    <div class="material-patty"></div>
+                    <div class="material-patty"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+
+        <!-- END MENU BUTTON -->
+
+        <!-- TRANSLATE -->
+
+        <ul class="nav navbar-nav navbar-right sa-translate">
+          <li class="dropdown translate">
+            <i class="material-icons md-18">translate </i>
+            <select #langSelect (change)="translate.use(langSelect.value)" class="">
+              <option *ngFor="let lang of translate.getLangs()" [value]="lang"
+                      [selected]="lang === translate.currentLang">{{ lang }} <b class="caret"></b></option>
+            </select>
+          </li>
+        </ul>
+
+        <!-- END TRANSLATE -->
+
+        <!-- ACTIONS -->
+
+        <ul class="nav navbar-nav navbar-right actions" *ngFor="let menu of menus">
+          <li class="dropdown" *ngIf="menu.type == menuType.navDropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">{{profileData?.username}}
+              <b class="caret"></b>
+              <div class="ripple-container"></div>
+            </a>
+            <ul class="dropdown-menu">
+              <li *ngFor="let submenu of menu.subMenus" style="cursor: pointer;">
+                <a *ngIf="submenu.path != ''" routerLink="{{submenu.path}}">{{submenu.title | translate}}
+                  <div class="ripple-container">
+                    <div class="ripple ripple-on ripple-out"
+                         style="left: 57.4375px; top: 28px; background-color: rgb(0, 150, 136); transform: scale(25.375);"></div>
+                  </div>
+                </a>
+                <a *ngIf="submenu.path == '' && submenu.modalTarget!=''" data-toggle="modal"
+                   [attr.data-target]="submenu.modalTarget">{{submenu.title | translate}}
+                  <div class="ripple-container">
+                    <div class="ripple ripple-on ripple-out"
+                         style="left: 57.4375px; top: 28px; background-color: rgb(0, 150, 136); transform: scale(25.375);"></div>
+                  </div>
+                </a>
+                <a *ngIf="submenu.path == '' && submenu.modalTarget=='' && submenu.title=='menu.logout'"
+                   (click)="makeLogout()">{{submenu.title | translate}}
+                  <div class="ripple-container">
+                    <div class="ripple ripple-on ripple-out"
+                         style="left: 57.4375px; top: 28px; background-color: rgb(0, 150, 136); transform: scale(25.375);"></div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+
+        <!-- END ACTIONS -->
+
+      </div>
+    </div>
+  </div>
+</div>
+<simple-notifications [options]="options"></simple-notifications>
+
+<div class="nav-categories col-lg-12 col-md-12 col-sm-12 col-xs-12" [@visibilityChanged]="state">
+  <div *ngIf="validateLogin()">
+
+    <ngb-tabset type="pills" destroyOnHide="true" (tabChange)="subcategoriesView($event)">
+      <ngb-tab>
+        <ng-template ngbTabTitle></ng-template>
+        <ng-template ngbTabContent>
+          <div class="content-item-categories col-lg-10 col-md-8 col-sm-8 col-xs-4">
+              <a (click)="initializeMaterialStyle()" routerLinkActive="active" *ngFor="let item of categoryItem"
+                 class="col-lg-2 item-menu-u animated fadeInUp" routerLink="{{item.path}}">
+                <i class="material-icons md-36 item-menu-category">{{item.iconClass}}</i>
+                <p>{{item.title | translate}}</p>
+              </a>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab *ngFor="let categories of categories" id="{{categories.id}}">
+
+        <ng-template ngbTabTitle>
+          <i class="material-icons md-36 item-menu-category">{{categories.iconClass}}</i>
+          <p>{{categories.title | translate}}</p>
+        </ng-template>
+
+        <ng-template ngbTabContent>
+
+          <div class="nav-sub-categories col-lg-1 col-md-2 col-sm-2 col-xs-8 subcategory-{{categories.id}}"
+               [@sCategoryVisibility]="sCategoriesState">
+            <div class="animated fadeInRight" *ngIf="validateLogin()">
+
+              <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" *ngFor="let subcategories of categories.subMenus">
+                  <a *ngIf="subcategories.type === menuType.navSubCategory" class=" item-menu-sub-category" role="tab"
+                     data-toggle="tab" href="#{{subcategories.id}}">
+                    <i class="material-icons md-36">{{subcategories.iconClass}}</i>
+                    <p>{{subcategories.title | translate}}</p>
+                  </a>
+                </li>
+              </ul>
+
+            </div>
+          </div>
+
+          <div class="content-item-categories col-lg-10 col-md-8 col-sm-8 col-xs-4 item-category-{{categories.id}}">
+            <div class="tab-content" *ngIf="validateLogin()">
+
+              <div role="tabpanel" class="tab-pane" *ngFor="let subcategories of categories.subMenus"
+                   id="{{subcategories.id}}">
+                <ul class="nav nav-tabs" role="tablist">
+                  <li class="col-lg-2 col-md-3 col-sm-3 col-xs-12 item-menu animated slideInRight" role="presentation"
+                      *ngFor="let itemssubCategory of subcategories.subMenus">
+                    <a routerLink="{{itemssubCategory.path}}" (click)="initializeMaterialStyle()"
+                       routerLinkActive="active" *ngIf="itemssubCategory.type === menuType.navCategoryItem">
+                      <i class="material-icons md-36">{{itemssubCategory.iconClass}}</i>
+                      <p>{{itemssubCategory.title | translate}}</p>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+
+              <ul class="nav nav-tabs" role="tablist">
+                <li class="col-lg-2 col-md-3 col-sm-3 col-xs-12 item-menu animated slideInRight" role="presentation"
+                    *ngFor="let subcategories of categories.subMenus">
+                  <a routerLink="{{subcategories.path}}" (click)="initializeMaterialStyle()" routerLinkActive="active"
+                     *ngIf="subcategories.type === menuType.navCategoryItem" role="tab" href="#{{subcategories.id}}">
+                    <i class="material-icons md-36">{{subcategories.iconClass}}</i>
+                    <p>{{subcategories.title | translate}}</p>
+                  </a>
+                </li>
+              </ul>
+
+            </div>
+          </div>
+
+        </ng-template>
+
+      </ngb-tab>
+    </ngb-tabset>
+
+  </div>
+</div>

@@ -1,0 +1,69 @@
+<!--<form class="form-inline">-->
+<!--<div class="form-group">-->
+<!--<div class="input-group">-->
+<!--<input class="form-control" placeholder="yyyy-mm-dd"-->
+<!--name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">-->
+<!--<div class="input-group-addon" (click)="d.toggle()" >-->
+<!--<i class="material-icons md-18">date_range</i>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</form>-->
+
+<div [ngBusy]="busy"></div>
+<div class="container-fluid accordion accordion-account">
+  <div class="panel panel-custom">
+    <ngb-accordion #acc="ngbAccordion" *ngFor="let pan of accordionFill" activeIds="{{pan.productType?.codigo}}">
+      <content>
+        <ngb-panel *ngIf="pan?.accounts?.length > 0" id="{{pan.productType.codigo}}">
+          <ng-template ngbPanelTitle>
+            <div>
+              <h3>{{pan.productType.nombre}}</h3>
+            </div>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <div class="table-responsive card-body animated fadeIn">
+              <table class="table table-hover table-striped">
+                <thead>
+                <tr>
+                  <th *ngFor="let itemhead of accountCustom">{{"account." + itemhead.titleHead | translate}}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let account of pan.accounts" (click)="goToAccount(account)" [attr.data-toggle]="tooltip" [attr.data-placement]="left" [attr.data-original-title]="account.descripcionEstado">
+                  <td *ngFor="let itemdata of accountCustom">
+                    <span *ngIf="itemdata.titleHead === 'status'" class="animated bounceIn status {{account.estado}}">
+                      <i class="material-icons md-24" *ngIf="account.estado === ' '">info_outline</i>
+                      <i class="material-icons md-24" *ngIf="account.estado === 'E'">block</i>
+                      <i class="material-icons md-24" *ngIf="account.estado === 'A'">check</i>
+                      <i class="material-icons md-24" *ngIf="account.estado === 'I'">remove_circle_outline</i>
+                      <i class="material-icons md-24" *ngIf="account.estado === 'C'">highlight_off</i>
+                    </span>
+                    <span *ngIf="itemdata.titleHead === 'number'">{{account.numeroCuenta}}</span>
+                    <span *ngIf="itemdata.titleHead === 'name'">{{account.nombre}}</span>
+                    <span *ngIf="itemdata.titleHead === 'relation'">{{account.relacion}}</span>
+                    <span *ngIf="itemdata.titleHead === 'product-type'" class="label label-default">{{ getProductTypeDescription(account.tipoProducto) }}</span>
+                    <span *ngIf="itemdata.titleHead === 'currency'">{{account.moneda}}</span>
+                    <span *ngIf="itemdata.titleHead === 'availableBalance'" class="label label-success">{{ account.saldoDisponible | number:'.2-2'}}</span>
+                    <span *ngIf="itemdata.titleHead === 'totalBalance'" class="label label-info">{{ account.saldoTotal | number:'.2-2'}}</span>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+              <!--<sa-data-table [(pager)]="pager" (updatePagination)="updateTable($event)"></sa-data-table>-->
+            </div>
+          </ng-template>
+        </ngb-panel>
+      </content>
+    </ngb-accordion>
+    <div class="panel-footer text-right col-lg-10" *ngIf="!inactive">
+      <div class="row">
+        <button type="button" class="btn btn-success btn-radio animated bounceIn" (click)="toCreateAccount()"
+                data-toggle="tooltip" data-placement="top" translate
+                translate-attr-data-original-title="tooltip.create-account">
+          <i class="material-icons md-18">add</i> {{'buttons.create' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

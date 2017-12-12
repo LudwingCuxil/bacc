@@ -1,0 +1,40 @@
+<div class="inputs" *ngIf="role || modeCreate" [formGroup]="formGroup">
+  <fieldset>
+    <div class="form-group" *ngIf="false">
+      <div class="col-md-12">
+        <label for="id" class="control-label">Id:</label>
+        <input [(ngModel)]="role.id" formControlName="id" class="form-control" name="id" id="id" placeholder="Id"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-12">
+        <label for="nombre" class="control-label" [translate]="'role.name'">{{'role.name' | translate}}:</label>
+        <input [(ngModel)]="role.nombre" formControlName="name" name="nombre" class="form-control" id="nombre" autofocus/>
+        <pl-errors-message [control]="name"></pl-errors-message>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-12">
+        <label for="descripcion" class="control-label" [translate]="'role.description'">{{'role.description' | translate}}:</label>
+        <input [(ngModel)]="role.descripcion" formControlName="description" name="descripcion" id="descripcion" class="form-control"/>
+        <pl-errors-message [control]="description"></pl-errors-message>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-12">
+        <label for="tipo" class="control-label" [translate]="'role.type'">{{'role.type' | translate}}:</label>
+        <select id="tipo" formControlName="type" [(ngModel)]="role.tipo" class="form-control">
+          <option [ngValue]="typeRole.FUN">{{ 'role.type-value.FUN' | translate }}</option>
+          <option [ngValue]="typeRole.MOD">{{ 'role.type-value.MOD' | translate }}</option>
+			  </select>
+        <pl-errors-message [control]="type"></pl-errors-message>
+      </div>
+    </div>
+    <div class="form-group">
+      <button (click)="goBack()" *ngIf="individual" [translate]="'buttons.back'">{{'buttons.back' | translate}}</button>
+      <button *ngIf="individual && !modeCreate" [translate]="'buttons.create'">{{'buttons.create' | translate}}</button>
+      <button *ngIf="individual && !modeEdit" [translate]="'buttons.update'">{{'buttons.update' | translate}}</button>
+      <button *ngIf="individual && !modeDelete" [translate]="'buttons.delete'">{{'buttons.delete' | translate}}</button>
+    </div>
+  </fieldset>
+</div>

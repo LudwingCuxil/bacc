@@ -1,0 +1,208 @@
+/*  //////////////  HEADER (JUMBOTRON) ///////////////*/
+
+.portal-create-component .jumbotron,
+.account-component .jumbotron {
+  padding: 0px 0px 0px 0px;
+  background-color: #fff;
+  margin-bottom: 0px;
+  border-bottom: 2px solid #CDD9DD;
+}
+
+.portal-create-component .jumbotron h1,
+.account-component .jumbotron h1 {
+  font-size: 29px;
+}
+
+.portal-create-component .jumbotron h3,
+.account-component .jumbotron h3 {
+  font-size: 18px;
+}
+
+.portal-create-component .jumbotron .row,
+.account-component .jumbotron .row {
+  margin-right: 0px;
+  margin-left: 0px;
+}
+
+/*  STATUS-ACCOUNT */
+
+.content-status-client .header-status-client,
+.content-status-account .header-status-account {
+  padding: 3px 15px;
+  border-radius: 100px;
+  font-size: 1em !important;
+  width: auto;
+  display: block;
+  position: absolute;
+  right: 0px;
+}
+
+.content-status-client .header-status-client .material-icons,
+.content-status-account .header-status-account .material-icons {
+  display: inline-block;
+}
+
+.content-status-client .header-status-client.P, /*PROSPECTO*/
+.content-status-account .header-status-account.status-default { /*PENDIENTE ACTIVACION*/
+  background-color: #D9EDF7;
+  color: #31708f;
+}
+.content-status-client .header-status-client.C,  /*EMBARGADA*/
+.content-status-account .header-status-account.E {  /*EMBARGADA*/
+  background-color: #FCF8E3;
+  color: #8a6d3b;
+}
+.content-status-client .header-status-client.A,  /*ACTIVO*/
+.content-status-account .header-status-account.A {  /*ACTIVA*/
+  background-color: #DFF0D8;
+  color: #3c763d;
+}
+.content-status-account .header-status-account i,
+.content-status-client .header-status-client i {
+  vertical-align: middle;
+}
+.content-status-client .header-status-client.A i,
+.content-status-account .header-status-account.A i {
+  border: 2px solid #3c763d;
+  border-radius: 100px;
+  font-size: 14px;
+  margin-left: 2px;
+  font-weight: bold;
+  padding: 1px;
+}
+.content-status-account .header-status-account.I {  /*INACTIVA*/
+  background-color: #FCF8E3;
+  color: #8a6d3b;
+}
+.content-status-client .header-status-client.I,  /*INACTIVA*/
+.content-status-account .header-status-account.C {  /*CANCELADA*/
+  background-color: #F2DEDE;
+  color: #a94442;
+}
+
+/***********  SOURCE  **********/
+
+.portal-create-component .jumbotron .source-client,
+.account-component .jumbotron .source-client {
+  padding: 10px 15px;
+}
+
+.portal-create-component .jumbotron .portal-header h1,
+.portal-create-component .jumbotron .portal-header small,
+.account-component .jumbotron .portal-header h1,
+.account-component .jumbotron .portal-header small {
+  text-transform: uppercase;
+}
+
+.portal-create-component .jumbotron .img-source-client,
+.account-component .jumbotron .img-source-client {
+  height: 80px;
+  width: 80px;
+  display: block;
+  margin: 5px auto;
+  border-radius: 100px;
+  border: 2px solid #CDD9DD;
+  position: relative;
+}
+
+.img-account {
+  position: relative;
+  width: 100%;
+  padding: 8px;
+  left: 0px;
+  height: 100%;
+  top: 0px;
+  font-size: 1.2em !important;
+}
+
+.client-natural {
+  background: transparent url('../../../assets/img/account/icon-user.png') no-repeat center center;
+  background-size: cover;
+}
+
+.client-not-selected {
+  background-color: gray;
+  filter: grayscale(100%) contrast(25%) opacity(50%) brightness(170%);
+}
+
+.portal-create-component .jumbotron .status-client,
+.account-component .jumbotron .status-client {
+  position: absolute;
+  right: calc((100% - 90px) / 2);
+  top: 65%;
+  color: #00BC65;
+}
+
+.portal-create-component .jumbotron .account-header,
+.portal-create-component .jumbotron .client-juridic,
+.account-component .jumbotron .account-header,
+.account-component .jumbotron .client-juridic {
+  font-size: 4.2em;
+  vertical-align: text-top;
+  color: #32465B;
+}
+
+/***********  DATA  **********/
+
+.data-account > div,
+.data-client > div {
+  padding-left: 0px;
+}
+
+.data-account .number-account,
+.data-client .client-name {
+  height: 35px;
+}
+
+.data-account .number-account h2,
+.data-client .client-name h2 {
+  margin: 0px;
+}
+
+.data-account .number-account .row,
+.data-client .client-name .row {
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.data-account .client-name h3 .row,
+.client-name h2 .row {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.portal-create-component .data-client > div:not(.client-name),
+.account-component .data-client > div:not(.client-name) {
+  margin-top: 10px;
+}
+
+.portal-create-component .data-account,
+.portal-create-component .data-client,
+.account-component .data-account,
+.account-component .data-client {
+  padding: 15px 0px;
+}
+
+.portal-create-component .data-account h1,
+.portal-create-component .data-client h1,
+.account-component .data-account h1,
+.account-component .data-client h1 {
+  margin-top: 0px;
+}
+
+.portal-create-component .data-account h3,
+.portal-create-component .data-account small,
+.account-component .data-client h3,
+.account-component .data-client small{
+  color: #2B454E;
+}
+
+.portal-create-component .data-account h3,
+.portal-create-component .data-client h3,
+.account-component .data-account h3,
+.account-component .data-client h3{
+  font-weight: 500;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}

@@ -1,0 +1,371 @@
+<div [ngBusy]="busy"></div>
+<form [formGroup]="formGroup" name="general-data-form" autocomplete="off" role="form" (ngSubmit)="validateForm()">
+  <div class="container-fluid animated fadeIn">
+    <div class="panel panel-custom">
+      <div class="panel-heading">
+        <h2 [translate]="'create-account.data.customer.title'">{{'create-account.data.customer.title' | translate}}</h2>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <label class="control-label" [translate]="'create-account.data.customer.name'">{{'create-account.data.customer.name' | translate}}</label>
+            <div class="form-group required" [ngClass]="{'has-error': customerName.touched && customerName.invalid}">
+              <textarea formControlName="customerName" name="customerName" class="form-control" [(ngModel)]="account.datoGeneral.nombre"
+                rows="2" cols="200" [(uppercase)]='account.datoGeneral.nombre' [maxLength]="180"></textarea>
+              <pl-errors-message [control]="customerName"></pl-errors-message>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-5">
+            <label class="control-label" [translate]="'create-account.data.customer.address'">{{'create-account.data.customer.address' | translate}}</label>
+            <div class="form-group required" [ngClass]="{'has-error': customerDirection.touched && customerDirection.invalid}">
+              <pl-address id="address" [formGroup]="formGroup" [controlName]="'customerDirection'"
+                [address]="account.datoGeneral.direccion" (changeAddress)="selectAddress($event)"
+                [autocomplete]="true"></pl-address>
+              <pl-errors-message [control]="customerDirection"></pl-errors-message>
+            </div>
+          </div>
+          <div class="col-md-4" *ngIf="navigationService.account.futuroCrece">
+            <label class="control-label" [translate]="'create-account.data.customer.opening-value'">{{'create-account.data.customer.opening-value' | translate}}</label>
+            <div class="input-group">
+	            <div class="form-group" [ngClass]="{'has-error': openingValue.touched && openingValue.invalid}">
+	              <input formControlName="openingValue" id="openingValue" type="text" class="form-control text-right" [(ngModel)]="account.datoGeneral.valorApertura"
+	                [maxLength]="13" onkeydown="numbersOnlyWithDecimal(this, event);" onblur="applyMoneyPattern(this, '');" onfocus="removeMoneyMask(this);"/>
+	              <pl-errors-message [control]="openingValue"></pl-errors-message>
+	            </div>
+	            <span class="input-group-btn">
+	              <button type="button" (click)="loadFuturoCrece()" class="btn btn-primary btn-radio btn-margin-reset animated bounceIn">
+	                <i class="material-icons md-18">search</i>
+	                <div class="ripple-container"></div>
+	              </button>
+	            </span>
+	          </div>
+          </div>
+          <div class="col-md-4" *ngIf=" !navigationService.account.futuroCrece">
+            <div class="form-group" [ngClass]="{'has-error': openingValue.touched && openingValue.invalid}">
+              <label class="control-label" [translate]="'create-account.data.customer.opening-value'">{{'create-account.data.customer.opening-value' | translate}}</label>
+              <input formControlName="openingValue" id="openingValue" type="text" class="form-control text-right" [(ngModel)]="account.datoGeneral.valorApertura"
+                [maxLength]="13" onkeydown="numbersOnlyWithDecimal(this, event);" onblur="applyMoneyPattern(this, '');" onfocus="removeMoneyMask(this);"/>
+              <pl-errors-message [control]="openingValue"></pl-errors-message>
+            </div>
+          </div>
+          <div class="col-md-3" *ngIf="account?.cliente?.tipoPersona != 'J' && !navigationService.account.futuroCrece && !account.datoGeneral.fechaInicio">
+            <div class="form-group">
+              <label class="control control--checkbox">
+                <input formControlName="jointAccount"id="jointAccount" name="jointAccount" type="checkbox" [(ngModel)]="account.datoGeneral.cuentaMancomunada"/>
+                <label [translate]="'create-account.data.customer.joint-account'" for="jointAccount">{{'create-account.data.customer.joint-account' | translate}}</label>
+               <div class="control__indicator"></div>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="navigationService.account.futuroCrece || account.datoGeneral.fechaInicio">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="control-label" [translate]="'create-account.data.customer.initial-date'">{{'create-account.data.customer.initial-date'
+                | translate}}</label>
+              <div class="form-group form-inline" id="dateRangePicker2"
+                   [ngClass]="{'has-error': initialDate.touched && initialDate.invalid}">
+                <div class="input-group">
+                  <sa-datepicker [(ngModel)]="bornDate" (ngModelChange)="changeDate($event)" name="initialDate"
+                                 formControlName="initialDate"
+                                 [maxDate]="maxDate" [minDate]="minDate"></sa-datepicker>
+                  <pl-errors-message [control]="initialDate"></pl-errors-message>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6" *ngIf="account?.cliente?.tipoPersona != 'J'">
+            <div class="form-group">
+              <label class="control control--checkbox">
+                <input formControlName="jointAccount"id="jointAccount" name="jointAccount" type="checkbox" [(ngModel)]="account.datoGeneral.cuentaMancomunada"/>
+                <label [translate]="'create-account.data.customer.joint-account'" for="jointAccount">{{'create-account.data.customer.joint-account' | translate}}</label>
+               <div class="control__indicator"></div>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="panel panel-primary-custom">
+              <header class="panel-heading text-center">
+                <h3 [translate]="'create-account.data.customer.economic-profile.title'">{{'create-account.data.customer.economic-profile.title' | translate}}</h3>
+              </header>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <label class="control-label" [translate]="'create-account.data.customer.economic-profile.sector'">{{'create-account.data.customer.economic-profile.sector' | translate}}</label>
+                    <div class="form-group required" [ngClass]="{'has-error': economicSector.touched && economicSector.invalid}">
+                      <pl-economic-sector-select [autocomplete]="true" [economicSector]="account.datoGeneral.sectorEconomico"
+                        [formGroup]="formGroup" [controlName]="'economicSector'" (changeEconomicSector)="selectEconomicSector($event)"></pl-economic-sector-select>
+                      <pl-errors-message [control]="economicSector"></pl-errors-message>
+                    </div>
+                  </div>
+                  <div class="col-lg-12">
+                    <label class="control-label" [translate]="'create-account.data.customer.economic-profile.activity'">{{'create-account.data.customer.economic-profile.activity' | translate}}</label>
+                    <div class="form-group required" [ngClass]="{'has-error': economicActivity.touched && economicActivity.invalid}">
+                      <pl-economic-activities-select id="economicActivity" [formGroup]="formGroup"
+                        [economicActivity]="account.datoGeneral.actividadEconomica" (changeEconomicActivity)="selectEconomicActivities($event)"
+                        [autocomplete]="true"></pl-economic-activities-select>
+                      <pl-errors-message [control]="economicActivity"></pl-errors-message>
+                    </div>
+                  </div>
+                  <div class="col-lg-12">
+                    <div class="form-group">
+                      <label class="control control--checkbox">
+                        <input formControlName="individualBank" id="individualBank" name="individualBank" type="checkbox" [(ngModel)]="account.datoGeneral.bancaEmpresarialPyme"/>
+                        <label for="individualBank">{{ changeTag() | translate}}</label>
+                        <div class="control__indicator"></div>
+                      </label>
+                    </div>
+                    <div class="form-group">
+                      <label class="control control--checkbox">
+                        <input formControlName="isrAffection" id="isrAffection" name="isrAffection" type="checkbox" [(ngModel)]="account.datoGeneral.afectaIsr"/>
+                        <label [translate]="'create-account.data.customer.economic-profile.isr'" for="isrAffection">{{'create-account.data.customer.economic-profile.isr' | translate}}</label>
+                        <div class="control__indicator"></div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="panel panel-primary-custom">
+              <header class="panel-heading text-center">
+                <h3 [translate]="'create-account.data.customer.account-reference.title'">{{'create-account.data.customer.account-reference.title' | translate}}</h3>
+              </header>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-lg-12 text-center sub-title">
+                    <h4><strong [translate]="'create-account.data.customer.account-reference.funds-origin'">
+                      {{'create-account.data.customer.account-reference.funds-origin' | translate}}</strong></h4>
+                  </div>
+                  <div class="col-lg-12">
+                    <label class="control-label" [translate]="'create-account.data.customer.account-reference.account-open'">
+                      {{'create-account.data.customer.account-reference.account-open' | translate}}</label>
+                    <div class="form-group required" [ngClass]="{'has-error': originFund.touched && originFund.invalid}">
+                      <pl-origin-funds-select id="originFund" [formGroup]="formGroup"
+                                [originFund]="account.datoGeneral.abrirLaCuenta"
+                                (changeOriginFund)="selectOriginFunds($event)" [autocomplete]="true"></pl-origin-funds-select>
+                      <pl-errors-message [control]="originFund"></pl-errors-message>
+                    </div>
+                  </div>
+                  <div class="col-lg-12">
+                    <label class="control-label" [translate]="'create-account.data.customer.account-reference.account-purpose'" >
+                      {{'create-account.data.customer.account-reference.account-purpose' | translate}}</label>
+                    <div class="form-group required" [ngClass]="{'has-error': accountPurpose.touched && accountPurpose.invalid}">
+                      <pl-account-purpose-select id="accountPurpose" [formGroup]="formGroup"
+                                [accountPurpose]="account.datoGeneral.utilizarEnCuenta"
+                                (changeAccountPurpose)="selectAccountPurpose($event)" [autocomplete]="true"></pl-account-purpose-select>
+                      <pl-errors-message [control]="accountPurpose"></pl-errors-message>
+                    </div>
+                  </div>
+                  <div class="col-lg-12">
+                    <label class="control-label" [translate]="'create-account.data.customer.account-reference.deposit-month'">
+                      {{'create-account.data.customer.account-reference.deposit-month' | translate}}</label>
+                    <div class="form-group required" [ngClass]="{'has-error': depositAmount.touched && depositAmount.invalid}">
+                      <input id="depositAmount" type="text" formControlName="depositAmount" [(ngModel)]="account.datoGeneral.montoDepositos" onkeydown="numbersOnlyWithDecimal(this, event);"
+                        onblur="applyMoneyPattern(this, '');" onfocus="removeMoneyMask(this);" [maxLength]="13" class="form-control text-right"/>
+                      <pl-errors-message [control]="depositAmount"></pl-errors-message>
+                    </div>
+                  </div>
+                  <div class="col-lg-12">
+                    <label class="control-label" [translate]="'create-account.data.customer.account-reference.observations'">
+                      {{'create-account.data.customer.account-reference.observations' | translate}}</label>
+                    <div class="form-group required" [ngClass]="{'has-error': observations.touched && observations.invalid}">
+                      <textarea id="observations" formControlName="observations" class="form-control" [(ngModel)]="account.datoGeneral.proposito"
+                        rows="3" cols="100" [(uppercase)]="account.datoGeneral.proposito" [maxLength]="80"></textarea>
+                      <pl-errors-message [control]="observations"></pl-errors-message>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="row">
+	                <div class="col-lg-12">
+	                  <label class="control-label" [translate]="'create-account.data.customer.promotions'">{{'create-account.data.customer.promotions' | translate}}</label>
+	                  <div class="form-group" [ngClass]="{'has-error': promotions.touched && promotions.invalid}">
+	                    <pl-promotions-select id="salarySelected" [formGroup]="formGroup"
+                                [promotion]="account.datoGeneral.promocion" [controlName]="'promotions'"
+                                (changePromotion)="selectPromotion($event)" [autocomplete]="true"></pl-promotions-select>
+	                    <pl-errors-message [control]="promotions"></pl-errors-message>
+	                  </div>
+	                </div>
+                  <div class="col-lg-12">
+                    <label class="control-label" [translate]="'create-account.data.customer.send-account'">{{'create-account.data.customer.send-account' | translate}}</label>
+                    <div *ngIf="business" class="form-group required" [ngClass]="{'has-error': agencies.touched && agencies.invalid}">
+                      <pl-agencies-select id="agencies" [formGroup]="formGroup"
+                                [agency]="account.datoGeneral.envioEstadoCuenta"
+                                (changeAgency)="selectAgency($event)" [autocomplete]="true"
+                                [controlName]="'agencies'" [business]="business"></pl-agencies-select>
+                      <pl-errors-message [control]="agencies"></pl-errors-message>
+                    </div>
+                  </div>
+                  <div class="col-lg-12" *ngIf="account.subProducto?.tipoForma != null && account.subProducto?.tipoForma != '0'">
+                    <label class="control-label">{{account.subProducto.tipoFormaDescripcion}}</label>
+                    <div class="form-group required" [ngClass]="{'has-error': savingsBook.touched && savingsBook.invalid}">
+                      <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' formControlName="savingsBook" class="form-control"
+                        [maxLength]="7" [(ngModel)]="account.datoGeneral.productoCampo1" [required]="account.subProducto?.tipoForma != null && account.subProducto?.tipoForma != '0'"/>
+                      <pl-errors-message [control]="savingsBook"></pl-errors-message>
+                    </div>
+                  </div>
+                  <div class="col-lg-12" *ngIf="hideGroup">
+                    <label class="control-label" [translate]="'create-account.data.customer.economic-group'">{{'create-account.data.customer.economic-group' | translate}}</label>
+                    <div class="form-group" [ngClass]="{'has-error': economicGroup.touched && economicGroup.invalid}">
+                      <pl-economic-group-select id="economicGroup" [formGroup]="formGroup"
+                        [economicGroup]="account.datoGeneral.grupoEconomico" (changeEconomicGroup)="selectEconomicGroup($event)"
+                        [autocomplete]="true" [editMode]="editMode ? true : navigationService.account.dataCustomer"></pl-economic-group-select>
+                      <pl-errors-message [control]="economicGroup"></pl-errors-message>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="row">
+	                <div class="col-lg-12">
+	                  <label class="control-label" [translate]="'create-account.data.customer.responsible-officer'">{{'create-account.data.customer.responsible-officer' | translate}}</label>
+	                  <div *ngIf="business" class="form-group required" [ngClass]="{'has-error': operationsSupervisor.touched && operationsSupervisor.invalid}">
+	                    <pl-operations-supervisor id="operationsSupervisor" [autocomplete]="true" [business]="business"
+                        [formGroup]="formGroup" [controlName]="'operationsSupervisor'" [operationsSupervisor]="account.datoGeneral.funcionarioResponsable"
+                        (changeOperationsSupervisor)="selectOperationsSupervisor($event)"></pl-operations-supervisor>
+	                    <pl-errors-message [control]="operationsSupervisor"></pl-errors-message>
+	                  </div>
+	                </div>
+                  <div class="col-lg-12">
+                    <label class="control-label" [translate]="'create-account.data.customer.account-officer'">{{'create-account.data.customer.account-officer' | translate}}</label>
+                    <div *ngIf="business" class="form-group required" [ngClass]="{'has-error': businessExecutive.touched && businessExecutive.invalid}">
+                      <pl-business-executive-select id="businessExecutive" [autocomplete]="true" [business]="business"
+                        [formGroup]="formGroup" [controlName]="'businessExecutive'" [businessExecutive]="account.datoGeneral.oficialCuentas"
+                        (changeBusinessExecutive)="selectAccountOfficer($event)"></pl-business-executive-select>
+                      <pl-errors-message [control]="businessExecutive"></pl-errors-message>
+                    </div>
+                  </div>
+                  <div class="col-lg-12">
+                    <div class="form-group">
+                      <label class="control control--checkbox">
+                        <input formControlName="accountManagementCharge" id="accountManagementCharge" name="accountManagementCharge" type="checkbox"
+                          [(ngModel)]="account.datoGeneral.cargoPorManejoCuenta"/>
+                        <label for="accountManagementCharge">{{ 'create-account.data.customer.management-feels' | translate}}</label>
+                        <div class="control__indicator"></div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer text-right col-lg-10" >
+        <div class="row">
+          <button type="button" (click)="editMode? restoreData() : cancelModal()"
+           class="btn btn-danger btn-radio animated bounceIn" *ngIf="customerDirection.enabled">
+              <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+              <div class="ripple-container"></div>
+          </button>
+          <button type="button" (click)="editMode? changeControl() : showEdit()"
+           class="btn btn-warning btn-radio animated bounceIn" *ngIf="!cancelAccount && editMode && customerDirection.disabled || navigationService.account.dataCustomer">
+              <i class="material-icons md-18">create</i> {{'buttons.update' | translate}}
+              <div class="ripple-container"></div>
+          </button>
+          <button type="submit" [disabled]="!formGroup.valid" *ngIf="customerDirection.enabled"
+            class="btn btn-success btn-radio animated bounceIn">
+              {{'buttons.continue' | translate}}
+                <i class="material-icons md-18">chevron_right</i>
+            <div class="ripple-container"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<cancel-confirmation [account]="true"></cancel-confirmation>
+<div class="modal fade" id="authorizationModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">{{'authorization.title'|translate}}<i class="material-icons md-18">check_circle</i></h4>
+      </div>
+      <div class="modal-body">
+        <pl-authorization [authorization]="authorization"
+                          (changeAuthorization)="changeAuthorization($event)"></pl-authorization>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="editSection()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel" [translate]="'messages.editar-cuenta'"><i class="material-icons md-18">create</i>
+          {{'messages.editar-cuenta' | translate}}</h4>
+      </div>
+      <div class="modal-body text-right">
+       <button type="button" class="btn btn-danger btn-radio animated bounceIn"
+                    data-toggle="tooltip" data-placement="top" translate data-dismiss="modal"
+                    translate-attr-data-original-title="tooltip.buscar">
+         <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+        </button>
+        <button type="button" class="btn btn-success btn-radio animated bounceIn" data-dismiss="modal" (click)="editSection()"
+                    data-toggle="tooltip" data-placement="top" translate
+                    translate-attr-data-original-title="tooltip.buscar">
+          <i class="material-icons md-18">check</i> {{'buttons.continue' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="futuroCreceModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><i class="material-icons md-18">check_circle</i>{{'autorizacion.futuro-crece' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="table-responsive">
+              <table class="table table-striped table-hover text-center">
+		            <thead>
+		            <tr>
+		              <th [translate]="'encabezado-tabla.col-descripcion'">{{'encabezado-tabla.col-descripcion' | translate}}</th>
+		              <th [translate]="'encabezado-tabla.col-plazo'">{{'encabezado-tabla.col-plazo' | translate}}</th>
+		              <th [translate]="'encabezado-tabla.col-penalizacion'" >{{'encabezado-tabla.col-penalizacion' | translate}}</th>
+		              <th [translate]="'encabezado-tabla.col-valor'">{{'encabezado-tabla.col-valor' | translate}}</th>
+                  	  <th [translate]="'encabezado-tabla.col-seguro'">{{'encabezado-tabla.col-seguro' | translate}}</th>
+		            </tr>
+		            </thead>
+		            <tbody>
+		            <tr *ngFor="let amount of listaMonto; let i = index" (click)="amountSelect(amount,i)"
+		                [class.active]="i == selectedRow">
+		              <td class="text-center">{{ amount.descripcion }}</td>
+		              <td class="text-center">{{ amount.plazo }}</td>
+		              <td class="text-center">{{ amount.porcentajePenalizacion | number}}%</td>
+		              <td class="text-center" id="future" >{{ amount.valorAperturaMascara}}</td>
+		              <td class="text-center">{{ amount.valorSeguro }}</td>
+		            </tr>
+		            </tbody>
+		          </table>
+<!--               <sa-data-table [data]="depositParameter?.listaMonto" [heading]="heading" [values]="values" -->
+<!--                 [pager]="undefined" [actionTemplate]="actionsTemplate" [useTableTemplate]="true" [useServicePager]="false" (rowSelected)="amountSelect($event)"></sa-data-table> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

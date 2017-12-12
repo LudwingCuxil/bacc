@@ -1,0 +1,1329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:int="http://www.springframework.org/schema/integration" 
+	xmlns:int-jdbc="http://www.springframework.org/schema/integration/jdbc"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" 
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/integration/jdbc http://www.springframework.org/schema/integration/jdbc/spring-integration-jdbc.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<int:gateway id="clienteIntegrationDao" service-interface="com.bytesw.platform.bs.dao.clientes.ClienteDao">
+    	<int:method name="getDatosRegistroPersonas" request-channel="getDatosRegistroPersonasRequestChannel" request-timeout="5000" reply-channel="getDatosRegistroPersonasResponseChannel" reply-timeout="5000" />
+    	<int:method name="getUltimoCorrelativoCodigoCliente" request-channel="getCorrelativoCodigoClienteRequestChannel" request-timeout="5000" reply-channel="getCorrelativoCodigoClienteReplyChannel" reply-timeout="5000" />
+    	<int:method name="updateCorrelativoCodigoCliente" request-channel="updateCorrelativoCodigoClienteRequestChannel" request-timeout="5000" payload-expression="#args" />
+    	<int:method name="saveInformacionGeneralCliente" request-channel="saveInformacionGeneralClienteRequestChannel" request-timeout="5000" reply-channel="saveInformacionGeneralClienteReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveInformacionPersonaNatural" request-channel="saveInformacionPersonaNaturalRequestChannel" request-timeout="5000" reply-channel="saveInformacionPersonaNaturalReplyChannel" reply-timeout="5000" /> 
+    	<int:method name="saveInformacionPersonaJuridica" request-channel="saveInformacionPersonaJuridicaRequestChannel" request-timeout="5000" reply-channel="saveInformacionPersonaJuridicaReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveNivelVentasPersonaJuridica" request-channel="saveNivelVentasPersonaJuridicaRequestChannel" request-timeout="5000" reply-channel="saveNivelVentasPersonaJuridicaReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveRepresentanteLegal" request-channel="saveRepresentanteLegalRequestChannel" request-timeout="5000" reply-channel="saveRepresentanteLegalReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveIndice" request-channel="saveIndiceRequestChannel" request-timeout="5000" reply-channel="saveIndiceReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveDireccion" request-channel="saveDireccionRequestChannel" request-timeout="5000" reply-channel="saveDireccionReplyChannel" reply-timeout="5000" />
+		<int:method name="saveDireccionLog" request-channel="saveDireccionLogRequestChannel" request-timeout="5000" />
+		<int:method name="saveInformacionGeneralClienteTemporal" request-channel="saveInformacionGeneralClienteTemporalRequestChannel" request-timeout="5000" reply-channel="saveInformacionGeneralClienteTemporalReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveDatosAdicionales" request-channel="saveDatosAdicionalesRequestChannel" request-timeout="5000" reply-channel="saveDatosAdicionalesReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveDocumentoApertura" request-channel="saveDocumentoAperturaRequestChannel" request-timeout="5000" />
+    	<int:method name="saveGrupoEconomico" request-channel="saveGrupoEconomicoRequestChannel" request-timeout="5000" />
+    	<int:method name="saveReferenciasLaborales" request-channel="saveReferenciasLaboralesRequestChannel" request-timeout="5000" reply-channel="saveReferenciasLaboralesReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveReferenciasSeguros" request-channel="saveReferenciasSegurosRequestChannel" request-timeout="5000" reply-channel="saveReferenciasSegurosReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveReferenciasCredito" request-channel="saveReferenciasCreditoRequestChannel" request-timeout="5000" reply-channel="saveReferenciasCreditoReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveReferenciasCuentas" request-channel="saveReferenciasCuentasRequestChannel" request-timeout="5000" reply-channel="saveReferenciasCuentasReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveReferenciasPersonalesFamiliares" request-channel="saveReferenciasPersonalesFamiliaresRequestChannel" request-timeout="5000" reply-channel="saveReferenciasPersonalesFamiliaresReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveReferenciasVehiculos" request-channel="saveReferenciasVehiculosRequestChannel" request-timeout="5000" reply-channel="saveReferenciasVehiculosReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveReferenciasDependientes" request-channel="saveReferenciasDependientesRequestChannel" request-timeout="5000" reply-channel="saveReferenciasDependientesReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveReferenciasLaboralesConyugue" request-channel="saveReferenciasLaboralesConyugueRequestChannel" request-timeout="5000" reply-channel="saveReferenciasLaboralesConyugueReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveReferenciasAccionistas" request-channel="saveReferenciasAccionistasRequestChannel" request-timeout="5000" reply-channel="saveReferenciasAccionistasReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveReferenciasComerciales" request-channel="saveReferenciasComercialesRequestChannel" request-timeout="5000" reply-channel="saveReferenciasComercialesReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveReferenciasPropiedades" request-channel="saveReferenciasPropiedadesRequestChannel" request-timeout="5000" reply-channel="saveReferenciasPropiedadesReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveReferenciasProveedores" request-channel="saveReferenciasProveedoresRequestChannel" request-timeout="5000" reply-channel="saveReferenciasProveedoresReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveReferenciasTarjetasCredito" request-channel="saveReferenciasTarjetasCreditoRequestChannel" request-timeout="5000" reply-channel="saveReferenciasTarjetasCreditoReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveReferenciasConyugue" request-channel="saveReferenciasConyugueRequestChannel" request-timeout="5000" reply-channel="saveReferenciasConyugueReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveReferenciasComerciante" request-channel="saveReferenciasComercianteRequestChannel" request-timeout="5000" reply-channel="saveReferenciasComercianteReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveReferenciasComercianteDatosContador" request-channel="saveReferenciasComercianteDatosContadorRequestChannel" request-timeout="5000" reply-channel="saveReferenciasComercianteDatosContadorReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveReferenciasParentestoEmpleados" request-channel="saveReferenciasParentestoEmpleadosRequestChannel" request-timeout="5000" reply-channel="saveReferenciasParentestoEmpleadosReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveCamposBCH" request-channel="saveCamposBCHRequestChannel" request-timeout="5000" reply-channel="saveCamposBCHReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveLogInformacionPersonaNatural" request-channel="saveLogInformacionPersonaNaturalRequestChannel" request-timeout="5000" reply-channel="saveLogInformacionPersonaNaturalReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveLogInformacionPersonaJuridica" request-channel="saveLogInformacionPersonaJuridicaRequestChannel" request-timeout="5000" reply-channel="saveLogInformacionPersonaJuridicaReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveLogDatosAdicionalesCliente" request-channel="saveLogDatosAdicionalesClienteRequestChannel" request-timeout="5000" reply-channel="saveLogDatosAdicionalesClienteReplyChannel" reply-timeout="5000" /> 
+    	<int:method name="saveLogDatosGeneralesClientes" request-channel="saveLogDatosGeneralesClientesRequestChannel" request-timeout="5000"/>
+    	<int:method name="saveLogDatosGenerales" request-channel="saveLogDatosGeneralesRequestChannel" request-timeout="5000"/>
+    	<int:method name="saveLogUsoRegistroPersonas" request-channel="saveLogUsoRegistroPersonasRequestChannel" request-timeout="5000" reply-channel="saveLogUsoRegistroPersonasReplyChannel" reply-timeout="5000" />
+    	<int:method name="updateNombre" request-channel="updateNombreRequestChannel" request-timeout="5000" />
+    	<int:method name="updateId" request-channel="updateIdRequestChannel" request-timeout="5000" />
+    	<int:method name="updateNombrePersonaNatural" request-channel="updateNombrePersonaNaturalRequestChannel" request-timeout="5000" />
+    	<int:method name="updateNombrePersonaJuridica" request-channel="updateNombrePersonaJuridicaRequestChannel" request-timeout="5000" />
+    	<int:method name="updateDatosGeneralesCliente" request-channel="updateDatosGeneralesClienteRequestChannel" request-timeout="5000" />
+    	<int:method name="updateDatosGeneralesPersonaNatural" request-channel="updateDatosGeneralesPersonaNaturalRequestChannel" request-timeout="5000" />
+    	<int:method name="updateNumeroDependientes" request-channel="updateNumeroDependientesRequestChannel" request-timeout="5000" />
+    	<int:method name="updateDatosGeneralesPersonaJuridica" request-channel="updateDatosGeneralesPersonaJuridicaRequestChannel" request-timeout="5000" />
+    	<int:method name="updateNivelVentasPersonaJuridica" request-channel="updateNivelVentasPersonaJuridicaRequestChannel" request-timeout="5000" />
+    	<int:method name="updatePerfilEconomico" request-channel="updatePerfilEconomicoRequestChannel" request-timeout="5000" />
+    	<int:method name="updatePerfilEconomicoAdicional" request-channel="updatePerfilEconomicoAdicionalRequestChannel" request-timeout="5000" />
+    	<int:method name="updateCamposBCH" request-channel="updateCamposBCHRequestChannel" request-timeout="5000" />
+    	<int:method name="updateRepresentanteLegal" request-channel="updateRepresentanteLegalRequestChannel" request-timeout="5000" />
+    	<int:method name="updateRepresentanteLegalNombreCompleto" request-channel="updateRepresentanteLegalNombreCompletoRequestChannel" request-timeout="5000" />
+    	<int:method name="updateRepresentanteLegalPersonaJuridica" request-channel="updateRepresentanteLegalPersonaJuridicaRequestChannel" request-timeout="5000" />
+    	<int:method name="updateDatosAdicionales" request-channel="updateDatosAdicionalesRequestChannel" request-timeout="5000" />
+    	<int:method name="updateDireccion" request-channel="updateDireccionRequestChannel" request-timeout="5000" />
+    	<int:method name="updateReferenciasDependientes" request-channel="updateReferenciasDependientesRequestChannel" request-timeout="5000" />
+    	<int:method name="updateReferenciasAccionista" request-channel="updateReferenciasAccionistaRequestChannel" request-timeout="5000" />
+    	<int:method name="updateReferenciasCredito" request-channel="updateReferenciasCreditoRequestChannel" request-timeout="5000" />
+    	<int:method name="updateReferenciasCuenta" request-channel="updateReferenciasCuentaRequestChannel" request-timeout="5000" />
+    	<int:method name="updateReferenciasPersonalesFamiliares" request-channel="updateReferenciasPersonalesFamiliaresRequestChannel" request-timeout="5000" />
+    	<int:method name="updateReferenciasVehiculos" request-channel="updateReferenciasVehiculosRequestChannel" request-timeout="5000" />
+    	<int:method name="updateReferenciasSeguros" request-channel="updateReferenciasSegurosRequestChannel" request-timeout="5000" />
+    	<int:method name="updateReferenciasParentescoEmpleados" request-channel="updateReferenciasParentescoEmpleadosRequestChannel" request-timeout="5000" />
+    	<int:method name="updateReferenciasLaborales" request-channel="updateReferenciasLaboralesRequestChannel" request-timeout="5000" />
+    	<int:method name="updateReferenciasProveedores" request-channel="updateReferenciasProveedoresRequestChannel" request-timeout="5000" />
+    	<int:method name="updateReferenciaComerciante" request-channel="updateReferenciaComercianteRequestChannel" request-timeout="5000" />
+    	<int:method name="updateReferenciasComercianteDatosContador" request-channel="updateReferenciasComercianteDatosContadorRequestChannel" request-timeout="5000" />
+    	<int:method name="deleteIndice" request-channel="deleteIndiceRequestChannel" request-timeout="5000" />
+    	<int:method name="deleteDocumentoApertura" request-channel="deleteDocumentoAperturaRequestChannel" request-timeout="5000" />
+       	<int:method name="deleteDireccion" request-channel="deleteDireccionRequestChannel" request-timeout="5000" />
+       	<int:method name="deleteRepresentanteLegal" request-channel="deleteRepresentanteLegalRequestChannel" request-timeout="5000" />
+       	<int:method name="deleteGrupoEconomico" request-channel="deleteGrupoEconomicoRequestChannel" request-timeout="5000" />
+       	<int:method name="deleteGruposEconomicos" request-channel="deleteGruposEconomicosRequestChannel" request-timeout="5000" />
+   		<int:method name="deleteReferenciasDependientes" request-channel="deleteReferenciasDependientesRequestChannel" request-timeout="5000" />
+   		<int:method name="deleteReferenciasAccionista" request-channel="deleteReferenciasAccionistaRequestChannel" request-timeout="5000" />
+   		<int:method name="deleteReferenciasCredito" request-channel="deleteReferenciasCreditoRequestChannel" request-timeout="5000" />
+   		<int:method name="deleteReferenciasCuenta" request-channel="deleteReferenciasCuentaRequestChannel" request-timeout="5000" />
+   		<int:method name="deleteReferenciasPersonalesFamiliares" request-channel="deleteReferenciasPersonalesFamiliaresRequestChannel" request-timeout="5000" />
+   		<int:method name="deleteReferenciasVehiculos" request-channel="deleteReferenciasVehiculosRequestChannel" request-timeout="5000" />
+   	   	<int:method name="deleteReferenciasSeguros" request-channel="deleteReferenciasSegurosRequestChannel" request-timeout="5000" />
+        <int:method name="deleteReferenciasParentescoEmpleados" request-channel="deleteReferenciasParentescoEmpleadosRequestChannel" request-timeout="5000" />
+        <int:method name="deleteReferenciasLaborales" request-channel="deleteReferenciasLaboralesRequestChannel" request-timeout="5000" />
+    	<int:method name="deleteReferenciasProveedores" request-channel="deleteReferenciasProveedoresRequestChannel" request-timeout="5000" />
+       	<int:method name="deleteReferenciaComerciante" request-channel="deleteReferenciaComercianteRequestChannel" request-timeout="5000" />
+   		<int:method name="deleteReferenciasComercianteDatosContador" request-channel="deleteReferenciasComercianteDatosContadorRequestChannel" request-timeout="5000" />
+    </int:gateway>
+		
+	<!-- REGISTRO DE PERSONAS -->
+	
+	<int:channel id="getDatosRegistroPersonasRequestChannel"/>
+	<int:channel id="getDatosRegistroPersonasResponseChannel"/>
+	
+	<int-jdbc:outbound-gateway 	id="getDatosRegistroPersonasOutbound"
+    							data-source="dataSource" 
+								request-channel="getDatosRegistroPersonasRequestChannel"
+								reply-channel="getDatosRegistroPersonasResponseChannel"
+								query="SELECT 
+											PERID  ID_PERSONA,
+											PERSEQ SECUENCIA,
+											PENOM1 PRIMER_NOMBRE,
+											PENOM2 SEGUNDO_NOMBRE,
+											PEAPE1 PRIMER_APELLIDO,
+											PEAPE2 SEGUNDO_APELLIDO,
+											PEAPCA APELLIDO_DE_CASADA,
+											PERGEN GENERO,
+											PERANA ANO_NACIMIENTO,
+											PERMNA MES_NACIMIENTO,
+											PERDNA DIA_NACIMIENTO,
+											PERAAL ANO_ALTA,
+											PERMAL MES_ALTA,
+											PERDAL DIA_ALTA,
+											PERHAL HORA_ALTA,
+											PERUAL USUARIO_ALTA,
+											PERAMO ANO_MODIFICACION,
+											PERMMO MES_MODIFICACION,
+											PERDMO DIA_MODIFICACION,
+											PERHMO HORA_MODIFICACION,
+											PERUMO USUARIO_MODIFICACION
+										FROM 
+											#{BTRAB}.PLRPER
+										WHERE 
+											PERID = :payload.identificacion"
+								requires-reply="false"		
+								row-mapper="registroPersonasMapper"/>
+								
+	<bean id="registroPersonasMapper" class="com.bytesw.platform.eis.mapper.RegistroPersonasMapper"/>
+	
+	<!-- ############## GRABA ############## -->
+	
+	<!-- CORRELATIVO -->
+
+	<int:channel id="getCorrelativoCodigoClienteRequestChannel" />
+	<int:channel id="getCorrelativoCodigoClienteReplyChannel" />
+
+	<int-jdbc:outbound-gateway id="correlativoCodigoClienteGateway" data-source="dataSource" 
+		request-channel="getCorrelativoCodigoClienteRequestChannel" reply-channel="getCorrelativoCodigoClienteReplyChannel" requires-reply="false"
+		query="SELECT PARCCL FROM #{CLPAR}.CLPARM FETCH FIRST 1 ROWS ONLY WITH RS USE AND KEEP EXCLUSIVE LOCKS"		
+		row-mapper="codigoClienteMapper">
+	</int-jdbc:outbound-gateway>
+		
+	<bean id="codigoClienteMapper" class="com.bytesw.platform.eis.mapper.CodigoClienteMapper"/>
+	
+	<!-- UPDATE CORRELATIVO -->
+	
+	<int:channel id="updateCorrelativoCodigoClienteRequestChannel" />
+		
+	<int-jdbc:outbound-channel-adapter id="updateCorrelativoCodigoClienteAdapter" data-source="dataSource"
+		channel="updateCorrelativoCodigoClienteRequestChannel"
+		query="UPDATE #{CLPAR}.CLPARM SET PARCCL = :payload[0]">
+	</int-jdbc:outbound-channel-adapter>
+
+	<!-- INFORMACION GENERAL -->
+	
+	<int:channel id="saveInformacionGeneralClienteRequestChannel" />
+	<int:channel id="saveInformacionGeneralClienteReplyChannel" />
+
+	<int-jdbc:outbound-gateway id="saveInformacionGeneralClienteGateway" data-source="dataSource"
+		request-channel="saveInformacionGeneralClienteRequestChannel" reply-channel="saveInformacionGeneralClienteReplyChannel" 
+		update="#{sqlSaveInformacionGeneralCliente}" 
+		query="SELECT count(*) FROM #{CLDAT}.CLMCTE WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveInformacionGeneralCliente">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLMCTE (
+					CLTDOC, CLDOC,  CLNOMB,
+					CLTIPE, CLAISR, CLNNIT,
+                   	ESTATU, CLEMPC, CLAGCD,
+                   	CLSUCO, CLEJCO, CLSECO,
+                   	CLAÑAL, CLMEAL, CLDIAL,
+                   	CLNEGR, CLREPR, CLCLCO,
+                   	CLNUID, CLLECL, CLTID@,
+                   	CLACCO, CLPORI, CLSTPA,
+                   	CLCOVI, CLTDVI, CLDOVI)
+				VALUES (
+					:payload.tipoDocumento, :payload.documento, :payload.nombreCompleto, 
+					:payload.tipoPersonaString, :payload.perfilEconomico.stringAfectoIsr, :payload.perfilEconomico.rtn,
+					'A', :payload.empresa, :payload.agencia, 
+					'9999', :payload.oficialDeCuentas.id.codigo, :payload.perfilEconomico.sectorEconomico.codigo,
+					:payload.anioApertura, :payload.mesApertura, :payload.diaApertura, 
+					'N', :payload.representanteLegalTutor.nombreCompletoRecortado, :payload.perfilEconomico.claseCliente.codigo,
+					:payload.identificacion, '0.00', :payload.tipoIdentificacion.codigo, 
+					'0', :payload.paisOrigen.codigo, :payload.estadoPapeleria,
+					' ', ' ', ' ')
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	<!-- LOG DATOS GENERALES -->
+	<int:channel id="saveLogDatosGeneralesRequestChannel"/>
+	<int-jdbc:outbound-channel-adapter id="saveLogDatosGeneralesAdapter" data-source="dataSource"
+									   channel="saveLogDatosGeneralesRequestChannel" query="#{saveLogDatosGenerales}"/>
+	<bean class="java.lang.String" id="saveLogDatosGenerales">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLMCLO (
+					CLTDOC, CLDOC,  CLNOMB,
+					CLTIPE, CLAISR, CLNNIT,
+                   	ESTATU, CLEMPC, CLAGCD,
+                   	CLSUCO, CLEJCO, CLSECO,
+                   	CLAÑAL, CLMEAL, CLDIAL,
+                   	CLNEGR, CLREPR, CLCLCO,
+                   	CLNUID, CLLECL, CLTID@,
+                   	CLACCO, CLPORI, CLSTPA,
+                   	LOGDIA,	LOGMES,	LOGAÑO,
+                   	LOGUSR,	LOGAGU,	LOGHOR,
+                   	LOGTIP,	LOGAOD)
+				VALUES (
+					:payload.tipoDocumento, :payload.documento, :payload.nombreCompleto,
+					:payload.tipoPersonaString, :payload.perfilEconomico.stringAfectoIsr, :payload.perfilEconomico.rtn,
+					'A', :payload.empresa, :payload.agencia,
+					'0', :payload.oficialDeCuentas.id.codigo, :payload.perfilEconomico.sectorEconomico.codigo,
+					:payload.anioApertura, :payload.mesApertura, :payload.diaApertura,
+					'N', :payload.representanteLegalTutor.nombreCompletoRecortado, :payload.perfilEconomico.claseCliente.codigo,
+					:payload.identificacion, '0.00', :payload.tipoIdentificacion.codigo,
+					:payload.perfilEconomico.actividadEconomica.codigo, :payload.paisOrigen.codigo, :payload.estadoPapeleria,
+					:payload.diaLog, :payload.mesLog, :payload.anioLog,
+					:payload.usuario, :payload.agencia, :payload.hora,
+					:payload.logTipo, :payload.logOper)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	<!-- LOG DATOS GENERALES2 -->
+	<int:channel id="saveLogDatosGeneralesClientesRequestChannel"/>
+	<int-jdbc:outbound-channel-adapter id="saveLogDatosGeneralesClientesAdapter" data-source="dataSource"
+									   channel="saveLogDatosGeneralesClientesRequestChannel" query="#{saveLogDatosGeneralesClientes}"/>
+	<bean class="java.lang.String" id="saveLogDatosGeneralesClientes">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLMCLO (
+					CLTDOC, CLDOC,  CLNOMB,
+					CLTIPE, CLAISR, CLNNIT,
+                   	ESTATU, CLEMPC, CLAGCD,
+                   	CLSUCO, CLEJCO, CLSECO,
+                   	CLAÑAL, CLMEAL, CLDIAL,
+                   	CLNEGR, CLREPR, CLCLCO,
+                   	CLNUID, CLLECL, CLTID@,
+                   	CLACCO, CLPORI, CLSTPA,
+                   	LOGDIA,	LOGMES,	LOGAÑO,
+                   	LOGUSR,	LOGAGU,	LOGHOR,
+                   	LOGTIP,	LOGAOD)
+				VALUES (
+					:payload.id.tipoIdentificacion, :payload.id.identificacion, :payload.nombre,
+					:payload.tipoPersonaName, :payload.stringAfectoIsr, :payload.idenTributaria,
+					'A', :payload.empresa, :payload.agencia,
+					:payload.supervisor, :payload.ejecutivoNegocio, :payload.sectorEconomico,
+					:payload.anioAlta, :payload.mesAlta, :payload.diaAlta,
+					'N', :payload.representanteLegal, :payload.clase.codigo,
+					:payload.numeroIdentificacion, '0.00', :payload.tipoDeIdentificacion,
+					:payload.actividadEconomica, :payload.paisOrigen, :payload.estadoPapeleria,
+					:payload.diaLog, :payload.mesLog, :payload.anioLog,
+					:payload.usuario, :payload.agencia, :payload.hora,
+					:payload.logTipo, :payload.logOper)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	<!-- INFORMACION NATURAL -->
+	
+	<int:channel id="saveInformacionPersonaNaturalRequestChannel" />
+	<int:channel id="saveInformacionPersonaNaturalReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveInformacionPersonaNaturalGateway" data-source="dataSource" 
+		request-channel="saveInformacionPersonaNaturalRequestChannel" reply-channel="saveInformacionPersonaNaturalReplyChannel" 
+		update="#{sqlSaveInformacionPersonaNatural}" 
+		query="SELECT count(*) FROM #{CLDAT}.CLPEIN WHERE CLDOC = :payload.documento AND CLTDOC = :payload.tipoDocumento "
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveInformacionPersonaNatural">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLPEIN (
+					CLTDOC, CLDOC,  CLIAP1, 
+					CLIAP2, CLIAP3, CLINO1,
+                    CLINO2, CLNACI, CLISEX, 
+                    CLAÑNA, CLMENA, CLDINA,
+                    CLESCI, CLNUDE, CLPRCO, 
+                    CLCONO, CLNOLI, CLAMAE, 
+                    CLMMAE, CLDMAE)
+				VALUES (
+					:payload.tipoDocumento, :payload.documento, :payload.datosGeneralesPersonaNatural.primerApellido, 
+					:payload.datosGeneralesPersonaNatural.segundoApellido, :payload.datosGeneralesPersonaNatural.apellidoCasada, :payload.datosGeneralesPersonaNatural.primerNombre,
+        			:payload.datosGeneralesPersonaNatural.segundoNombre, :payload.datosGeneralesPersonaNatural.nacionalidad.nacionalidad, :payload.datosGeneralesPersonaNatural.generoString, 
+        			:payload.anioAlta, :payload.mesAlta, :payload.diaAlta,
+					:payload.datosGeneralesPersonaNatural.estadoCivilString, :payload.dependientes, :payload.datosGeneralesPersonaNatural.profesion.id, 
+					:payload.datosGeneralesPersonaNatural.conyuge, :payload.datosGeneralesPersonaNatural.numeroLicencia, :payload.datosGeneralesPersonaNatural.anioMayoriaEdad, 
+					:payload.datosGeneralesPersonaNatural.mesMayoriaEdad, :payload.datosGeneralesPersonaNatural.diaMayoriaEdad)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>	
+	
+	<!-- INFORMACION JURIDICA -->
+	
+	<int:channel id="saveInformacionPersonaJuridicaRequestChannel" />
+	<int:channel id="saveInformacionPersonaJuridicaReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveInformacionPersonaJuridicaGateway" data-source="dataSource" 
+		request-channel="saveInformacionPersonaJuridicaRequestChannel" reply-channel="saveInformacionPersonaJuridicaReplyChannel" 
+		update="#{sqlSaveInformacionPersonaJuridica}" 
+		query="SELECT count(*) FROM #{CLDAT}.CLPEJU WHERE CLDOC = :payload.documento AND CLTDOC = :payload.tipoDocumento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveInformacionPersonaJuridica">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLPEJU (
+					CLTDOC, CLDOC,  CLRAZS,
+					CLREME, CLTOMO, CLFOLI,
+					CLASIE, CLAÑRE, CLMERE,
+					CLDIRE, CLEMFO, CLPUAC,
+					CLPATE, CLSIGL, CLESCR,
+					CLDICO, CLMECO, CLAÑCO,
+					TIPSOC, CLIDRP, CLTERP)
+				VALUES (
+					:payload.tipoDocumento, :payload.documento, :payload.datosGeneralesPersonaJuridica.razonSocialRecortado,
+					:payload.datosGeneralesPersonaJuridica.registroMercantilNumero, :payload.datosGeneralesPersonaJuridica.registroMercantilTomo, :payload.datosGeneralesPersonaJuridica.registroMercantilPagina,
+					'     ', :payload.datosGeneralesPersonaJuridica.anioRegistro, :payload.datosGeneralesPersonaJuridica.mesRegistro,
+					:payload.datosGeneralesPersonaJuridica.diaRegistro, :payload.datosGeneralesPersonaJuridica.empresaEnFormacion, :payload.datosGeneralesPersonaJuridica.puntoActa,
+					:payload.datosGeneralesPersonaJuridica.patenteComercio, :payload.datosGeneralesPersonaJuridica.siglas, :payload.datosGeneralesPersonaJuridica.numeroEscrituraPermisoOperaciones,
+					:payload.datosGeneralesPersonaJuridica.diaInicioOperaciones, :payload.datosGeneralesPersonaJuridica.mesInicioOperaciones, :payload.datosGeneralesPersonaJuridica.anioInicioOperaciones,
+					:payload.datosGeneralesPersonaJuridica.tipoSociedad.codigo, :payload.representanteLegalTutor.idReprLegalRecortado, :payload.representanteLegalTutor.telefono1)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>	
+	
+	<!-- NIVELES VENTA PERSONA JURIDICA -->
+	
+	<int:channel id="saveNivelVentasPersonaJuridicaRequestChannel" />
+	<int:channel id="saveNivelVentasPersonaJuridicaReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveNivelVentasPersonaJuridicaGateway" data-source="dataSource" 
+		request-channel="saveNivelVentasPersonaJuridicaRequestChannel" reply-channel="saveNivelVentasPersonaJuridicaReplyChannel" 
+		update="#{sqlSaveNivelVentasPersonaJuridica}" 
+		query="SELECT count(*) FROM #{CLDAT}.CLCLNI WHERE CLDOC = :payload.documento AND CLTDOC = :payload.tipoDocumento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveNivelVentasPersonaJuridica">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLCLNI
+					(CLTDOC, CLDOC, CLNIVC)
+				VALUES 
+					(:payload.tipoDocumento, :payload.documento, :payload.datosGeneralesPersonaJuridica.nivelVentas.codigo)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+			
+	<!-- GRABA REPRESENTANTE LEGAL -->
+	
+	<int:channel id="saveRepresentanteLegalRequestChannel" />
+	<int:channel id="saveRepresentanteLegalReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveRepresentanteLegalGateway" data-source="dataSource" 
+		request-channel="saveRepresentanteLegalRequestChannel" reply-channel="saveRepresentanteLegalReplyChannel" 
+		update="#{sqlSaveRepresentanteLegal}" 
+		query="SELECT count(*) FROM #{CLDAT}.CLDRLE WHERE CLDOC = :payload.documento AND CLTDOC = :payload.tipoDocumento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveRepresentanteLegal">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLDRLE (
+					CLTDOC, CLDOC,  RLEAP1, 
+					RLEAP2, RLEACA, RLENO1, 
+					RLENO2, RLENOM, RLETDI, 
+					RLENDI, RLEPRO, RLEANO, 
+					RLEMNO, RLEADO, RLEDC1, 
+					RLEDC2, RLEDC3, RLEDC4, 
+					RLEEC5, RLETN1, RLETN2)
+				VALUES (
+					:payload.tipoDocumento, :payload.documento, :payload.representanteLegalTutor.primerApellido, 
+					:payload.representanteLegalTutor.segundoApellido, :payload.representanteLegalTutor.apellidoCasada, :payload.representanteLegalTutor.primerNombre,
+					:payload.representanteLegalTutor.segundoNombre, :payload.representanteLegalTutor.nombreRecortado, :payload.representanteLegalTutor.tipoIdentificacion.codigo, 
+					:payload.representanteLegalTutor.identificacion, :payload.representanteLegalTutor.codigoProfesion, :payload.representanteLegalTutor.anioNombramiento, 
+					:payload.representanteLegalTutor.mesNombramiento, :payload.representanteLegalTutor.diaNombramiento, :payload.representanteLegalTutor.direccionRecortada1, 
+					:payload.representanteLegalTutor.direccionRecortada2, :payload.representanteLegalTutor.direccionRecortada3, :payload.representanteLegalTutor.direccionRecortada4, 
+					:payload.representanteLegalTutor.direccionRecortada5, :payload.representanteLegalTutor.telefono1, :payload.representanteLegalTutor.telefono2)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- GRABA DOCUMENTO APERTURA -->
+	
+	<int:channel id="saveDocumentoAperturaRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="saveDocumentoAperturaAdapter" data-source="dataSource"
+		channel="saveDocumentoAperturaRequestChannel"
+		query="#{sqlSaveDocumentoApertura}">
+	</int-jdbc:outbound-channel-adapter>
+	<bean id="sqlSaveDocumentoApertura" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLDOCL (
+					CLTDOC, CLDOC, CLDOCO)
+				VALUES (:payload.tipoDocumento, :payload.documento, :payload.codigo)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- GRABA GRUPO ECONOMICO -->
+	
+	<int:channel id="saveGrupoEconomicoRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="saveGrupoEconomicoAperturaAdapter" data-source="dataSource"
+		channel="saveGrupoEconomicoRequestChannel"
+		query="#{sqlSaveGrupoEconomico}">
+	</int-jdbc:outbound-channel-adapter>
+	<bean id="sqlSaveGrupoEconomico" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLAGCL (
+					CLTDOC, CLDOC, CLCTGR,
+					CLGRCO)
+				VALUES (
+					:payload.tipoDocumento, :payload.documento, :payload.id.tipoGrupo,
+					:payload.id.grupo)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- INDICES -->
+	
+	<int:channel id="saveIndiceRequestChannel" />
+	<int:channel id="saveIndiceReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveIndiceGateway" data-source="dataSource" 
+		request-channel="saveIndiceRequestChannel" reply-channel="saveIndiceReplyChannel" 
+		update="#{sqlSaveIndice}" 
+		query="SELECT COUNT(*) FROM #{CLDAT}.CLIDCL WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveIndice">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLIDCL
+				    (CLTDOC,CLDOC,CLIDX)
+				VALUES
+				    (:payload.tipoDocumento, :payload.documento, :payload.indice)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- GRABA DIRECCION -->
+	
+	<int:channel id="saveDireccionRequestChannel" />
+	<int:channel id="saveDireccionReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveDireccionGateway" data-source="dataSource" 
+		request-channel="saveDireccionRequestChannel" reply-channel="saveDireccionReplyChannel" 
+		update="#{sqlSaveDireccion}" 
+		query="SELECT (COALESCE(MAX(CORR.CLDIRC), 0)) FROM #{CLDAT}.CLDICL CORR WHERE CORR.CLTDOC = :payload.tipoDocumento AND CORR.CLDOC = :payload.documento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveDireccion">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLDICL (
+					CLTDOC, CLDOC,  CLDIRC, 
+					CLDICO, CLZONA, CLCOLO,
+					NIGE01, NIGE02, NIGE03,
+					NIGE04, CLAPTO, CLAPOS,
+					CLTEL1, CLTEL2, CLNFAX,
+					CLDIRE, CLDIR2, CLDIR3,
+					CLZOCO, CLRUTA, CLCICO,
+					CLALCO, CLCACO, CLFAAN,
+					CLFAME, CLFADI)
+				VALUES ( 
+					:payload.tipoDocumento, :payload.documento, (SELECT (COALESCE(MAX(CORR.CLDIRC), 0) + 1) FROM #{CLDAT}.CLDICL CORR WHERE CORR.CLDOC = :payload.documento AND CORR.CLTDOC = :payload.tipoDocumento),
+					:payload.tipoDireccion.codigo, '0', :payload.emailRecortado,
+					:payload.nivelGeografico1, :payload.nivelGeografico2, :payload.nivelGeografico3,
+					:payload.nivelGeografico4, :payload.apartadoPostal, :payload.codigoPostal,
+					:payload.telefono1, :payload.telefono2, :payload.fax,
+					:payload.direccionRecortada1, :payload.direccionRecortada2, :payload.direccionRecortada3,
+					:payload.codigoZona, :payload.codigoRuta, '0',
+					'0', '0', :payload.anioAntiguedad,
+					:payload.mesAntiguedad, :payload.diaAntiguedad)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+
+	<!-- GRABA LOG DIRECCION -->
+
+	<int:channel id="saveDireccionLogRequestChannel" />
+
+	<int-jdbc:outbound-channel-adapter id="saveDireccionLogAdapter" data-source="dataSource" channel="saveDireccionLogRequestChannel" query="#{saveDireccionLog}" />
+	<bean class="java.lang.String" id="saveDireccionLog">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLDILO (
+					CLTDOC, CLDOC,  CLDIRC,
+					CLDICO, CLZONA, CLCOLO,
+					NIGE01, NIGE02, NIGE03,
+					NIGE04, CLAPTO, CLAPOS,
+					CLTEL1, CLTEL2, CLNFAX,
+					CLDIRE, CLDIR2, CLDIR3,
+					CLZOCO, CLRUTA, CLCICO,
+					CLALCO, CLCACO, LOGDIA,
+					LOGMES, LOGAÑO, LOGUSR,
+					LOGAGU, LOGHOR, LOGTIP,
+					LOGAOD, LOAGSR, LOFUNC)
+				VALUES (
+					:payload.tipoDocumento, :payload.documento, :payload.correlativoDireccion,
+					:payload.tipoDireccion.codigo, '0', :payload.emailRecortado,
+					:payload.nivelGeografico1, :payload.nivelGeografico2, :payload.nivelGeografico3,
+					:payload.nivelGeografico4, :payload.apartadoPostal, :payload.codigoPostal,
+					:payload.telefono1, :payload.telefono2, :payload.fax,
+					:payload.direccionRecortada1, :payload.direccionRecortada2, :payload.direccionRecortada3,
+					:payload.codigoZona, :payload.codigoRuta, '0',
+					'0', '0', :payload.logDia,
+					:payload.logMes, :payload.logAnio, :payload.usuario,
+					:payload.agenciaUser, :payload.logHora, :payload.logTipo,
+					:payload.logOper, :payload.agenciaUser, '0')
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- INFORMACION GENERAL TEMPORAL -->
+	
+	<int:channel id="saveInformacionGeneralClienteTemporalRequestChannel" />
+	<int:channel id="saveInformacionGeneralClienteTemporalReplyChannel" />
+
+	<int-jdbc:outbound-gateway id="saveInformacionGeneralClienteTemporalGateway" data-source="dataSource" 
+		request-channel="saveInformacionGeneralClienteTemporalRequestChannel" reply-channel="saveInformacionGeneralClienteTemporalReplyChannel" 
+		update="#{sqlSaveInformacionGeneralClienteTemporal}" 
+		query="SELECT count(*) FROM #{CLDAT}.CLMCTETE WHERE CLDOC = :payload.documento AND CLTDOC = :payload.tipoDocumento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveInformacionGeneralClienteTemporal">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLMCTETE (
+					CLTDOC, CLDOC,  CLNOMB,
+					CLTIPE, CLAISR, CLNNIT,
+					ESTATU, CLEMPC, CLAGCD,
+					CLSUCO, CLEJCO, CLSECO,
+					CLAÑAL, CLMEAL, CLDIAL,
+					CLNEGR, CLREPR, CLCLCO,
+					CLNUID, CLLECL, CLTID@,
+					CLACCO, CLPORI, CLSTPA,
+					CLCOVI, CLTDVI, CLDOVI,
+					USUARI, HORA)
+				VALUES (
+					:payload.tipoDocumento, :payload.documento, :payload.nombreCompleto,
+					:payload.tipoPersonaString, :payload.perfilEconomico.stringAfectoIsr, :payload.perfilEconomico.rtn,
+					'A', :payload.empresa, :payload.agencia,
+					'9999', :payload.oficialDeCuentas.id.codigo, :payload.perfilEconomico.sectorEconomico.codigo,
+					:payload.anioApertura, :payload.mesApertura, :payload.diaApertura,
+					'N', :payload.representanteLegalTutor.nombreCompletoRecortado, :payload.perfilEconomico.claseCliente.codigo,
+					:payload.identificacion, '0.00', :payload.tipoIdentificacion.codigo,
+					'0', :payload.paisOrigen.codigo, :payload.estadoPapeleria,
+					' ', ' ', ' ',
+					'PLATAFORMA', :payload.hora)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- GRABA DATOS ADICIONALES -->
+	
+	<int:channel id="saveDatosAdicionalesRequestChannel" />
+	<int:channel id="saveDatosAdicionalesReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveDatosAdicionalesGateway" data-source="dataSource" 
+		request-channel="saveDatosAdicionalesRequestChannel" reply-channel="saveDatosAdicionalesReplyChannel" 
+		update="#{sqlSaveDatosAdicionales}" 
+		query="SELECT count(*) FROM #{CLDAT}.CLMCTEAD WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean id="sqlSaveDatosAdicionales" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLMCTEAD (
+					CLTDOC, CLDOC,  CLIDTI,
+					CLIDNU, CLADC1, CLADC2,
+					CLADC3, CLADC4, CLADC5,
+					CLADC6, CLADC7, CLADC8,
+					CLADC9, CLCORG, CLCCGE,
+					CLCORD, CLCCDE, CLCODA)
+				VALUES (
+					:payload.tipoDocumento, :payload.documento, :payload.datosAdicionalesTipoDatoAdicional,
+   					:payload.datosAdicionalesNumeroIdentificacion, :payload.perfilEconomico.codigoEmpleado, :payload.perfilEconomico.codigoTipoCliente,
+   					'0', '', '',
+   					'', '', '',
+   					'', '0', '',
+   					'0', '', :payload.perfilEconomico.actividadEconomica.codigo)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- ############## GRABA REFERENCIAS ############## -->
+
+	<!-- GRABA REFERENCIAS LABORALES -->
+	
+	<int:channel id="saveReferenciasLaboralesRequestChannel" />
+	<int:channel id="saveReferenciasLaboralesReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveReferenciasLaboralesGateway" data-source="dataSource" 
+		request-channel="saveReferenciasLaboralesRequestChannel" reply-channel="saveReferenciasLaboralesReplyChannel" 
+		update="#{sqlSaveReferenciasLaborales}" 
+		query="SELECT (COALESCE(MAX(CORR.LABCOR), 0)) FROM #{CLDAT}.CLREFL CORR WHERE CORR.CLDOC = :payload.documento AND CORR.CLTDOC = :payload.tipoDocumento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveReferenciasLaborales">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLREFL (
+					CLTDOC, CLDOC,   LABCOR,
+					LABNOM, LABDIR,  LABTEL,
+					LABDIA, LABMES,  LABAÑO,
+					LABDEG, LABMEG,  LABAEG,
+					LABDPA, LABCAR,  LABSUE,
+					LABJEF, LABDI1)
+				VALUES ( 
+					:payload.tipoDocumento, :payload.documento,  (SELECT (COALESCE(MAX(CORR.LABCOR), 0) + 1) FROM #{CLDAT}.CLREFL CORR WHERE CORR.CLDOC = :payload.documento AND CORR.CLTDOC = :payload.tipoDocumento),
+					:payload.nombre, :payload.direccionRecortada, :payload.telefono,
+					:payload.diaIngreso, :payload.mesIngreso, :payload.anioIngreso,
+					:payload.diaEgreso, :payload.mesEgreso, :payload.anioEgreso,
+					:payload.diaPago, :payload.cargo, :payload.salarioCodigo,
+					'', :payload.correlativoDireccion)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>		
+	
+	<!-- GRABA REFERENCIAS SEGUROS -->
+	
+	<int:channel id="saveReferenciasSegurosRequestChannel" />
+	<int:channel id="saveReferenciasSegurosReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveReferenciasSegurosGateway" data-source="dataSource" 
+		request-channel="saveReferenciasSegurosRequestChannel" reply-channel="saveReferenciasSegurosReplyChannel" 
+		update="#{sqlSaveReferenciasSeguros}" 
+		query="SELECT count(*) FROM #{CLDAT}.CLSOSEGU WHERE CLDOC = :payload.documento AND CLTDOC = :payload.tipoDocumento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveReferenciasSeguros">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLSOSEGU (
+					CLTDOC, CLDOC,  ASECOD,
+					ASEPOL, ASETIP, ASEEND,
+					ASECER, ASECOB, ASEAVE,
+					ASEMVE, ASEDVE, CLMOCO)
+				VALUES (
+					:payload.tipoDocumento, :payload.documento, :payload.institucion.codigo,
+					:payload.poliza, :payload.tipoDePoliza, :payload.endoso,
+					:payload.certificado, :payload.cobertura, :payload.anioVencimiento,
+					:payload.mesVencimiento, :payload.diaVencimiento, :payload.moneda.codigo)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>	
+
+	<!-- GRABA REFERENCIAS CREDITO -->
+
+	<int:channel id="saveReferenciasCreditoRequestChannel" />
+	<int:channel id="saveReferenciasCreditoReplyChannel" />
+
+	<int-jdbc:outbound-gateway id="saveReferenciasCreditoGateway" data-source="dataSource" 
+		request-channel="saveReferenciasCreditoRequestChannel" reply-channel="saveReferenciasCreditoReplyChannel" 
+		update="#{sqlSaveReferenciasCredito}" 
+		query="SELECT count(*) FROM #{CLDAT}.CLREFT WHERE CLDOC = :payload.documento AND CLTDOC = :payload.tipoDocumento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveReferenciasCredito">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLREFT (
+					CLTDOC, CLDOC,  TARCOR,
+					CLTICO, CLINSC, TARNUM,
+					TARLIM, TARACO, TARMCO,
+					TARDCO, TARAVE, TARMVE,
+					TARDVE)
+				VALUES (
+					:payload.tipoDocumento, :payload.documento, (SELECT (COALESCE(MAX(CORR.TARCOR), 0) + 1) FROM #{CLDAT}.CLREFT CORR WHERE CORR.CLDOC = :payload.documento AND CORR.CLTDOC = :payload.tipoDocumento),
+					:payload.tipoInstitucion.codigo, :payload.institucion.codigo, :payload.numero,
+					:payload.limite, :payload.anioConcesion, :payload.mesConcesion,
+					:payload.diaConcesion, :payload.anioVencimiento, :payload.mesVencimiento,
+					:payload.diaVencimiento)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>	
+		
+	<!-- GRABA REFERENCIAS CUENTAS -->
+	
+	<int:channel id="saveReferenciasCuentasRequestChannel" />
+	<int:channel id="saveReferenciasCuentasReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveReferenciasCuentasGateway" data-source="dataSource" 
+		request-channel="saveReferenciasCuentasRequestChannel" reply-channel="saveReferenciasCuentasReplyChannel" 
+		update="#{sqlSaveReferenciasCuentas}" 
+		query="SELECT count(*) FROM #{CLDAT}.CLSOCTAS WHERE CLDOC = :payload.documento AND CLTDOC = :payload.tipoDocumento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveReferenciasCuentas">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLSOCTAS (
+					CLTDOC, CLDOC,  BANTIP,
+					BANCOD, BANCTA, BANCLA,
+					BANAAP, BANMAP)
+				VALUES(
+					:payload.tipoDocumento, :payload.documento, :payload.tipoInstitucion.codigo,
+					:payload.institucion.codigo, :payload.numeroCuenta, :payload.tipo,
+					:payload.anioAproxApertura, :payload.mesAproxApertura)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>	
+		
+	<!-- GRABA REFERENCIAS PERSONALES FAMILIARES -->
+	
+	<int:channel id="saveReferenciasPersonalesFamiliaresRequestChannel" />
+	<int:channel id="saveReferenciasPersonalesFamiliaresReplyChannel" />
+
+	<int-jdbc:outbound-gateway id="saveReferenciasPersonalesFamiliaresGateway" data-source="dataSource" 
+		request-channel="saveReferenciasPersonalesFamiliaresRequestChannel" reply-channel="saveReferenciasPersonalesFamiliaresReplyChannel" 
+		update="#{sqlSaveReferenciasPersonalesFamiliares}" 
+		query="SELECT (COALESCE(MAX(CORR.PFACOR), 0)) FROM #{CLDAT}.CLREFP CORR WHERE CORR.CLDOC = :payload.documento AND CORR.CLTDOC = :payload.tipoDocumento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveReferenciasPersonalesFamiliares">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLREFP (
+					CLTDOC, CLDOC,  PFACOR,
+					PERNOM, PERDIR, PERTEL,
+					PERTEO, PERPAR)
+				VALUES (
+					:payload.tipoDocumento, :payload.documento,  (SELECT (COALESCE(MAX(CORR.PFACOR), 0) + 1) FROM #{CLDAT}.CLREFP CORR WHERE CORR.CLDOC = :payload.documento AND CORR.CLTDOC = :payload.tipoDocumento),
+					:payload.nombre, :payload.direccion, :payload.telefonoCasa,
+					:payload.telefonoOficina, :payload.parentesco.codigo)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>	
+		
+	<!-- GRABA REFERENCIAS VEHICULOS -->
+	
+	<int:channel id="saveReferenciasVehiculosRequestChannel" />
+	<int:channel id="saveReferenciasVehiculosReplyChannel" />
+
+	<int-jdbc:outbound-gateway id="saveReferenciasVehiculosGateway" data-source="dataSource" 
+		request-channel="saveReferenciasVehiculosRequestChannel" reply-channel="saveReferenciasVehiculosReplyChannel" 
+		update="#{sqlSaveReferenciasVehiculos}" 
+		query="SELECT count(*) FROM #{CLDAT}.CLSOVEHI WHERE CLDOC = :payload.documento AND CLTDOC = :payload.tipoDocumento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveReferenciasVehiculos">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLSOVEHI (
+					CLTDOC, CLDOC,  VEHPLA,
+				    VEHMAR, VEHMOD, VEHFIN,
+				    VEHSAL)
+				VALUES (
+					:payload.tipoDocumento, :payload.documento,  :payload.placaVehiculo,
+				    :payload.marca, :payload.modelo, :payload.empresaFinancia,
+				    :payload.saldoFinanciamiento)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- GRABA REFERENCIAS DEPENDIENTES -->
+	
+	<int:channel id="saveReferenciasDependientesRequestChannel" />
+	<int:channel id="saveReferenciasDependientesReplyChannel" />
+
+	<int-jdbc:outbound-gateway id="saveReferenciasDependientesGateway" data-source="dataSource" 
+		request-channel="saveReferenciasDependientesRequestChannel" reply-channel="saveReferenciasDependientesReplyChannel" 
+		update="#{sqlSaveReferenciasDependientes}" 
+		query="SELECT (COALESCE(MAX(CORR.RFDCOR), 0)) FROM #{CLDAT}.CLREFD CORR WHERE CORR.CLDOC = :payload.documento AND CORR.CLTDOC = :payload.tipoDocumento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveReferenciasDependientes">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLREFD (
+					CLTDOC, CLDOC,  RFDCOR,
+					RFDNOM, RFDDIR, RFDTEL,
+					RFDTEO, RFDREL)
+				VALUES(
+					:payload.tipoDocumento, :payload.documento, (SELECT (COALESCE(MAX(CORR.RFDCOR), 0) + 1) FROM #{CLDAT}.CLREFD CORR WHERE CORR.CLDOC = :payload.documento AND CORR.CLTDOC = :payload.tipoDocumento),
+					:payload.nombre, :payload.direccion, :payload.telefono1,
+					:payload.telefono2, :payload.parentesco.codigo)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- GRABA REFERENCIAS LABORALES CONYUGUE -->
+	
+	<int:channel id="saveReferenciasLaboralesConyugueRequestChannel" />
+	<int:channel id="saveReferenciasLaboralesConyugueReplyChannel" />
+
+	<int-jdbc:outbound-gateway id="saveReferenciasLaboralesConyugueGateway" data-source="dataSource" 
+		request-channel="saveReferenciasLaboralesConyugueRequestChannel" reply-channel="saveReferenciasLaboralesConyugueReplyChannel" 
+		update="#{sqlSaveReferenciasLaboralesConyugue}" 
+		query="SELECT count(*) FROM #{CLDAT}.CLSOLACO WHERE CLDOC = :payload.documento AND CLTDOC = :payload.tipoDocumento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveReferenciasLaboralesConyugue">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLSOLACO (
+					CLTDOC, CLDOC,  CONEMP,
+					CONDIR, CONTEL, CONAIN,
+					CONMIN, CONDIN, CONAEG,
+					CONMEG, CONDEG, CODECA,
+					CONSUE, CONOTR, CONPRO)
+				VALUES (
+					:payload.tipoDocumento, :payload.documento, '',
+					:payload.direccion, :payload.telefonos, :payload.anioIngreso,
+					:payload.mesIngreso, :payload.diaIngreso, :payload.anioEgreso,
+					:payload.mesEgreso, :payload.diaEgreso, :payload.cargo,
+					:payload.salario, :payload.otrosIngresos, :payload.procedencia)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+		
+	<!-- GRABA REFERENCIAS ACCIONISTAS -->
+	
+	<int:channel id="saveReferenciasAccionistasRequestChannel" />
+	<int:channel id="saveReferenciasAccionistasReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveReferenciasAccionistasGateway" data-source="dataSource" 
+		request-channel="saveReferenciasAccionistasRequestChannel" reply-channel="saveReferenciasAccionistasReplyChannel" 
+		update="#{sqlSaveReferenciasAccionistas}" 
+		query="SELECT (COALESCE(MAX(CORR.ACCCOR), 0)) FROM #{CLDAT}.CLACCI CORR WHERE CORR.CLDOC = :payload.documento AND CORR.CLTDOC = :payload.tipoDocumento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveReferenciasAccionistas">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLACCI (
+					CLTDOC, CLDOC,  ACCCOR,
+					NOMBRE, APELLI, TIPOAC,
+					LABDIA, LABMES, "LABAÑO",
+					LABDEG, LABMEG, LABAEG,
+					LABDPA)
+				VALUES (
+					:payload.tipoDocumento, :payload.documento,  (SELECT (COALESCE(MAX(CORR.ACCCOR), 0) + 1) FROM #{CLDAT}.CLACCI CORR WHERE CORR.CLDOC = :payload.documento AND CORR.CLTDOC = :payload.tipoDocumento),
+					:payload.nombres, :payload.apellidos, :payload.tipoAccionista,
+					:payload.diaIngreso, :payload.mesIngreso, :payload.anioIngreso,
+					:payload.diaEgreso, :payload.mesEgreso, :payload.anioEgreso,
+					:payload.porcentajeParticipacion)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- GRABA REFERENCIAS COMERCIALES -->
+	
+	<int:channel id="saveReferenciasComercialesRequestChannel" />
+	<int:channel id="saveReferenciasComercialesReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveReferenciasComercialesGateway" data-source="dataSource" 
+		request-channel="saveReferenciasComercialesRequestChannel" reply-channel="saveReferenciasComercialesReplyChannel" 
+		update="#{sqlSaveReferenciasComerciales}" 
+		query="SELECT (COALESCE(MAX(CORR.RFCCOR), 0)) FROM #{CLDAT}.CLREFC CORR WHERE CORR.CLDOC = :payload.documento AND CORR.CLTDOC = :payload.tipoDocumento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveReferenciasComerciales">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLREFC (
+					CLTDOC, CLDOC,  RFCCOR,
+					RFCNOM, RFCDIR, RFCTEL,
+					RFCTEO, RFCREL)
+				VALUES(
+					:payload.tipoDocumento, :payload.documento, (SELECT (COALESCE(MAX(CORR.RFCCOR), 0) + 1) FROM #{CLDAT}.CLREFC CORR WHERE CORR.CLDOC = :payload.documento AND CORR.CLTDOC = :payload.tipoDocumento),
+					:payload.nombre, :payload.direccion, :payload.telefono1,
+					:payload.telefono2, :payload.relacion)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+
+	<!-- GRABA REFERENCIAS PROPIEDADES -->
+	
+	<int:channel id="saveReferenciasPropiedadesRequestChannel" />
+	<int:channel id="saveReferenciasPropiedadesReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveReferenciasPropiedadesGateway" data-source="dataSource" 
+		request-channel="saveReferenciasPropiedadesRequestChannel" reply-channel="saveReferenciasPropiedadesReplyChannel" 
+		update="#{sqlSaveReferenciasPropiedades}" 
+		query="SELECT count(*) FROM #{CLDAT}.CLSOPROP WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveReferenciasPropiedades">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLSOPROP (
+					CLTDOC, CLDOC,  PRODES,
+					PRODIR, PROFIN, PROFOL,
+					PROLIB, PROVAL)
+				VALUES(
+					:payload.tipoDocumento, :payload.documento, :payload.descripcionPropiedad,
+					:payload.direccionPropiedad, '', :payload.folio,
+					:payload.libro, :payload.valorPropiedad)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- GRABA REFERENCIAS PROVEEDORES -->
+	
+	<int:channel id="saveReferenciasProveedoresRequestChannel" />
+	<int:channel id="saveReferenciasProveedoresReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveReferenciasProveedoresGateway" data-source="dataSource" 
+		request-channel="saveReferenciasProveedoresRequestChannel" reply-channel="saveReferenciasProveedoresReplyChannel" 
+		update="#{sqlSaveReferenciasProveedores}" 
+		query="SELECT (COALESCE(MAX(CORR.PROCOR), 0)) FROM #{CLDAT}.CLREPR CORR WHERE CORR.CLDOC = :payload.documento AND CORR.CLTDOC = :payload.tipoDocumento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveReferenciasProveedores">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLREPR (
+					CLTDOC, CLDOC,  PROCOR,
+					PRONOM, PRODIR, PROTEL,
+					PROTEO)
+				VALUES (
+					:payload.tipoDocumento, :payload.documento, (SELECT (COALESCE(MAX(CORR.PROCOR), 0) + 1) FROM #{CLDAT}.CLREPR CORR WHERE CORR.CLDOC = :payload.documento AND CORR.CLTDOC = :payload.tipoDocumento),
+					:payload.nombre, :payload.direccion, :payload.telefono1,
+					:payload.telefono2)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+		
+	<!-- GRABA REFERENCIAS TARJETAS DE CREDITO -->
+	
+	<int:channel id="saveReferenciasTarjetasCreditoRequestChannel" />
+	<int:channel id="saveReferenciasTarjetasCreditoReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveReferenciasTarjetasCreditoGateway" data-source="dataSource" 
+		request-channel="saveReferenciasTarjetasCreditoRequestChannel" reply-channel="saveReferenciasTarjetasCreditoReplyChannel" 
+		update="#{sqlSaveReferenciasTarjetasCredito}" 
+		query="SELECT count(*) FROM #{CLDAT}.CLSOTARJ WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveReferenciasTarjetasCredito">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLSOTARJ (
+					CLTDOC, CLDOC,  TARNUM,
+					TARTEL, TARNOM, TARLIM,
+					TARACO, TARMCO, TARDCO,
+					TARAVE, TARMVE, TARDVE)
+				VALUES (
+					:payload.tipoDocumento, :payload.documento, :payload.numeroTarjeta,
+					:payload.telefono, :payload.empresaEmisora, :payload.limite,
+					:payload.anioConcesion, :payload.mesConcesion, :payload.diaConcesion,
+					:payload.anioVencimiento, :payload.mesVencimiento, :payload.diaVencimiento)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- GRABA REFERENCIAS CONYUGUE -->
+	
+	<int:channel id="saveReferenciasConyugueRequestChannel" />
+	<int:channel id="saveReferenciasConyugueReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveReferenciasConyugueGateway" data-source="dataSource" 
+		request-channel="saveReferenciasConyugueRequestChannel" reply-channel="saveReferenciasConyugueReplyChannel" 
+		update="#{sqlSaveReferenciasConyugue}" 
+		query="SELECT count(*) FROM #{CLDAT}.CLSOCONY WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveReferenciasConyugue">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLSOCONY (
+					CLTDOC, CLDOC,  CONNOM,
+					CONANA, CONMNA, CONDNA,
+					CONTEL, CONTRA, CONTDO,
+					CONIDE)
+				VALUES (
+					:payload.tipoDocumento, :payload.documento, :payload.nombres,
+					:payload.anioNacimiento, :payload.mesNacimiento, :payload.diaNacimiento,
+					:payload.telefono, :payload.tieneTrabajo, :payload.esClienteString,
+					:payload.identificacion)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+
+	<!-- GRABA REFERENCIAS COMERCIANTE -->
+		
+	<int:channel id="saveReferenciasComercianteRequestChannel" />
+	<int:channel id="saveReferenciasComercianteReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveReferenciasComercianteGateway" data-source="dataSource" 
+		request-channel="saveReferenciasComercianteRequestChannel" reply-channel="saveReferenciasComercianteReplyChannel" 
+		update="#{sqlSaveReferenciasComerciante}" 
+		query="SELECT count(*) FROM #{CLDAT}.CLDNEG WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveReferenciasComerciante">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLDNEG (
+					CLTDOC, CLDOC,  NEGCOR,
+					DNENNE, DNEAIO, DNEMIO, 
+					DNEDIO, DNEGNE, DNEINE, 
+					DNEDN1, DNEDN2, DNEDN3, 
+					DNEDN4, DNEDN5, DNETN1, 
+					DNETN2, DNECDI)
+				VALUES (
+					:payload.tipoDocumento, :payload.documento, (SELECT (COALESCE(MAX(RC.NEGCOR), 0) + 1) FROM #{CLDAT}.CLDNEG RC WHERE RC.CLTDOC = :payload.tipoDocumento AND RC.CLDOC = :payload.documento),
+					:payload.nombreNegocio, :payload.anioInicioOperaciones, :payload.mesInicioOperaciones, 
+					:payload.diaInicioOperaciones, :payload.actividadNegocios, :payload.ingresosDeNegocioPropio, 
+					:payload.direccionRecortada1, :payload.direccionRecortada2, :payload.direccionRecortada3, 
+					:payload.direccionRecortada4, :payload.direccionRecortada5, :payload.telefono1, 
+					:payload.telefono2, :payload.correlativoDireccion)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- GRABA REFERENCIAS COMERCIANTE DATOS CONTADOR -->
+	
+	<int:channel id="saveReferenciasComercianteDatosContadorRequestChannel" />
+	<int:channel id="saveReferenciasComercianteDatosContadorReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveReferenciasComercianteDatosContadorGateway" data-source="dataSource" 
+		request-channel="saveReferenciasComercianteDatosContadorRequestChannel" reply-channel="saveReferenciasComercianteDatosContadorReplyChannel" 
+		update="#{sqlSaveReferenciasComercianteDatosContador}" 
+		query="SELECT count(*) FROM #{CLDAT}.CLDCON WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveReferenciasComercianteDatosContador">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLDCON (
+					CLTDOC, CLDOC,  CONCOR,
+					DCONCO, DCOTDI, DCONDI, 
+					DCONAC, DCODC1, DCODC2, 
+					DCODC3, DCODC4, DCODC5, 
+					DCOTN1, DCOTN2)
+				VALUES (
+					:payload.tipoDocumento, :payload.documento, (SELECT (COALESCE(MAX(DC.CONCOR), 0) + 1) FROM #{CLDAT}.CLDCON DC WHERE DC.CLTDOC = :payload.tipoDocumento AND DC.CLDOC = :payload.documento),
+					:payload.contador.nombre, :payload.contador.tipoIdentificacionString, :payload.contador.numeroIdentificacion, 
+					:payload.contador.nacionalidadString, :payload.contador.direccionRecortada1, :payload.contador.direccionRecortada2, 
+					:payload.contador.direccionRecortada3, :payload.contador.direccionRecortada4, :payload.contador.direccionRecortada5, 
+					:payload.contador.telefono1, :payload.contador.telefono2)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- GRABA REFERENCIAS PARENTESCO EMPLEADOS -->
+	
+	<int:channel id="saveReferenciasParentestoEmpleadosRequestChannel" />
+	<int:channel id="saveReferenciasParentestoEmpleadosReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveReferenciasParentestoEmpleadosGateway" data-source="dataSource" 
+		request-channel="saveReferenciasParentestoEmpleadosRequestChannel" reply-channel="saveReferenciasParentestoEmpleadosReplyChannel" 
+		update="#{sqlSaveReferenciasParentestoEmpleados}" 
+		query="SELECT count(*) FROM #{CLDAT}.CLPAEM WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveReferenciasParentestoEmpleados">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLPAEM (
+					CLTDOC, CLDOC, PEMCEM,
+					PEMPAR)
+				VALUES (
+					:payload.tipoDocumento, :payload.documento, :payload.empleado.id.codigo,
+					:payload.parentesco.codigo)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- CAMPOS ADICIONALES  -->
+	
+	<int:channel id="saveCamposBCHRequestChannel" />
+	<int:channel id="saveCamposBCHReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveCamposBCHGateway" data-source="dataSource" 
+		request-channel="saveCamposBCHRequestChannel" reply-channel="saveCamposBCHReplyChannel" 
+		update="#{sqlSaveCamposBCH}" 
+		query="SELECT count(*) FROM #{CLPAR}.CLACCL WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveCamposBCH">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLPAR}.CLACCL (
+					CLTDOC, CLDOC, ACLCOR,
+					ACLCOA)
+				VALUES (
+					:payload.tipoDocumento, :payload.documento, :payload.perfilEconomico.tipoInstitucion,
+					:payload.perfilEconomico.institucion)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- ############## LOGS ############## -->
+	
+	<!-- LOG INFORMACION NATURAL -->
+	
+	<int:channel id="saveLogInformacionPersonaNaturalRequestChannel" />
+	<int:channel id="saveLogInformacionPersonaNaturalReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveLogInformacionPersonaNaturalGateway" data-source="dataSource" 
+		request-channel="saveLogInformacionPersonaNaturalRequestChannel" reply-channel="saveLogInformacionPersonaNaturalReplyChannel" 
+		update="#{sqlSaveLogInformacionPersonaNatural}" 
+		query="SELECT count(*) FROM #{CLDAT}.CLLOIN WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveLogInformacionPersonaNatural">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLLOIN (
+					CLTDOC, CLDOC,  CLIAP1,
+					CLIAP2, CLIAP3, CLINO1,
+					CLINO2, CLNACI, CLISEX,
+					CLAÑNA, CLMENA, CLDINA,
+					CLESCI, CLNUDE, CLPRCO,
+					CLCONO, CLNOLI, LOGDIA,
+					LOGMES, LOGAÑO, LOGUSR,
+					LOGAGU, LOGHOR, LOGTIP,
+					LOGAOD)
+				VALUES (
+					:payload.tipoDocumento, :payload.documento, :payload.datosGeneralesPersonaNatural.primerApellido,
+					:payload.datosGeneralesPersonaNatural.segundoApellido, :payload.datosGeneralesPersonaNatural.apellidoCasada, :payload.datosGeneralesPersonaNatural.primerNombre,
+					:payload.datosGeneralesPersonaNatural.segundoNombre, :payload.datosGeneralesPersonaNatural.nacionalidad.nacionalidad, :payload.datosGeneralesPersonaNatural.generoString,
+					:payload.anioAlta, :payload.mesAlta, :payload.diaAlta,
+					:payload.datosGeneralesPersonaNatural.estadoCivilString, :payload.dependientes, :payload.datosGeneralesPersonaNatural.profesion.id,
+					:payload.datosGeneralesPersonaNatural.conyuge, :payload.datosGeneralesPersonaNatural.numeroLicencia,  :payload.diaLog, 
+					:payload.mesLog, :payload.anioLog, :payload.usuario, 
+					:payload.agencia, :payload.hora, :payload.logTipo,
+					:payload.logOper)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>	
+	
+	<!-- LOG INFORMACION JURIDICA -->
+	
+	<int:channel id="saveLogInformacionPersonaJuridicaRequestChannel" />
+	<int:channel id="saveLogInformacionPersonaJuridicaReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveLogInformacionPersonaJuridicaGateway" data-source="dataSource" 
+		request-channel="saveLogInformacionPersonaJuridicaRequestChannel" reply-channel="saveLogInformacionPersonaJuridicaReplyChannel" 
+		update="#{sqlSaveLogInformacionPersonaJuridica}" 
+		query="SELECT count(*) FROM #{CLDAT}.CLLOJU WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveLogInformacionPersonaJuridica">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLLOJU (
+					CLTDOC, CLDOC,  CLRAZS,
+					CLREME, CLTOMO, CLFOLI,
+					CLASIE, CLAÑRE, CLMERE,
+					CLDIRE, CLEMFO, CLPUAC,
+					CLPATE, CLSIGL, CLESCR,
+					CLDICO, CLMECO, CLAÑCO,
+					LOGDIA, LOGMES, LOGAÑO,
+					LOGUSR, LOGAGU, LOGHOR,
+					LOGTIP, LOGAOD)
+				VALUES (
+					:payload.tipoDocumento, :payload.documento, :payload.datosGeneralesPersonaJuridica.nombreComercialRecortado,
+					:payload.datosGeneralesPersonaJuridica.registroMercantilNumero, :payload.datosGeneralesPersonaJuridica.registroMercantilTomo, :payload.datosGeneralesPersonaJuridica.registroMercantilPagina,
+					'     ', :payload.datosGeneralesPersonaJuridica.anioRegistro, :payload.datosGeneralesPersonaJuridica.mesRegistro,
+					:payload.datosGeneralesPersonaJuridica.diaRegistro, :payload.datosGeneralesPersonaJuridica.empresaEnFormacion, :payload.datosGeneralesPersonaJuridica.puntoActa,
+					:payload.datosGeneralesPersonaJuridica.patenteComercio, :payload.datosGeneralesPersonaJuridica.siglas, :payload.datosGeneralesPersonaJuridica.numeroEscrituraPermisoOperaciones,
+					:payload.datosGeneralesPersonaJuridica.diaInicioOperaciones, :payload.datosGeneralesPersonaJuridica.mesInicioOperaciones, :payload.datosGeneralesPersonaJuridica.anioInicioOperaciones,
+					:payload.diaLog, :payload.mesLog, :payload.anioLog,
+					:payload.usuario, :payload.agencia, :payload.hora,
+					:payload.logTipo, :payload.logOper)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>	
+	
+	<!-- LOG DATOS ADICIONALES -->
+	
+	<int:channel id="saveLogDatosAdicionalesClienteRequestChannel" />
+	<int:channel id="saveLogDatosAdicionalesClienteReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveLogDatosAdicionalesClienteGateway" data-source="dataSource" 
+		request-channel="saveLogDatosAdicionalesClienteRequestChannel" reply-channel="saveLogDatosAdicionalesClienteReplyChannel" 
+		update="#{sqlSaveLogDatosAdicionalesCliente}" 
+		query="SELECT count(*) FROM #{CLDAT}.CLMCLOA WHERE CLDOC = :payload.documento AND CLTDOC = :payload.tipoDocumento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveLogDatosAdicionalesCliente">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{CLDAT}.CLMCLOA (
+					CLTDOC, CLDOC,  CLIDTI,
+					CLIDNU, CLADC1, CLADC2,
+					CLADC3, CLADC4, CLADC5,
+					CLADC6, CLADC7, CLADC8,
+					CLADC9, CLCORG, CLCCGE,
+					CLCORD, CLCCDE, CLCODA,
+					LOGDIA, LOGMES, LOGAÑO,
+					LOGUSR, LOGAGU, LOGHOR,
+					LOGTIP, LOGAOD)
+				VALUES (
+					:payload.tipoDocumento, :payload.documento,  '',
+					'', :payload.perfilEconomico.codigoEmpleado, :payload.perfilEconomico.codigoTipoCliente,
+					'0', '', '',
+					'', '', '',
+					'', '0', '',
+					'0', '', :payload.perfilEconomico.actividadEconomica.codigo,
+					:payload.diaLog, :payload.mesLog, :payload.anioLog,
+					:payload.usuario, :payload.agencia, :payload.hora,
+					:payload.logTipo, :payload.logOper)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>		
+	
+	<!-- LOG USO REGISTRO DE PERSONAS -->
+	
+	<int:channel id="saveLogUsoRegistroPersonasRequestChannel" />
+	<int:channel id="saveLogUsoRegistroPersonasReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveLogUsoRegistroPersonasGateway" data-source="dataSource" 
+		request-channel="saveLogUsoRegistroPersonasRequestChannel" reply-channel="saveLogUsoRegistroPersonasReplyChannel" 
+		update="#{sqlSaveLogUsoRegistroPersonas}" 
+		query="SELECT count(*) FROM #{BTRAB}.PLRPLG WHERE CLDOC = :payload.documento AND CLTDOC = :payload.tipoDocumento"
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean class="java.lang.String" id="sqlSaveLogUsoRegistroPersonas">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{BTRAB}.PLRPLG (
+					PERID,  CLTDOC, CLDOC,
+					LPETRE, PENOM1, PENOM2,
+					PEAPE1, PEAPE2, PEAPCA,
+					PERGEN, PERANA, PERMNA,
+					PERDNA, PERALO, PERMLO,
+					PERDLO, PERHLO, PERULO,
+					PERAMO, PERMMO, PERDMO,
+					PERHMO, PERUMO)
+				VALUES (
+					:payload.identificacion,  :payload.tipoDocumento, :payload.documento,
+					:payload.tipoRegistro, :payload.datosGeneralesPersonaNatural.primerNombre, :payload.datosGeneralesPersonaNatural.segundoNombre,
+					:payload.datosGeneralesPersonaNatural.primerApellido, :payload.datosGeneralesPersonaNatural.segundoApellido, :payload.datosGeneralesPersonaNatural.apellidoCasada,
+					:payload.datosGeneralesPersonaNatural.generoString, :payload.anioAlta, :payload.mesAlta,
+					:payload.diaAlta, :payload.anioLog, :payload.mesLog,
+					:payload.diaLog, :payload.hora, :payload.usuario,
+					:payload.anioLog, :payload.mesLog, :payload.diaLog,
+					:payload.hora, :payload.usuario)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>		
+	
+</beans>

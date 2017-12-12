@@ -1,0 +1,104 @@
+<div class="container">
+<div class="animated fadeIn">
+	<form name="webform" autocomplete="off" novalidate="" role="form" ng-submit="partialSave('DEPENDIENTES')" show-validation>
+		<blockquote>
+			<h3 translate="referencias-dependientes.title"></h3>
+		</blockquote>
+		<div class="panel panel-primary" ng-include="'webform/app/cuentas/encabezado/encabezado-cliente.html'"></div>
+		<div class="row">
+			<div class="col-lg-12">
+				<label class="control-label" translate="referencias-dependientes.nombre"></label>
+				<div class="form-group required" ng-class="{ 'has-error': webform.nombre.$touched && webform.nombre.$invalid}">
+					<input type="text" capitalize = "" required class="form-control" name="nombre" ng-model="Cliente.referenciaDependientes.nombre" byte-max-length="" ng-maxlength="40" required aria-describedby="nombre-validator-help" ng-pattern="/^[\u00E0-\u00FCña-zÑA-Z\s]+$/"/>
+					<div ng-messages="webform.nombre.$error" id="nombre-validator-help" class="help-block animated fadeInLeft" role="alert" ng-if="webform.nombre.$touched">
+				    	<div ng-message="required"><span translate="messages.requiered"></span></div>
+						<div ng-message="pattern"><span translate="messages.pattern-alpha"></span></div>
+				  		<div ng-message="minlength"><span translate="messages.minlength"></span> 40</div>
+				  		<div ng-message="maxlength"><span translate="messages.maxlength"></span> 40</div>
+				  	</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<label class="control-label" translate="referencias-dependientes.direccion"></label>
+				<div class="form-group required" ng-class="{ 'has-error': webform.direccion.$touched && webform.direccion.$invalid}">
+					<input type="text" capitalize = "" required class="form-control" name="direccion" ng-model="Cliente.referenciaDependientes.direccion" byte-max-length="" ng-maxlength="40" required aria-describedby="direccion-validator-help"/>
+					<div ng-messages="webform.direccion.$error" id="direccion-validator-help" class="help-block animated fadeInLeft" role="alert" ng-if="webform.direccion.$touched">
+				    	<div ng-message="required"><span translate="messages.requiered"></span></div>
+				  		<div ng-message="minlength"><span translate="messages.minlength"></span> 40</div>
+				  		<div ng-message="maxlength"><span translate="messages.maxlength"></span> 40</div>
+				  	</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-7">
+				<label class="control-label" translate="referencias-dependientes.parentesco"></label>
+				<div class="form-group required" ng-class="{ 'has-error': webform.parentesco.$touched && webform.parentesco.$invalid}">
+					<select ng-model="Cliente.referenciaDependientes.parentesco" required class="form-control" ng-options="tipo.descripcion for tipo in parentescos track by tipo.codigo"></select>
+					<div ng-messages="webform.parentesco.$error" id="parentesco-validator-help" class="help-block animated fadeInLeft" role="alert" ng-if="webform.parentesco.$touched">
+				    	<div ng-message="required"><span translate="messages.requiered"></span></div>
+				  	</div>
+				</div>
+			</div>
+			<div class="col-lg-5">
+				<label class="control-label" translate="referencias-dependientes.telefono"></label>
+				<div class="form-group required" ng-class="{ 'has-error': webform.telefono.$touched && webform.telefono.$invalid}">
+					<input type="text" capitalize = "" required class="form-control" onkeydown="numbersOnlyWithDecimal(this, event);" name="telefono" ng-model="Cliente.referenciaDependientes.telefono" byte-max-length="" ng-maxlength="15" required aria-describedby="telefono-validator-help" onkeydown="numbersOnly(event);"/>
+					<div ng-messages="webform.telefono.$error" id="telefono-validator-help" class="help-block animated fadeInLeft" role="alert" ng-if="webform.telefono.$touched">
+				    	<div ng-message="required"><span translate="messages.requiered"></span></div>
+				  		<div ng-message="minlength"><span translate="messages.minlength"></span> 15</div>
+				  		<div ng-message="maxlength"><span translate="messages.maxlength"></span> 15</div>
+				  	</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-6">
+				<label class="control-label" translate="referencias-dependientes.telefono-2"></label>
+				<div class="form-group" ng-class="{ 'has-error': webform.telefono2.$touched && webform.telefono2.$invalid}">
+					<input type="text" capitalize = "" class="form-control" onkeydown="numbersOnly(event);" name="telefono2" ng-model="Cliente.referenciaDependientes.telefono2" byte-max-length="" ng-maxlength="15" aria-describedby="telefono2-validator-help"/>
+				</div>
+			</div>
+		</div>
+		<div class="row panel-buttons">
+      <div class="col-lg-12 text-right">
+        <button type="button" ng-disabled="webform.$invalid" ng-class="editar ? 'btn btn-primary btn-radio' : 'btn btn-success btn-radio'" ng-click="agregarReferencia(Cliente.referenciaDependientes)" data-toggle="tooltip" data-placement="left" translate translate-attr-data-original-title="tooltip.agregar-datos">
+          <span ng-class="editar ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-plus'"></span>
+        </button>
+        <button type="button" ng-disabled="personas.editable"  class="btn btn-danger btn-radio" ng-click = "removeReferencia(Cliente.referenciaDependientes)" ng-if="modificando" data-toggle="tooltip" data-placement="left" translate translate-attr-data-original-title="tooltip.eliminar-datos">
+          <span class="glyphicon glyphicon-trash"></span>
+        </button>
+        <button type="button"  class="btn btn-danger btn-radio" ng-if="modificando" ng-click="clean()" data-toggle="tooltip" data-placement="left" translate translate-attr-data-original-title="tooltip.cancelar">
+          <span class="fa fa-times fa-fw"></span>
+        </button>
+      </div>
+    </div>
+    <div class="row panel-buttons">
+    	<div class="col-lg-12">
+	      <div class="tableDiv table-responsive">
+	        <table ng-table="tableParams"  show-filter="false" class="table table-bordered table-striped">
+	          <tr ng-repeat="row in $data" ng-click="modificar($index)">
+	              <td  data-title="'encabezado-tabla.col-codigo' | translate">{{row.codigo}}</td>
+	              <td  data-title="'encabezado-tabla.col-descripcion' | translate">{{row.descripcion}}</td>
+	          </tr>
+	        </table>
+	      </div>
+      	</div>
+    </div>
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="text-right">
+				    <button type="button" ng-click="cancel()" class="btn btn-danger btn-radio" data-toggle="tooltip" data-placement="left" translate translate-attr-data-original-title="tooltip.cancelar">
+         				<span class="fa fa-close fa-fw"></span>
+    				</button>
+					<button type="submit" class="btn btn-success btn-radio" data-toggle="tooltip" data-placement="left" translate translate-attr-data-original-title="tooltip.revisar">
+						<span class="fa fa-check-square-o fa-fw"></span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+</div>

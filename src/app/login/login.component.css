@@ -1,0 +1,68 @@
+.login-content {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  /*background-color: #F7F7F7;*/
+}
+
+.content-logo {
+  height: 150px;
+  display: block;
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.content-logo .logo {
+  max-width: 100%;
+  height: 100%;
+  display: block;
+  /*background: transparent url('../../assets/img/bytelogo.png') no-repeat;*/ /*  LOGO BYTE */
+  background: transparent url('../../assets/img/BANTRAB_LOGO.jpg') no-repeat; /*  LOGO BANTRAB  */
+  background-position: center center;
+  background-size: contain;
+}
+
+.login-content-form{
+  margin-top: 7%;
+  background-color: #fff;
+  border-radius: 0px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+}
+
+.login-content-form .content-field {
+  background-color: #fff;
+  border-radius: 2px;
+  margin-top: 15px;
+  padding-top: 15px;
+  /*border: 1px solid #ddd;*/
+  /*box-shadow: 0px 3px 10px -6px rgba(0, 0, 0, 0.5)*/
+}
+
+.login-content-form .content-field .input-group-addon {
+  background-color: #337ab7;
+  border: none;
+}
+
+.login-content-form .content-field .input-group-addon i {
+  color: #fff;
+}
+
+.login-content-form .content-field input[type="text"],
+.login-content-form .content-field input[type="password"] {
+  font-size: 1em;
+  background-color: #f7f7f7;
+}
+
+.login-content-form .content-field .btn-login {
+  padding: 6px 15px;
+  /*border-radius: 100px;*/
+  font-size: 1.1em;
+  font-weight: 600;
+}
+
+.login-content-form .content-field .btn-login i {
+  vertical-align: middle;
+  /*margin-right: 15px;*/
+}

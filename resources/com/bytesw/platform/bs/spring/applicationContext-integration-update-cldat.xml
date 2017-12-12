@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:int="http://www.springframework.org/schema/integration" 
+	xmlns:int-jdbc="http://www.springframework.org/schema/integration/jdbc"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" 
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/integration/jdbc http://www.springframework.org/schema/integration/jdbc/spring-integration-jdbc.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- ############## CAMBIO ############## -->
+	
+	<!-- CAMBIO DE NOMBRE -->
+	
+	<int:channel id="updateNombreRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateNombreAdapter" data-source="dataSource" channel="updateNombreRequestChannel" query="#{sqlUpdateNombre}" />
+	<bean id="sqlUpdateNombre" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLMCTE 
+				SET CLNOMB = :payload.nombreCompleto
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+
+	<!-- CAMBIO DE IDENTIFICACION -->
+
+	<int:channel id="updateIdRequestChannel" />
+
+	<int-jdbc:outbound-channel-adapter id="updateIdAdapter" data-source="dataSource" channel="updateIdRequestChannel" query="#{sqlUpdateId}" />
+	<bean id="sqlUpdateId" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLMCTE
+				SET CLTID@ = :payload.tipoIdentificacion.codigo,
+				CLNUID= :payload.identificacion
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	<!-- CAMBIO DE NOMBRE PERSONA NATURAL -->
+	
+	<int:channel id="updateNombrePersonaNaturalRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateNombrePersonaNaturalAdapter" data-source="dataSource" channel="updateNombrePersonaNaturalRequestChannel" query="#{sqlUpdateNombrePersonaNatural}" />
+	<bean id="sqlUpdateNombrePersonaNatural" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLPEIN 
+				SET CLIAP1 = :payload.datosGeneralesPersonaNatural.primerApellido,
+				    CLIAP2 = :payload.datosGeneralesPersonaNatural.segundoApellido,
+				    CLIAP3 = :payload.datosGeneralesPersonaNatural.apellidoCasada,
+				    CLINO1 = :payload.datosGeneralesPersonaNatural.primerNombre,
+				    CLINO2 = :payload.datosGeneralesPersonaNatural.segundoNombre
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- CAMBIO DE NOMBRE PERSONA JURIDICA -->
+	
+	<int:channel id="updateNombrePersonaJuridicaRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateNombrePersonaJuridicaAdapter" data-source="dataSource" channel="updateNombrePersonaJuridicaRequestChannel" query="#{sqlUpdateNombrePersonaJuridica}" />
+	<bean id="sqlUpdateNombrePersonaJuridica" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLPEJU 
+				SET CLRAZS = :payload.datosGeneralesPersonaJuridica.razonSocialRecortado
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- CAMBIO DATOS GENERALES CLIENTE -->
+	
+	<int:channel id="updateDatosGeneralesClienteRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateDatosGeneralesClienteAdapter" data-source="dataSource" channel="updateDatosGeneralesClienteRequestChannel" query="#{sqlUpdateDatosGeneralesCliente}" />
+	<bean id="sqlUpdateDatosGeneralesCliente" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLMCTE 
+				SET CLEJCO = :payload.oficialDeCuentas.id.codigo,
+					CLPORI = :payload.paisOrigen.codigo
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- CAMBIO DATOS GENERALES PERSONA NATURAL -->
+	
+	<int:channel id="updateDatosGeneralesPersonaNaturalRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateDatosGeneralesPersonaNaturalAdapter" data-source="dataSource" channel="updateDatosGeneralesPersonaNaturalRequestChannel" query="#{sqlUpdateDatosGeneralesPersonaNatural}" />
+	<bean id="sqlUpdateDatosGeneralesPersonaNatural" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLPEIN
+				SET CLNACI = :payload.datosGeneralesPersonaNatural.nacionalidad.nacionalidad,
+					CLISEX = :payload.datosGeneralesPersonaNatural.generoString,
+					CLAÑNA = :payload.anioAlta, 
+					CLMENA = :payload.mesAlta, 
+					CLDINA = :payload.diaAlta,
+					CLESCI = :payload.datosGeneralesPersonaNatural.estadoCivilString,
+					CLPRCO = :payload.datosGeneralesPersonaNatural.profesion.id,
+					CLCONO = (CASE WHEN (CLESCI = 'C' OR CLESCI = 'D' OR CLESCI = 'U') AND (:payload.datosGeneralesPersonaNatural.estadoCivilString = 'S' OR :payload.datosGeneralesPersonaNatural.estadoCivilString = 'V') THEN ' ' ELSE CAST(:payload.datosGeneralesPersonaNatural.conyuge AS varchar(40)) END),
+					CLNOLI = :payload.datosGeneralesPersonaNatural.numeroLicencia
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- CAMBIO NUMERO DE DEPENDIENTES -->
+		
+	<int:channel id="updateNumeroDependientesRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateNumeroDependientesAdapter" data-source="dataSource" channel="updateNumeroDependientesRequestChannel" query="#{sqlUpdateNumeroDependientes}" />
+	<bean id="sqlUpdateNumeroDependientes" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLPEIN
+				SET CLNUDE = :payload.datosGeneralesPersonaNatural.dependientes
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- CAMBIO DATOS GENERALES PERSONA JURIDICA -->
+		
+	<int:channel id="updateDatosGeneralesPersonaJuridicaRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateDatosGeneralesPersonaJuridicaAdapter" data-source="dataSource" channel="updateDatosGeneralesPersonaJuridicaRequestChannel" query="#{sqlUpdateDatosGeneralesPersonaJuridica}" />
+	<bean id="sqlUpdateDatosGeneralesPersonaJuridica" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLPEJU
+				SET CLRAZS = :payload.datosGeneralesPersonaJuridica.nombreComercialRecortado,
+				    CLREME = :payload.datosGeneralesPersonaJuridica.registroMercantilNumero,
+					CLTOMO = :payload.datosGeneralesPersonaJuridica.registroMercantilTomo,
+					CLFOLI = :payload.datosGeneralesPersonaJuridica.registroMercantilPagina,
+					CLAÑRE = :payload.datosGeneralesPersonaJuridica.anioRegistro,
+					CLMERE = :payload.datosGeneralesPersonaJuridica.mesRegistro,
+					CLDIRE = :payload.datosGeneralesPersonaJuridica.diaRegistro,
+					CLEMFO = :payload.datosGeneralesPersonaJuridica.empresaEnFormacion,
+					CLPUAC = :payload.datosGeneralesPersonaJuridica.puntoActa,
+					CLPATE = :payload.datosGeneralesPersonaJuridica.patenteComercio,
+					CLSIGL = :payload.datosGeneralesPersonaJuridica.siglas,
+					CLESCR = :payload.datosGeneralesPersonaJuridica.numeroEscrituraPermisoOperaciones,
+					CLDICO = :payload.datosGeneralesPersonaJuridica.diaInicioOperaciones,
+					CLMECO = :payload.datosGeneralesPersonaJuridica.mesInicioOperaciones,
+					CLAÑCO = :payload.datosGeneralesPersonaJuridica.anioInicioOperaciones,
+					TIPSOC = :payload.datosGeneralesPersonaJuridica.tipoSociedad.codigo
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- CAMBIO NIVEL VENTAS PERSONA JURIDICA -->
+		
+	<int:channel id="updateNivelVentasPersonaJuridicaRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateNivelVentasPersonaJuridicaAdapter" data-source="dataSource" channel="updateNivelVentasPersonaJuridicaRequestChannel" query="#{sqlUpdateDatosGeneralesPersonaJuridica}" />
+	<bean id="sqlUpdateNivelVentasPersonaJuridica" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLCLNI
+				SET CLNIVC = :payload.datosGeneralesPersonaJuridica.nivelVentas.codigo
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- CAMBIO PERFIL ECONOMICO -->
+		
+	<int:channel id="updatePerfilEconomicoRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updatePerfilEconomicoAdapter" data-source="dataSource" channel="updatePerfilEconomicoRequestChannel" query="#{sqlUpdatePerfilEconomico}" />
+	<bean id="sqlUpdatePerfilEconomico" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLMCTE
+				SET CLAISR = :payload.perfilEconomico.stringAfectoIsr,
+					CLNNIT = :payload.perfilEconomico.rtn,
+					CLSECO = :payload.perfilEconomico.sectorEconomico.codigo,
+					CLCLCO = :payload.perfilEconomico.claseCliente.codigo,
+					CLACCO = '0'
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<int:channel id="updatePerfilEconomicoAdicionalRequestChannel" />
+
+    <int-jdbc:outbound-channel-adapter id="updatePerfilEconomicoAdicionalAdapter" data-source="dataSource" channel="updatePerfilEconomicoAdicionalRequestChannel" query="#{sqlUpdatePerfilEconomicoAdicional}" />
+	<bean id="sqlUpdatePerfilEconomicoAdicional" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLMCTEAD
+				SET CLADC1 = :payload.perfilEconomico.codigoEmpleado,
+					CLADC2 = :payload.perfilEconomico.codigoTipoCliente,
+					CLCODA = :payload.perfilEconomico.actividadEconomica.codigo
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- CAMBIO CAMPOS BCH -->
+	
+	<int:channel id="updateCamposBCHRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateCamposBCHAdapter" data-source="dataSource" channel="updateCamposBCHRequestChannel" query="#{sqlUpdateCamposBCH}" />
+	<bean id="sqlUpdateCamposBCH" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLPAR}.CLACCL
+				SET ACLCOR = :payload.perfilEconomico.tipoInstitucion,
+					ACLCOA = :payload.perfilEconomico.institucion
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- CAMBIO REPRESENTANTE LEGAL -->
+	
+	<int:channel id="updateRepresentanteLegalRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateRepresentanteLegalAdapter" data-source="dataSource" channel="updateRepresentanteLegalRequestChannel" query="#{sqlUpdateRepresentanteLegal}" />
+	<bean id="sqlUpdateRepresentanteLegal" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLDRLE
+				SET RLEAP1 = :payload.representanteLegalTutor.primerApellido,
+					RLEAP2 = :payload.representanteLegalTutor.segundoApellido,
+					RLEACA = :payload.representanteLegalTutor.apellidoCasada,
+					RLENO1 = :payload.representanteLegalTutor.primerNombre,
+					RLENO2 = :payload.representanteLegalTutor.segundoNombre,
+					RLENOM = :payload.representanteLegalTutor.nombreCompleto,
+					RLETDI = :payload.representanteLegalTutor.tipoIdentificacion.codigo,
+					RLENDI = :payload.representanteLegalTutor.identificacion,
+					RLEPRO = :payload.representanteLegalTutor.codigoProfesion,
+					RLEANO = :payload.representanteLegalTutor.anioNombramiento,
+					RLEMNO = :payload.representanteLegalTutor.mesNombramiento,
+					RLEADO = :payload.representanteLegalTutor.diaNombramiento,
+					RLEDC1 = :payload.representanteLegalTutor.direccionRecortada1,
+					RLEDC2 = :payload.representanteLegalTutor.direccionRecortada2,
+					RLEDC3 = :payload.representanteLegalTutor.direccionRecortada3,
+					RLEDC4 = :payload.representanteLegalTutor.direccionRecortada4,
+					RLEEC5 = :payload.representanteLegalTutor.direccionRecortada5,
+					RLETN1 = :payload.representanteLegalTutor.telefono1,
+					RLETN2 = :payload.representanteLegalTutor.telefono2
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- CAMBIO REPRESENTANTE LEGAL NOMBRE COMPLETO -->
+	
+	<int:channel id="updateRepresentanteLegalNombreCompletoRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateRepresentanteLegalNombreCompletoAdapter" data-source="dataSource" channel="updateRepresentanteLegalNombreCompletoRequestChannel" query="#{sqlUpdateRepresentanteLegalNombreCompleto}" />
+	<bean id="sqlUpdateRepresentanteLegalNombreCompleto" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLMCTE
+				SET CLREPR = :payload.representanteLegalTutor.nombreCompletoRecortado
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- CAMBIO REPRESENTANTE LEGAL PERSONA JURIDICA -->
+	
+	<int:channel id="updateRepresentanteLegalPersonaJuridicaRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateRepresentanteLegalPersonaJuridicaAdapter" data-source="dataSource" channel="updateRepresentanteLegalPersonaJuridicaRequestChannel" query="#{sqlUpdateRepresentanteLegalPersonaJuridica}" />
+	<bean id="sqlUpdateRepresentanteLegalPersonaJuridica" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLPEJU
+				SET CLTERP = :payload.representanteLegalTutor.telefono1
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- CAMBIO DATOS ADICIONALES -->
+	
+	<int:channel id="updateDatosAdicionalesRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateDatosAdicionalesAdapter" data-source="dataSource" channel="updateDatosAdicionalesRequestChannel" query="#{sqlUpdateDatosAdicionales}" />
+	<bean id="sqlUpdateDatosAdicionales" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLMCTEAD
+				SET CLIDTI = :payload.datosAdicionalesTipoDatoAdicional,
+					CLIDNU = :payload.datosAdicionalesNumeroIdentificacion
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- CAMBIO DE DIRECCION PARA EL CLIENTE -->
+	
+	<int:channel id="updateDireccionRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateDireccionAdapter" data-source="dataSource" channel="updateDireccionRequestChannel" query="#{sqlUpdateDireccion}" />
+	<bean id="sqlUpdateDireccion" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLDICL
+				SET CLDICO = :payload.tipoDireccion.codigo,
+					CLZONA = '0',
+					CLCOLO = :payload.emailRecortado,
+					NIGE01 = :payload.nivelGeografico1,
+					NIGE02 = :payload.nivelGeografico2,
+					NIGE03 = :payload.nivelGeografico3,
+					NIGE04 = :payload.nivelGeografico4,
+					CLAPTO = :payload.apartadoPostal,
+					CLAPOS = :payload.codigoPostal,
+					CLTEL1 = :payload.telefono1,
+					CLTEL2 = :payload.telefono2,
+					CLNFAX = :payload.fax,
+					CLDIRE = :payload.direccionRecortada1,
+					CLDIR2 = :payload.direccionRecortada2,
+					CLDIR3 = :payload.direccionRecortada3,
+					CLZOCO = :payload.codigoZona,
+					CLRUTA = :payload.codigoRuta,
+					CLCICO = '0',
+					CLALCO = '0',
+					CLCACO = '0',
+					CLFAAN = :payload.anioAntiguedad,
+					CLFAME = :payload.mesAntiguedad,
+					CLFADI = :payload.diaAntiguedad
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND CLDIRC = :payload.correlativoDireccion
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- ############## REFERENCIAS ############## -->
+	
+	<!-- REFERENCIA DE DEPENDIENTES -->
+	
+	<int:channel id="updateReferenciasDependientesRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateReferenciasDependientesAdapter" data-source="dataSource" channel="updateReferenciasDependientesRequestChannel" query="#{sqlUpdateReferenciasDependientes}" />
+	<bean id="sqlUpdateReferenciasDependientes" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLREFD
+				SET RFDNOM = :payload.nombre,
+					RFDDIR = :payload.direccion, 
+					RFDTEL = :payload.telefono1,
+					RFDTEO = :payload.telefono2, 
+					RFDREL = :payload.parentesco.codigo
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND RFDCOR = :payload.correlativo
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- REFERENCIA DE ACCIONISTA -->
+	
+	<int:channel id="updateReferenciasAccionistaRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateReferenciasAccionistaAdapter" data-source="dataSource" channel="updateReferenciasAccionistaRequestChannel" query="#{sqlUpdateReferenciasAccionista}" />
+	<bean id="sqlUpdateReferenciasAccionista" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLACCI
+				SET NOMBRE = :payload.nombres, 
+					APELLI = :payload.apellidos,
+					TIPOAC = :payload.tipoAccionista,
+					LABDIA = :payload.diaIngreso,
+					LABMES = :payload.mesIngreso,
+					LABAÑO = :payload.anioIngreso,
+					LABDEG = :payload.diaEgreso,
+					LABMEG = :payload.mesEgreso,
+					LABAEG = :payload.anioEgreso,
+					LABDPA= :payload.porcentajeParticipacion
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND ACCCOR = :payload.correlativoReferencia
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- REFERENCIA DE CREDITO -->
+	
+	<int:channel id="updateReferenciasCreditoRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateReferenciasCreditoAdapter" data-source="dataSource" channel="updateReferenciasCreditoRequestChannel" query="#{sqlUpdateReferenciasCredito}" />
+	<bean id="sqlUpdateReferenciasCredito" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLREFT
+				SET CLTICO = :payload.tipoInstitucion.codigo,
+					CLINSC = :payload.institucion.codigo,
+					TARNUM = :payload.numero,
+					TARLIM = :payload.limite,
+					TARACO = :payload.anioConcesion,
+					TARMCO = :payload.mesConcesion,
+					TARDCO = :payload.diaConcesion,
+					TARAVE = :payload.anioVencimiento,
+					TARMVE = :payload.mesVencimiento,
+					TARDVE = :payload.diaVencimiento
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND TARCOR = :payload.correlativoReferencia
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- REFERENCIA DE CUENTA -->
+	
+	<int:channel id="updateReferenciasCuentaRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateReferenciasCuentaAdapter" data-source="dataSource" channel="updateReferenciasCuentaRequestChannel" query="#{sqlUpdateReferenciasCuenta}" />
+	<bean id="sqlUpdateReferenciasCuenta" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLSOCTAS
+				SET BANTIP = :payload.tipoInstitucion.codigo,
+				    BANCOD = :payload.institucion.codigo,
+				    BANCTA = :payload.numeroCuenta,
+				    BANCLA = :payload.tipo,
+					BANAAP = :payload.anioAproxApertura,
+					BANMAP = :payload.mesAproxApertura
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND BANTIP = :payload.codigoTipoInstitucion AND BANCOD = :payload.codigoInstitucion AND BANCTA = :payload.codigoNumeroCuenta
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- REFERENCIAS PERSONALES FAMILIARES -->
+	
+	<int:channel id="updateReferenciasPersonalesFamiliaresRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateReferenciasPersonalesFamiliaresAdapter" data-source="dataSource" channel="updateReferenciasPersonalesFamiliaresRequestChannel" query="#{sqlUpdateReferenciasPersonalesFamiliares}" />
+	<bean id="sqlUpdateReferenciasPersonalesFamiliares" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLREFP
+				SET PERNOM = :payload.nombre,
+					PERDIR = :payload.direccion,
+					PERTEL = :payload.telefonoCasa,
+					PERTEO = :payload.telefonoOficina,
+					PERPAR = :payload.parentesco.codigo
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND PFACOR = :payload.correlativoReferencia
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- REFERENCIAS DE VEHICULOS -->
+	
+	<int:channel id="updateReferenciasVehiculosRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateReferenciasVehiculosAdapter" data-source="dataSource" channel="updateReferenciasVehiculosRequestChannel" query="#{sqlUpdateReferenciasVehiculos}" />
+	<bean id="sqlUpdateReferenciasVehiculos" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLSOVEHI
+				SET VEHPLA = :payload.placaVehiculo,
+				    VEHMAR = :payload.marca,
+					VEHMOD = :payload.modelo, 
+					VEHFIN = :payload.empresaFinancia,
+				    VEHSAL = :payload.saldoFinanciamiento
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND VEHPLA = :payload.placa
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- REFERENCIAS DE SEGUROS -->
+	
+	<int:channel id="updateReferenciasSegurosRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateReferenciasSegurosAdapter" data-source="dataSource" channel="updateReferenciasSegurosRequestChannel" query="#{sqlUpdateReferenciasSeguros}" />
+	<bean id="sqlUpdateReferenciasSeguros" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLSOSEGU
+				SET ASECOD = :payload.institucion.codigo,
+				    ASEPOL = :payload.poliza,
+					ASETIP = :payload.tipoDePoliza,
+					ASEEND = :payload.endoso,
+					ASECER = :payload.certificado,
+					ASECOB = :payload.cobertura,
+					ASEAVE = :payload.anioVencimiento,
+					ASEMVE = :payload.mesVencimiento,
+					ASEDVE = :payload.diaVencimiento, 
+					CLMOCO = :payload.moneda.codigo
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND ASECOD = :payload.codigoAseguradora	
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- REFERENCIAS PARENTESCO EMPLEADO -->
+	
+	<int:channel id="updateReferenciasParentescoEmpleadosRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateReferenciasParentescoEmpleadosAdapter" data-source="dataSource" channel="updateReferenciasParentescoEmpleadosRequestChannel" query="#{sqlUpdateReferenciasParentescoEmpleados}" />
+	<bean id="sqlUpdateReferenciasParentescoEmpleados" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLPAEM
+				SET PEMCEM = :payload.empleado.id.codigo,
+				    PEMPAR = :payload.parentesco.codigo
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND PEMCEM = :payload.codigoEmpleado	
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- REFERENCIAS LABORALES -->
+	
+	<int:channel id="updateReferenciasLaboralesRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateReferenciasLaboralesAdapter" data-source="dataSource" channel="updateReferenciasLaboralesRequestChannel" query="#{sqlUpdateReferenciasLaborales}" />
+	<bean id="sqlUpdateReferenciasLaborales" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLREFL
+				SET LABNOM = :payload.nombre,
+					LABDIR = :payload.direccionRecortada,
+					LABTEL = :payload.telefono,
+					LABDIA = :payload.diaIngreso,
+					LABMES = :payload.mesIngreso,
+					LABAÑO = :payload.anioIngreso,
+					LABDEG = :payload.diaEgreso, 
+					LABMEG = :payload.mesEgreso,
+					LABAEG = :payload.anioEgreso,
+					LABDPA = :payload.diaPago,
+					LABCAR = :payload.cargo, 
+					LABSUE = :payload.salarioCodigo,
+					LABJEF = '',
+					LABDI1 = :payload.correlativoDireccion
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND LABCOR = :payload.correlativoReferencia
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- REFERENCIAS PROVEEDORES -->
+	
+	<int:channel id="updateReferenciasProveedoresRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateReferenciasProveedoresAdapter" data-source="dataSource" channel="updateReferenciasProveedoresRequestChannel" query="#{sqlUpdateReferenciasProveedores}" />
+	<bean id="sqlUpdateReferenciasProveedores" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLREPR
+				SET PRONOM = :payload.nombre,
+					PRODIR = :payload.direccion, 
+					PROTEL = :payload.telefono1,
+					PROTEO = :payload.telefono2
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND PROCOR = :payload.correlativoReferencia
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- REFERENCIAS COMERCIANTES -->
+	
+	<int:channel id="updateReferenciaComercianteRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateReferenciaComercianteAdapter" data-source="dataSource" channel="updateReferenciaComercianteRequestChannel" query="#{sqlUpdateReferenciaComerciante}" />
+	<bean id="sqlUpdateReferenciaComerciante" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLDNEG
+				SET DNENNE = :payload.nombreNegocio,
+					DNEAIO = :payload.anioInicioOperaciones,
+					DNEMIO = :payload.mesInicioOperaciones, 
+					DNEDIO = :payload.diaInicioOperaciones,
+					DNEGNE = :payload.actividadNegocios, 
+					DNEINE = :payload.ingresosDeNegocioPropio,
+					DNEDN1 = :payload.direccionRecortada1,
+					DNEDN2 = :payload.direccionRecortada2, 
+					DNEDN3 = :payload.direccionRecortada3,
+					DNEDN4 = :payload.direccionRecortada4,
+					DNEDN5 = :payload.direccionRecortada5,
+					DNETN1 = :payload.telefono1, 
+					DNETN2 = :payload.telefono2,
+					DNECDI = :payload.correlativoDireccion
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND NEGCOR = :payload.correlativoReferencia
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- REFERENCIAS COMERCIANTES DATOS CONTADOR -->
+	
+	<int:channel id="updateReferenciasComercianteDatosContadorRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateReferenciasComercianteDatosContadorAdapter" data-source="dataSource" channel="updateReferenciasComercianteDatosContadorRequestChannel" query="#{sqlUpdateReferenciasComercianteDatosContador}" />
+	<bean id="sqlUpdateReferenciasComercianteDatosContador" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{CLDAT}.CLDCON
+				SET DCONCO = :payload.contador.nombre,
+					DCOTDI = :payload.contador.tipoIdentificacionString,
+					DCONDI = :payload.contador.numeroIdentificacion, 
+					DCONAC = :payload.contador.nacionalidadString,
+					DCODC1 = :payload.contador.direccionRecortada1,
+					DCODC2 = :payload.contador.direccionRecortada2, 
+					DCODC3 = :payload.contador.direccionRecortada3,
+					DCODC4 = :payload.contador.direccionRecortada4,
+					DCODC5 = :payload.contador.direccionRecortada5,
+					DCOTN1 = :payload.contador.telefono1,
+					DCOTN2 = :payload.contador.telefono2
+				WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND CONCOR = :payload.contador.correlativoContador
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+</beans>

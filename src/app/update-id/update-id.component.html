@@ -1,0 +1,107 @@
+
+<div class="container-fluid animated fadeIn" block-ui="myBlock" disable-all="editar">
+  <form [formGroup]="updateIdForm" id="updateIdForm" name="updateIdForm" class="" (ngSubmit)="updateId()">
+    <!--*ngIf="client.datosGeneralesPersonaNatural">-->
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-custom">
+          <div class="panel-heading">
+            <h2 class="control-label" [translate]="''">{{'portal.side-bar.update-id' | translate}}</h2>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="panel panel-custom">
+                  <label class="control-label" [translate]="'type-person.identification'">t</label>
+                  <div class="panel-body" [attr.disabled]="patternValitator">
+                    <div class="col-lg-6">
+                      <div class="form-group required-1 margin-reset"
+                           ng-class="{ 'has-error': updateIdForm.documentIdentification.$touched && updateIdForm.documentIdentification.$invalid}"
+                      >
+
+                        <pl-type-document-select id="typedocId"
+                                                 #docType
+                                                 [controlName]="'documentIdentification'"
+                                                 [formGroup]="updateIdForm"
+                                                 [documentIdentification]="client?.tipoIdentificacion"
+                                                 (changeTypeDocument)="selectDocumentoIdentificacion($event)"
+                                                 [autocomplete]="false"
+                                                 [modeView]="modeView"
+                                                  [clientType]="client?.tipoPersona">
+                        </pl-type-document-select>
+                        <pl-errors-message [control]="documentIdentification"></pl-errors-message>
+                      </div>
+                    </div>
+                    <div class="col-lg-6" *ngIf="client?.tipoPersona">
+                      <div class="form-group required-1 margin-reset"
+                           [ngClass]="{'has-error': numberIdentification.touched && numberIdentification.invalid}">
+                        <input style="text-transform: uppercase;"
+                               [textMask]="{mask: tipeDoc.mascara , guide: true, modelClean: true,placeholderChar : tipeDoc.maskCharacter}"
+                               id="numberIdentification" class="form-control"
+                               name="numberIdentification" formControlName="numberIdentification"
+                               (ngModelChange)="valuechange($event,guide)"
+                               (blur)="onBlurIdentification($event)"
+                               [(ngModel)]="tempIdentificiacion"
+                               placeholder="{{tipeDoc.placeHolder}}" model-view-value="true"/>
+                          <pl-errors-message [control]="numberIdentification" [customPatter]="true">
+                          <div *ngIf="numberIdentification?.hasError('pattern')">
+                            <span>{{'messages.error-mask' | translate}}</span>
+                          </div>
+                        </pl-errors-message>
+                        <!-- TODO Pasar el campo de identificacion a mayusculas -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-footer text-right col-lg-10">
+            <div class="row">
+              <span data-toggle="tooltip" data-placement="left" title=""
+                    attr.data-original-title="{{'buttons.cancel' | translate}}" *ngIf="disabledField">
+			        	<a class="btn btn-warning btn-raised btn-fab" (click)="change()">
+			          		<i class="material-icons md-18">create</i> {{'buttons.update' | translate}}
+			          		<div class="ripple-container"></div>
+			        	</a>
+              </span>
+              <span data-toggle="tooltip" data-placement="left" title=""
+                    attr.data-original-title="{{'buttons.cancel' | translate}}" *ngIf="!disabledField">
+			        	<a class="btn btn-danger btn-raised btn-fab" (click)="restoreUpdate()">
+			          		<i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+			          		<div class="ripple-container"></div>
+			        	</a>
+              </span>
+
+              <button type="submit" [disabled]="!updateIdForm.valid" class="btn btn-success"
+                      *ngIf="!disabledField" data-toggle="tooltip"
+                      data-placement="left" title="d" attr.data-original-title="{{'buttons.autorization' | translate}}">
+                <i class="material-icons md-18">check</i> {{'buttons.accept' | translate}}
+                <div class="ripple-container"></div>
+              </button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal fade" id="authorizationModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><i class="material-icons md-18">check_circle</i>
+          {{'authorization.title' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <pl-authorization [authorization]="authorization"
+                          (changeAuthorization)="changeAuthorization($event)"></pl-authorization>
+      </div>
+    </div>
+  </div>
+</div>
+<simple-notifications [options]="options"></simple-notifications>

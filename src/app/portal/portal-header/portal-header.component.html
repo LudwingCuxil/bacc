@@ -1,0 +1,120 @@
+<div class="jumbotron">
+  <div class="row portal-header">
+
+    <div class="col-lg-2 col-md-2 source-client text-center">
+      <div class="col-lg-12" [ngClass]="{'img-account' : accountInformation || clientInformation.tipoPersona === 'J'}">
+        <span *ngIf="clientInformation">
+          <!--<span class="img-source-client client-natural" *ngIf="clientInformation.tipoPersona === 'N'"></span>-->
+          <img class="img-source-client client-natural" [src]="clientAvatar"
+               *ngIf="clientInformation.tipoPersona === 'N'" target="_blank"/>
+          <i class="material-icons md-24 client-juridic"
+             *ngIf="clientInformation.tipoPersona === 'J'">account_balance</i>
+        </span>
+        <i *ngIf="accountInformation" class="material-icons md-24 account-header">account_balance_wallet</i>
+        <i class="material-icons md-24 status-client">check_circle</i>
+      </div>
+    </div>
+
+    <!--HEADER CLIENT-->
+    <div *ngIf="clientInformation" class="data-client">
+      <div class="client-name">
+        <h2 class="col-lg-9">
+          <div class="row" title="{{clientInformation.nombre}}">{{clientInformation?.nombre}}
+          </div>
+        </h2>
+        <div class="col-lg-2 text-right content-status-client">
+          <div class="animated bounceIn header-status-client header-status-default {{clientInformation.estado}}">
+            {{clientInformation.descripcionEstado}}
+            <i class="material-icons md-24" *ngIf="clientInformation.estado === 'I'">remove_circle_outline</i>
+            <i class="material-icons md-24" *ngIf="clientInformation.estado === 'P'">info_outline</i>
+            <i class="material-icons md-24" *ngIf="clientInformation.estado === 'A'">check</i>
+            <i class="material-icons md-24" *ngIf="clientInformation.estado === 'C'">highlight_off</i>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-4">
+        <small>
+          <div>{{clientInformation.descripcionTipoDeIdentificacion}}:</div>
+        </small>
+        <h3>
+          <div>{{clientInformation?.numeroIdentificacion}}</div>
+        </h3>
+      </div>
+      <div class="col-lg-3 col-md-4">
+        <small>
+          <div>{{'portal.header.code-client' | translate}}:</div>
+        </small>
+        <h3>
+          <div>{{clientInformation.id?.identificacion}}</div>
+        </h3>
+      </div>
+      <div class="col-lg-6 col-md-4">
+        <small>
+          <div>{{'portal.header.class' | translate}}:</div>
+        </small>
+        <h3>
+          <div>{{clientInformation.clase?.descripcion}}</div>
+        </h3>
+      </div>
+    </div>
+
+    <!--HEADER ACCOUNT-->
+    <div *ngIf="accountInformation" class="data-account">
+      <div class="number-account">
+        <h2 class="col-lg-8">
+          <div class="row">{{accountInformation.numeroCuenta}}</div>
+        </h2>
+        <div class="col-lg-3 text-right content-status-account">
+          <div class="animated bounceIn header-status-account status-default {{accountInformation.estado}}">
+            {{accountInformation.descripcionEstado}}
+            <i class="material-icons md-24" *ngIf="accountInformation.estado === ' '">info_outline</i>
+            <i class="material-icons md-24" *ngIf="accountInformation.estado === 'E'">block</i>
+            <i class="material-icons md-24" *ngIf="accountInformation.estado === 'A'">check</i>
+            <i class="material-icons md-24" *ngIf="accountInformation.estado === 'I'">remove_circle_outline</i>
+            <i class="material-icons md-24" *ngIf="accountInformation.estado === 'C'">highlight_off</i>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 client-name">
+        <h3 class="text-left">
+          <div class="row" title="{{accountInformation?.nombre}}">{{accountInformation?.nombre}}</div>
+        </h3>
+      </div>
+
+      <div class="col-lg-1 col-md-3">
+        <small>
+          <div>{{'portal.header.currency' | translate}}:</div>
+        </small>
+        <h3>
+          <div>{{accountInformation?.moneda}}</div>
+        </h3>
+      </div>
+      <div class="col-lg-2 col-md-4">
+        <small>
+          <div>{{'portal.header.product' | translate}}:</div>
+        </small>
+        <h3>
+          <div>{{accountInformation?.descripcionTipoProducto}}</div>
+        </h3>
+      </div>
+      <div class="col-lg-5 col-md-5">
+        <small>
+          <div>{{'portal.header.sub-product' | translate}}:</div>
+        </small>
+        <h3>
+          <div>{{accountInformation?.descripcionSubProducto}}</div>
+        </h3>
+      </div>
+    </div>
+
+    <a class="btn navbar-left btn-cancel" data-toggle="modal" (click)="goBack(clientBack)" *ngIf="clientInformation">
+      {{'buttons.exit' | translate}} <i class="material-icons md-36">clear</i>
+    </a>
+    <a class="btn navbar-left btn-cancel" data-toggle="modal" (click)="goBack(accountBack)" *ngIf="accountInformation">
+      {{'buttons.exit' | translate}} <i class="material-icons md-36">clear</i>
+    </a>
+
+  </div>
+</div>

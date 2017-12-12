@@ -1,0 +1,90 @@
+<form name="webform" autocomplete="off" novalidate="" role="form" ng-submit="partialSave()" show-validation>
+	<div class="container" ng-cloak="">
+		<div class="row text-center">
+			<h3>Datos Adicionales</h3>				
+		</div>
+		<div class="row">
+			<div class="form-class">
+				<div class="col-md-11">
+					<div calss="row">
+						<table class="table table-responsive borderless">
+							<tr>
+								<td><label class="control-label">Direcci&#243;n</label></td>
+								<td><label class="control-label">Colonia</label></td>
+								<td><label class="control-label">Lote</label></td>
+								<td><label class="control-label">Manzana</label></td>
+								<td><label class="control-label">Sector</label></td>
+							</tr>
+							<tr>
+								<td><input type="text" capitalize = "" class="form-control" name="direccion" id="field_direccion" ng-model="Cliente.datosAdicionales.direccion" required byte-max-length="" ng-maxlength="60" /></td>
+								<td><input type="text" capitalize = "" class="form-control" name="colonia" id="field_colonia" ng-model="Cliente.datosAdicionales.colonia" byte-max-length="" ng-maxlength="15" /></td>
+								<td><input type="text" capitalize = "" class="form-control" name="lote" id="field_lote" ng-model="Cliente.datosAdicionales.lote" byte-max-length="" ng-maxlength="15" /></td>
+								<td><input type="text" capitalize = "" class="form-control" name="manzana" id="field_manzana" ng-model="Cliente.datosAdicionales.manzana" byte-max-length="" ng-maxlength="15" /></td>
+								<td><input type="text" capitalize = "" class="form-control" name="sector" id="field_sector" ng-model="Cliente.datosAdicionales.sector" byte-max-length="" ng-maxlength="15" /></td>
+							</tr>
+						</table>
+					</div>
+					<div calss="row">
+						<table class="table table-responsive borderless">
+							<tr>
+								<td><label class="control-label">Departamento</label></td>
+								<td><label class="control-label">Municipio</label></td>
+								<td><label class="control-label">Aldea</label></td>
+								<td><label class="control-label">Cant&#243;n</label></td>
+								<td><label class="control-label">Caserio</label></td>
+							</tr>
+							<tr>
+								<td><select ng-model="Cliente.datosAdicionales.departamento" required class="form-control" ng-options="departamento.name for departamento in departamentos track by departamento.code" ng-change="fillMunicipiosList(Cliente.datosAdicionales.departamento)"></select></td>
+								<td><select ng-model="Cliente.datosAdicionales.municipio" data-ng-disabled="Cliente.datosAdicionales.departamento==null" required class="form-control" ng-options="municipio.name for municipio in municipios track by municipio.code" ng-change="fillAldeasList(Cliente.datosAdicionales.municipio)"></select></td>
+								<td><select ng-model="Cliente.datosAdicionales.aldea" data-ng-disabled="Cliente.datosAdicionales.municipio==null" required class="form-control" ng-options="aldea.description for aldea in aldeas track by aldea.code"></select></td>
+								<td><input type="text" capitalize = "" class="form-control" name="canton" id="field_manzana" ng-model="Cliente.datosAdicionales.canton" byte-max-length="" ng-maxlength="15" /></td>
+								<td><input type="text" capitalize = "" class="form-control" name="caserio" id="field_sector" ng-model="Cliente.datosAdicionales.caserio" byte-max-length="" ng-maxlength="15" /></td>
+							</tr>
+						</table>
+					</div>
+					<div calss="row">
+						<table class="table table-responsive borderless">
+							<tr>
+								<td><label class="control-label">Finca</label></td>
+								<td><label class="control-label">Zona</label></td>
+								<td><label class="control-label">Telefono Domicilio</label></td>
+								<td><label class="control-label">Telefono Celular</label></td>
+								<td><label class="control-label">Tenencia de Vivienda</label></td>
+							</tr>
+							<tr>
+								<td><input type="text" capitalize = "" class="form-control" name="canton" id="field_manzana" ng-model="Cliente.datosAdicionales.finca" byte-max-length="" ng-maxlength="15" /></td>
+								<td><input type="text" capitalize = "" class="form-control" name="canton" id="field_manzana" ng-model="Cliente.datosAdicionales.zona" byte-max-length="" ng-maxlength="15" /></td>
+								<td><input type="text" capitalize = "" class="form-control" name="canton" id="field_manzana" ng-model="Cliente.datosAdicionales.telefonoCasa" byte-max-length="" ng-maxlength="15" /></td>
+								<td><input type="text" capitalize = "" class="form-control" name="canton" id="field_manzana" ng-model="Cliente.datosAdicionales.telefonoCelular" byte-max-length="" ng-maxlength="15" /></td>
+								<td>
+									<select ng-model="Cliente.datosAdicionales.tenenciaLocal" required class="form-control">
+										<option value="1">ARRENDADA</option>
+										<option value="2">PROPIA CON HIPOTECA</option>
+										<option value="3">PROPIA SIN HIPOTECA</option>
+									</select>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div calss="row">
+						<table class="table table-responsive borderless">
+							<tr>
+								<td><label class="control-label">A&#241;os de residir en la vivienda</label></td>
+								<td><label class="control-label">Cuenta con energ&#237;a el&#233;ctrica en el hogar</label></td>
+							</tr>
+							<tr>
+								<td><input type="number" class="form-control" name="aniosResidencia" id="field_aniosResidencia" ng-model="Cliente.datosAdicionales.aniosResidencia" byte-max-length="" ng-maxlength="2" required/></td>
+								<td><input type="checkbox" class="form-control" name="energiaElectrica" id="field_energiaElectrica" ng-model="Cliente.datosAdicionales.energiaElectrica"/></td>
+							</tr>
+						</table>
+						<br/>
+						<br/>
+						<button type="submit" ng-disabled="webform.$invalid" class="btn btn-primary" data-toggle="tooltip" data-placement="left" translate translate-attr-data-original-title="tooltip.revisar">
+				            <span class="glyphicon glyphicon-check"></span>&nbsp;<span translate="entity.action.save">Validar</span>
+				        </button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>	

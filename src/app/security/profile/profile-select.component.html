@@ -1,0 +1,13 @@
+<div [formGroup]="formGroup">
+  <select id="profileSelected" [formControlName]="controlName" [(ngModel)]="profile" (ngModelChange)="onChangeObj($event)" class="form-control" required *ngIf="!autocomplete">
+    <option *ngFor="let p of profiles" [ngValue]="p">{{p.descripcion}}</option>
+  </select>
+
+  <ng-template #rt let-r="result" let-t="term" style="width: 96%">
+    {{ r.nombre }}
+  </ng-template>
+
+  <input (focus)="openAll($event)" [(ngModel)]="profile" [formControlName]="controlName" [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="formatter"
+         class="form-control" required *ngIf="autocomplete"
+         (selectItem)="onChangeObj($event)" />
+</div>

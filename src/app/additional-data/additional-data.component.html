@@ -1,0 +1,71 @@
+<div [ngBusy]="busy"></div>
+<form name="additional-data-form" autocomplete="off" role="form" (ngSubmit)="validateForm()" [formGroup]="formGroup">
+  <div class="container-fluid animated fadeIn">
+    <div class="panel panel-custom">
+      <div class="panel-heading">
+        <h2 [translate]="'additional-data.title'">{{'additional-data.title' | translate}}</h2>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group" [ngClass]="{'has-error': additionalDatatype.touched && additionalDatatype.invalid}"
+                 *ngFor="let item of additionalDatatypeList">
+              <label class="control control--radio">
+                <input formControlName="additionalDatatype" type="radio" name="additionalDatatype"
+                       id="additionalDatatype"
+                       value="{{item.code}}" [(ngModel)]="client.datosAdicionales.tipoDatoAdicional"/>
+                {{item.description}}
+                <div class="control__indicator"></div>
+              </label>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="col-lg-12">
+              <label class="control-label" [translate]="'additional-data.identification'">t</label>
+              <div class="form-group" [ngClass]="{ 'has-error': identification.touched && identification.invalid}">
+                <input formControlName="identification" type="text" class="form-control"
+                       [(uppercase)]='client.datosAdicionales.numeroIdentificacion'
+                       name="identificacion" id="identification"
+                       [(ngModel)]="client.datosAdicionales.numeroIdentificacion" [maxLength]="15"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer text-right col-lg-10">
+        <div class="row">
+          <button type=button (click)="editMode? cancelAdditionalData() : cancel()"
+           class="btn btn-danger btn-radio animated bounceIn"
+              data-toggle="tooltip" data-placement="top" translate
+              translate-attr-data-original-title="buttons.cancel">
+              <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+              <div class="ripple-container"></div>
+          </button>
+          <button type="submit"  class="btn btn-success btn-radio animated bounceIn"
+              data-toggle="tooltip" data-placement="top" translate
+              translate-attr-data-original-title="buttons.continue">
+              {{'buttons.continue' | translate}} <i class="material-icons md-18">chevron_right</i>
+              <div class="ripple-container"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="modal fade" id="authorizationModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><i class="material-icons md-18">check_circle</i>
+          {{'authorization.title' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <pl-authorization [authorization]="authorization"
+                          (changeAuthorization)="changeAuthorization($event)"></pl-authorization>
+      </div>
+    </div>
+  </div>
+</div>
+<cancel-confirmation></cancel-confirmation>

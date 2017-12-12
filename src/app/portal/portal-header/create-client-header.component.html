@@ -1,0 +1,59 @@
+<div class="jumbotron">
+  <div class="row portal-header">
+
+    <div class="col-lg-2 col-md-2 source-client text-center">
+      <div class="col-lg-12">
+        <span *ngIf="client?.tipoPersona === null">
+          <span class="img-source-client client-natural client-not-selected"></span>
+        </span>
+        <span *ngIf="client?.tipoPersona === 'N'" class="animated fadeIn">
+          <span class="img-source-client client-natural"></span>
+          <i class="material-icons md-24 status-client">check_circle</i>
+        </span>
+        <span *ngIf="client?.tipoPersona === 'J'" class="animated fadeIn">
+          <i class="material-icons md-24 account-header">account_balance</i>
+          <i class="material-icons md-24 status-client">check_circle</i>
+        </span>
+        <!--<i class="material-icons md-24 account-header">account_balance_wallet</i>-->
+      </div>
+    </div>
+
+    <!--HEADER CLIENT-->
+    <div class="col-lg-offset-2 col-lg-10 col-md-10 data-client">
+      <div class="col-lg-12 col-md-12 client-name">
+        <h1 class="animated fadeInUp" *ngIf="client?.tipoPersona === 'J'">{{client?.datosGeneralesPersonaJuridica.razonSocial}}</h1>
+        <h1 class="animated fadeInUp" *ngIf="client?.tipoPersona === 'N'">{{client?.datosGeneralesPersonaNatural.primerApellido}} {{client?.datosGeneralesPersonaNatural.segundoApellido}} {{client?.datosGeneralesPersonaNatural.primerNombre}} {{client?.datosGeneralesPersonaNatural.segundoNombre}}</h1>
+      </div>
+
+      <div class="col-lg-3 col-md-4">
+        <small>
+          <div>{{'portal.header.person-type' | translate}}:</div>
+        </small>
+        <h3>
+          <div class="animated fadeIn" *ngIf="client?.tipoPersona === 'N'">{{'portal.header.natural' | translate}}</div>
+          <div class="animated fadeIn" *ngIf="client?.tipoPersona === 'J'">{{'portal.header.legal' | translate}}</div>
+        </h3>
+      </div>
+      <div class="col-lg-3 col-md-4">
+        <small>
+          <div>{{'portal.header.document-type' | translate}}:</div>
+        </small>
+        <h3>
+          <div class="animated fadeIn">{{client?.tipoIdentificacion?.descripcion}}</div>
+        </h3>
+      </div>
+      <div class="col-lg-3 col-md-4">
+        <small>
+          <div>{{'portal.header.document' | translate}}:</div>
+        </small>
+        <h3>
+          <div class="animated fadeIn">{{client?.identificacion}}</div>
+        </h3>
+      </div>
+    </div>
+
+    <!--<a class="btn btn-danger navbar-left btn-cancel" data-toggle="modal" (click)="goBack()">-->
+    <!--<i class="material-icons md-18">chevron_left</i> {{'buttons.exit' | translate}}-->
+    <!--</a>-->
+  </div>
+</div>

@@ -1,0 +1,75 @@
+<div [ngBusy]="busy"></div>
+<form name="webform" autocomplete="off" novalidate="" role="form" (submit)="endAccount()">
+  <div class="container-fluid animated fadeIn">
+    <div class="panel panel-custom">
+      <div class="panel-heading">
+        <h2>{{'account-response.generated' | translate}}</h2>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="control-label">{{'account-response.currency' | translate}}</label>
+              <input type="text" class="form-control" value="{{account.accountResponse?.moneda}}" disabled>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="control-label">{{'account-response.product-type' | translate}}</label>
+              <input type="text" class="form-control" value="{{account.accountResponse?.tipoProducto}}" disabled>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="control-label">{{'account-response.account-number' | translate}}</label>
+              <input type="text" class="form-control" value="{{account.accountResponse?.numeroCuenta}}" disabled>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="control-label">{{'account-response.product' | translate}}</label>
+              <input type="text" class="form-control" value="{{account.accountResponse?.producto}}" disabled>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="form-group">
+              <label class="control-label">{{'account-response.account-name' | translate}}</label>
+              <input type="text" class="form-control" value="{{account.accountResponse?.nombre}}" disabled>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-primary-custom">
+          <div class="panel-heading">
+            <h4 class="control-label">{{'account-response.relation-client' | translate}}</h4>
+          </div>
+          <div class="panel-body">
+		        <div class="row">
+		          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		            <div class="table-responsive">
+		              <sa-data-table [data]="account.accountResponse?.personasAsociadas" [heading]="heading" [values]="values"
+		                [pager]="undefined" [actionTemplate]="actionsTemplate" [useTableTemplate]="true" [useServicePager]="false" (rowSelected)="modify($event)"></sa-data-table>
+		            </div>
+		          </div>
+		        </div>
+		      </div>
+		    </div>
+      </div>
+      <div class="panel-footer text-right col-lg-10">
+        <div class="row">
+          <button type="submit" class="btn btn-success animated bounceIn"
+                  data-toggle="tooltip" data-placement="top" translate
+                  translate-attr-data-original-title="tooltip.buscar">
+            {{'buttons.end' | translate}} <i class="material-icons md-18">done</i>
+          </button>
+          <button type="button" (click)="generateReport()" class="btn btn-primary animated bounceIn">
+            {{'buttons.report' | translate}} <i class="material-icons md-18">print</i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

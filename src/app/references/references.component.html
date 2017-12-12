@@ -1,0 +1,335 @@
+<div [ngBusy]="busy"></div>
+<div class="container-fluid">
+  <div class="panel panel-custom">
+      <ngb-accordion #acc="ngbAccordion" closeOthers="true">
+        <ngb-panel *ngIf="canShow('ACCIONISTAS')" id="ACCIONISTAS">
+          <ng-template ngbPanelTitle>
+            <div class="panel panel-group">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-lg-5 accordion-title">
+                    <h4>{{'referencias-accionistas.title' | translate}}</h4>
+                  </div>
+                  <div class="col-lg-6 accordion-count text-right">
+                    <span class="badge">{{client.referencias.referenciasAccionistas === undefined ? 0 : client.referencias.referenciasAccionistas.length}}</span>
+                    <span class="badge"><label>{{'referencias-indicadores.min' | translate}}</label> {{getParametrizedReference('ACCIONISTAS').minimo}} <label
+                      translate=""> | </label> <label>{{'referencias-indicadores.max' | translate}}</label> {{ getParametrizedReference('ACCIONISTAS').maximo }}</span>
+                  </div>
+                  <div class="col-lg-1">
+                    <i class="material-icons md-18 panel-expand expand-more">expand_more</i>
+                    <i class="material-icons md-18 panel-expand expand-less">expand_less</i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <div class="panel panel-default animated fadeIn">
+              <div class="progress">
+                <div class="progress-bar progress-bar-warning progress-bar-striped active"
+                     [style.width]="((client.referencias.referenciasAccionistas === undefined ? 0 : client.referencias.referenciasAccionistas.length > getParametrizedReference('ACCIONISTAS').minimo ? getParametrizedReference('ACCIONISTAS').minimo : client.referencias.referenciasAccionistas.length) * (100/getParametrizedReference('ACCIONISTAS').maximo)) + '%'"></div>
+                <div class="progress-bar progress-bar-success progress-bar-striped active"
+                     [style.width]="((client.referencias.referenciasAccionistas === undefined ? 0 : ((client.referencias.referenciasAccionistas.length > getParametrizedReference('ACCIONISTAS').maximo) ? ((client.referencias.referenciasAccionistas.length - getParametrizedReference('ACCIONISTAS').minimo)-(client.referencias.referenciasAccionistas.length-getParametrizedReference('ACCIONISTAS').maximo)) * (100/getParametrizedReference('ACCIONISTAS').maximo) : (client.referencias.referenciasAccionistas.length - getParametrizedReference('ACCIONISTAS').minimo) * (100/getParametrizedReference('ACCIONISTAS').maximo)))) + '%'"></div>
+              </div>
+              <div class="panel-body">
+                <pl-shareholder-reference [editMode]="editMode" [changeMode]="changeMode"></pl-shareholder-reference>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-panel>
+        <ngb-panel *ngIf="canShow('COMERCIALES')" id="COMERCIALES">
+          <ng-template ngbPanelTitle>
+            <div class="panel panel-group">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-lg-5 accordion-title">
+                    <h4>{{'referencias-comerciales.title' | translate}}</h4>
+                  </div>
+                  <div class="col-lg-6 accordion-count text-right">
+                    <span class="badge">{{client.referencias.referenciasComerciales === undefined ? 0 : client.referencias.referenciasComerciales.length}}</span>
+                    <span class="badge"><label>{{'referencias-indicadores.min' | translate}}</label> {{getParametrizedReference('COMERCIALES').minimo}}<label
+                      translate=""> | </label> <label>{{'referencias-indicadores.max' | translate}}</label> {{getParametrizedReference('COMERCIALES').maximo}} </span>
+                  </div>
+                  <div class="col-lg-1">
+                    <i class="material-icons md-18 panel-expand expand-more">expand_more</i>
+                    <i class="material-icons md-18 panel-expand expand-less">expand_less</i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <div class="progress">
+              <div class="progress-bar progress-bar-warning progress-bar-striped active"
+                   [style.width]="((client.referencias.referenciasComerciales === undefined ? 0 : client.referencias.referenciasComerciales.length > getParametrizedReference('COMERCIALES').minimo ? getParametrizedReference('COMERCIALES').minimo : client.referencias.referenciasComerciales.length) * (100/getParametrizedReference('COMERCIALES').maximo)) + '%'"></div>
+              <div class="progress-bar progress-bar-success progress-bar-striped active"
+                   [style.width]="((client.referencias.referenciasComerciales === undefined ? 0 : ((client.referencias.referenciasComerciales.length > getParametrizedReference('COMERCIALES').maximo) ? ((client.referencias.referenciasComerciales.length - getParametrizedReference('COMERCIALES').minimo)-(client.referencias.referenciasComerciales.length-getParametrizedReference('COMERCIALES').maximo)) * (100/getParametrizedReference('COMERCIALES').maximo) : (client.referencias.referenciasComerciales.length - getParametrizedReference('COMERCIALES').minimo) * (100/getParametrizedReference('COMERCIALES').maximo)))) + '%'"></div>
+            </div>
+            <div class="panel panel-default animated fadeIn">
+              <div class="panel-body">
+              </div>
+            </div>
+            <!-- TODO add commerce ref-->
+          </ng-template>
+        </ngb-panel>
+        <ngb-panel *ngIf="canShow('CREDITO')" id="CREDITO">
+          <ng-template ngbPanelTitle>
+            <div class="panel panel-group">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-lg-5 accordion-title">
+                    <h4>{{'referencias-credito.title' | translate}}</h4>
+                  </div>
+                  <div class="col-lg-6 accordion-count text-right">
+                    <span class="badge">{{client.referencias.referenciasCredito === undefined ? 0 : client.referencias.referenciasCredito.length}}</span>
+                    <span class="badge"><label>{{'referencias-indicadores.min' | translate}}</label> {{getParametrizedReference('CREDITO').minimo}} <label
+                      translate=""> | </label> <label>{{'referencias-indicadores.max' | translate}}</label> {{getParametrizedReference('CREDITO').maximo}} </span>
+                  </div>
+                  <div class="col-lg-1">
+                    <i class="material-icons md-18 panel-expand expand-more">expand_more</i>
+                    <i class="material-icons md-18 panel-expand expand-less">expand_less</i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <div class="panel panel-default animated fadeIn">
+              <div class="progress">
+                <div class="progress-bar progress-bar-warning progress-bar-striped active"
+                     [style.width]="((client.referencias.referenciasCredito === undefined ? 0 : client.referencias.referenciasCredito.length > getParametrizedReference('CREDITO').minimo ? getParametrizedReference('CREDITO').minimo : client.referencias.referenciasCredito.length) * (100/getParametrizedReference('CREDITO').maximo)) + '%'"></div>
+                <div class="progress-bar progress-bar-success progress-bar-striped active"
+                     [style.width]="((client.referencias.referenciasCredito === undefined ? 0 : ((client.referencias.referenciasCredito.length > getParametrizedReference('CREDITO').maximo) ? ((client.referencias.referenciasCredito.length - getParametrizedReference('CREDITO').minimo)-(client.referencias.referenciasCredito.length-getParametrizedReference('CREDITO').maximo)) * (100/getParametrizedReference('CREDITO').maximo) : (client.referencias.referenciasCredito.length - getParametrizedReference('CREDITO').minimo) * (100/getParametrizedReference('CREDITO').maximo)))) + '%'"></div>
+              </div>
+              <div class="panel-body animated fadeIn">
+                <pl-credit-reference [editMode]="editMode" [changeMode]="changeMode"></pl-credit-reference>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-panel>
+        <ngb-panel *ngIf="canShow('CUENTAS')" id="CUENTAS">
+          <ng-template ngbPanelTitle>
+            <div class="panel panel-group">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-lg-5 accordion-title">
+                    <h4>{{'referencias-cuenta.title' | translate}}</h4>
+                  </div>
+                  <div class="col-lg-6 accordion-count text-right">
+                    <span class="badge">{{client.referencias.referenciasCuentas === undefined ? 0 : client.referencias.referenciasCuentas.length}}</span>
+                    <span class="badge"><label>{{'referencias-indicadores.min' | translate}}</label> {{getParametrizedReference('CUENTAS').minimo}}<label
+                      translate=""> | </label> <label>{{'referencias-indicadores.max' | translate}}</label> {{getParametrizedReference('CUENTAS').maximo}} </span>
+                  </div>
+                  <div class="col-lg-1">
+                    <i class="material-icons md-18 panel-expand expand-more">expand_more</i>
+                    <i class="material-icons md-18 panel-expand expand-less">expand_less</i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <div class="panel panel-default animated fadeIn">
+              <div class="progress">
+                <div class="progress-bar progress-bar-warning progress-bar-striped active"
+                     [style.width]="((client.referencias.referenciasCuentas === undefined ? 0 : client.referencias.referenciasCuentas.length > getParametrizedReference('CUENTAS').minimo ? getParametrizedReference('CUENTAS').minimo : client.referencias.referenciasCuentas.length) * (100/getParametrizedReference('CUENTAS').maximo)) + '%'"></div>
+                <div class="progress-bar progress-bar-success progress-bar-striped active"
+                     [style.width]="((client.referencias.referenciasCuentas === undefined ? 0 : ((client.referencias.referenciasCuentas.length > getParametrizedReference('CUENTAS').maximo) ? ((client.referencias.referenciasCuentas.length - getParametrizedReference('CUENTAS').minimo)-(client.referencias.referenciasCuentas.length-getParametrizedReference('CREDITO').maximo)) * (100/getParametrizedReference('CREDITO').maximo) : (client.referencias.referenciasCuentas.length - getParametrizedReference('CUENTAS').minimo) * (100/getParametrizedReference('CUENTAS').maximo)))) + '%'"></div>
+              </div>
+              <div class="panel-body">
+                <pl-account-reference [editMode]="editMode" [changeMode]="changeMode"></pl-account-reference>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-panel>
+
+        <ngb-panel *ngIf="canShow('PERSONALES_FAMILIARES')" id="PERSONALES_FAMILIARES">
+          <ng-template ngbPanelTitle>
+            <div class="panel panel-group">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-lg-5 accordion-title">
+                    <h4>{{'referencias-personales.title' | translate}}</h4>
+                  </div>
+                  <div class="col-lg-6 accordion-count text-right">
+                    <span class="badge">{{client.referencias.referenciasPersonalesFamiliares === undefined ? 0 : client.referencias.referenciasPersonalesFamiliares.length}}</span>
+                    <span class="badge"><label>{{'referencias-indicadores.min' | translate}}</label> {{getParametrizedReference('PERSONALES_FAMILIARES').minimo}}<label
+                      translate=""> | </label> <label>{{'referencias-indicadores.max' | translate}}</label> {{getParametrizedReference('PERSONALES_FAMILIARES').maximo}} </span>
+                  </div>
+                  <div class="col-lg-1">
+                    <i class="material-icons md-18 panel-expand expand-more">expand_more</i>
+                    <i class="material-icons md-18 panel-expand expand-less">expand_less</i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <div class="panel panel-default animated fadeIn">
+              <div class="progress">
+                <div class="progress-bar progress-bar-warning progress-bar-striped active"
+                     [style.width]="((client.referencias.referenciasPersonalesFamiliares === undefined ? 0 : client.referencias.referenciasPersonalesFamiliares.length > getParametrizedReference('PERSONALES_FAMILIARES').minimo ? getParametrizedReference('PERSONALES_FAMILIARES').minimo : client.referencias.referenciasPersonalesFamiliares.length) * (100/getParametrizedReference('PERSONALES_FAMILIARES').maximo)) + '%'"></div>
+                <div class="progress-bar progress-bar-success progress-bar-striped active"
+                     [style.width]="((client.referencias.referenciasPersonalesFamiliares === undefined ? 0 : ((client.referencias.referenciasPersonalesFamiliares.length > getParametrizedReference('PERSONALES_FAMILIARES').maximo) ? ((client.referencias.referenciasPersonalesFamiliares.length - getParametrizedReference('PERSONALES_FAMILIARES').minimo)-(client.referencias.referenciasPersonalesFamiliares.length-getParametrizedReference('PERSONALES_FAMILIARES').maximo)) * (100/getParametrizedReference('PERSONALES_FAMILIARES').maximo) : (client.referencias.referenciasPersonalesFamiliares.length - getParametrizedReference('PERSONALES_FAMILIARES').minimo) * (100/getParametrizedReference('PERSONALES_FAMILIARES').maximo)))) + '%'"></div>
+              </div>
+              <div class="panel-body">
+                <pl-personal-reference [editMode]="editMode" [changeMode]="changeMode"></pl-personal-reference>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-panel>
+
+        <ngb-panel *ngIf="canShow('PROPIEDADES')" id="PROPIEDADES">
+          <ng-template ngbPanelTitle>
+            <div class="panel panel-group">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-lg-5 accordion-title">
+                    <h4>{{'referencias-personales.title' | translate}}</h4>
+                  </div>
+                  <div class="col-lg-6 accordion-count text-right">
+                    <span class="badge">{{client.referencias.referenciasPropiedades === undefined ? 0 : client.referencias.referenciasPropiedades.length}}</span>
+                    <span class="badge"><label>{{'referencias-indicadores.min' | translate}}</label> {{getParametrizedReference('PROPIEDADES').minimo}}<label
+                      translate=""> | </label> <label>{{'referencias-indicadores.max' | translate}}</label> {{getParametrizedReference('PROPIEDADES').maximo}} </span>
+                  </div>
+                  <div class="col-lg-1">
+                    <i class="material-icons md-18 panel-expand expand-more">expand_more</i>
+                    <i class="material-icons md-18 panel-expand expand-less">expand_less</i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <div class="panel panel-default animated fadeIn">
+              <div class="progress">
+                <div class="progress-bar progress-bar-warning progress-bar-striped active"
+                     [style.width]="((client.referencias.referenciasPropiedades === undefined ? 0 : client.referencias.referenciasPropiedades.length > getParametrizedReference('PROPIEDADES').minimo ? getParametrizedReference('PROPIEDADES').minimo : client.referencias.referenciasPropiedades.length) * (100/getParametrizedReference('PROPIEDADES').maximo)) + '%'"></div>
+                <div class="progress-bar progress-bar-success progress-bar-striped active"
+                     [style.width]="((client.referencias.referenciasPropiedades === undefined ? 0 : ((client.referencias.referenciasPropiedades.length > getParametrizedReference('PROPIEDADES').maximo) ? ((client.referencias.referenciasPropiedades.length - getParametrizedReference('PROPIEDADES').minimo)-(client.referencias.referenciasPropiedades.length-getParametrizedReference('PROPIEDADES').maximo)) * (100/getParametrizedReference('PROPIEDADES').maximo) : (client.referencias.referenciasPropiedades.length - getParametrizedReference('PROPIEDADES').minimo) * (100/getParametrizedReference('PROPIEDADES').maximo)))) + '%'"></div>
+              </div>
+              <div class="panel-body">
+              </div>
+            </div>
+            <!-- TODO build the reference -->
+          </ng-template>
+        </ngb-panel>
+
+        <ngb-panel *ngIf="canShow('SEGUROS')" id="SEGUROS">
+          <ng-template ngbPanelTitle>
+            <div class="panel panel-group">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-lg-5 accordion-title">
+                    <h4>{{'referencias-seguro.title' | translate}}</h4>
+                  </div>
+                  <div class="col-lg-6 accordion-count text-right">
+                    <span class="badge">{{client.referencias.referenciasSeguros === undefined ? 0 : client.referencias.referenciasSeguros.length}}</span>
+                    <span class="badge"><label>{{'referencias-indicadores.min' | translate}}</label> {{getParametrizedReference('SEGUROS').minimo}}<label
+                      translate=""> | </label> <label>{{'referencias-indicadores.max' | translate}}</label> {{getParametrizedReference('SEGUROS').maximo}} </span>
+                  </div>
+                  <div class="col-lg-1">
+                    <i class="material-icons md-18 panel-expand expand-more">expand_more</i>
+                    <i class="material-icons md-18 panel-expand expand-less">expand_less</i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <div class="panel panel-default animated fadeIn">
+              <div class="progress">
+                <div class="progress-bar progress-bar-warning progress-bar-striped active"
+                     [style.width]="((client.referencias.referenciasSeguros === undefined ? 0 : client.referencias.referenciasSeguros.length > getParametrizedReference('SEGUROS').minimo ? getParametrizedReference('SEGUROS').minimo : client.referencias.referenciasSeguros.length) * (100/getParametrizedReference('SEGUROS').maximo)) + '%'"></div>
+                <div class="progress-bar progress-bar-success progress-bar-striped active"
+                     [style.width]="((client.referencias.referenciasSeguros === undefined ? 0 : ((client.referencias.referenciasSeguros.length > getParametrizedReference('SEGUROS').maximo) ? ((client.referencias.referenciasSeguros.length - getParametrizedReference('SEGUROS').minimo)-(client.referencias.referenciasSeguros.length-getParametrizedReference('SEGUROS').maximo)) * (100/getParametrizedReference('SEGUROS').maximo) : (client.referencias.referenciasSeguros.length - getParametrizedReference('SEGUROS').minimo) * (100/getParametrizedReference('SEGUROS').maximo)))) + '%'"></div>
+              </div>
+              <div class="panel-body">
+                <pl-insurance-reference [editMode]="editMode" [changeMode]="changeMode"></pl-insurance-reference>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-panel>
+
+        <ngb-panel *ngIf="canShow('VEHICULOS')" id="VEHICULOS">
+          <ng-template ngbPanelTitle>
+            <div class="panel panel-group">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-lg-5 accordion-title">
+                    <h4>{{'referencias-vehiculo.title' | translate}}</h4>
+                  </div>
+                  <div class="col-lg-6 accordion-count text-right">
+                    <span class="badge">{{client.referencias.referenciasVehiculos=== undefined ? 0 : client.referencias.referenciasVehiculos.length}}</span>
+                    <span class="badge"><label>{{'referencias-indicadores.min' | translate}}</label> {{getParametrizedReference('VEHICULOS').minimo}}<label
+                      translate=""> | </label> <label>{{'referencias-indicadores.max' | translate}}</label> {{getParametrizedReference('VEHICULOS').maximo}} </span>
+                  </div>
+                  <div class="col-lg-1">
+                    <i class="material-icons md-18 panel-expand expand-more">expand_more</i>
+                    <i class="material-icons md-18 panel-expand expand-less">expand_less</i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <div class="panel panel-default animated fadeIn">
+              <div class="progress">
+                <div class="progress-bar progress-bar-warning progress-bar-striped active"
+                     [style.width]="((client.referencias.referenciasVehiculos=== undefined ? 0 : client.referencias.referenciasVehiculos.length > getParametrizedReference('VEHICULOS').minimo ? getParametrizedReference('VEHICULOS').minimo : client.referencias.referenciasVehiculos.length) * (100/getParametrizedReference('VEHICULOS').maximo)) + '%'"></div>
+                <div class="progress-bar progress-bar-success progress-bar-striped active"
+                     [style.width]="((client.referencias.referenciasVehiculos=== undefined ? 0 : ((client.referencias.referenciasVehiculos.length > getParametrizedReference('VEHICULOS').maximo) ? ((client.referencias.referenciasVehiculos.length - getParametrizedReference('VEHICULOS').minimo)-(client.referencias.referenciasVehiculos.length-getParametrizedReference('VEHICULOS').maximo)) * (100/getParametrizedReference('VEHICULOS').maximo) : (client.referencias.referenciasVehiculos.length - getParametrizedReference('VEHICULOS').minimo) * (100/getParametrizedReference('VEHICULOS').maximo)))) + '%'"></div>
+              </div>
+              <div class="panel-body">
+                <pl-vehicle-reference [editMode]="editMode" [changeMode]="changeMode"></pl-vehicle-reference>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-panel>
+      </ngb-accordion>
+    <div class="panel-footer text-right col-lg-10">
+      <div class="row">
+        <!--<button type="button" (click)="cancel()" *ngIf="!editMode" class="btn btn-danger btn-radio" data-toggle="tooltip"
+                data-placement="left">
+          <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+        </button>-->
+        <span data-toggle="tooltip" data-placement="left" title=""
+              attr.data-original-title="{{'buttons.cancel' | translate}}" *ngIf="editMode && disabledField">
+          <a class="btn btn-warning btn-raised btn-fab" (click)="change()">
+              <i class="material-icons md-18">create</i> {{'buttons.update' | translate}}
+              <div class="ripple-container"></div>
+          </a>
+        </span>
+        <span data-toggle="tooltip" data-placement="left" title="" *ngIf="editMode && !disabledField"
+              attr.data-original-title="{{'buttons.cancel' | translate}}">
+          <a class="btn btn-danger btn-raised btn-fab" (click)="change()">
+              <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+              <div class="ripple-container"></div>
+          </a>
+        </span>
+        <button type="submit" *ngIf="!disabledField" (click)="validateForm()" class="btn btn-success btn-radio animated bounceIn"
+                data-toggle="tooltip" data-placement="top" translate
+                translate-attr-data-original-title="tooltip.buscar">
+          {{'buttons.continue' | translate}} <i class="material-icons md-18">chevron_right</i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="authorizationModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><i class="material-icons md-18">check_circle</i>
+          {{'authorization.title' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <pl-authorization [authorization]="authorization"
+                          (changeAuthorization)="changeAuthorization($event)"></pl-authorization>
+      </div>
+    </div>
+  </div>
+</div>
+<cancel-confirmation></cancel-confirmation>

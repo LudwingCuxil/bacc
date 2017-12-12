@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:int="http://www.springframework.org/schema/integration" 
+	xmlns:int-jdbc="http://www.springframework.org/schema/integration/jdbc"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" 
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/integration/jdbc http://www.springframework.org/schema/integration/jdbc/spring-integration-jdbc.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- ############## ELIMINA ############## -->
+	
+	<!-- INDICES -->
+	
+	<int:channel id="deleteIndiceRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="deleteIndiceAdapter" data-source="dataSource" channel="deleteIndiceRequestChannel" query="#{sqlDeleteIndice}" />
+	<bean id="sqlDeleteIndice" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+					DELETE FROM #{CLDAT}.CLIDCL
+					WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- DOCUMENTO APERTURA -->
+	
+	<int:channel id="deleteDocumentoAperturaRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="deleteDocumentoAperturaAdapter" data-source="dataSource" channel="deleteDocumentoAperturaRequestChannel" query="#{sqlDeleteDocumentoApertura}" />
+	<bean id="sqlDeleteDocumentoApertura" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+					DELETE FROM #{CLDAT}.CLDOCL
+					WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- DIRECCION -->
+	
+	<int:channel id="deleteDireccionRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="deleteDireccionAdapter" data-source="dataSource" channel="deleteDireccionRequestChannel" query="#{sqlDeleteDireccion}" />
+	<bean id="sqlDeleteDireccion" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+					DELETE FROM #{CLDAT}.CLDICL
+					WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND CLDIRC = :payload.correlativoDireccion
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- REPRESENTANTE LEGAL -->
+	
+	<int:channel id="deleteRepresentanteLegalRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="deleteRepresentanteLegalAdapter" data-source="dataSource" channel="deleteRepresentanteLegalRequestChannel" query="#{sqlDeleteRepresentanteLegal}" />
+	<bean id="sqlDeleteRepresentanteLegal" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+					DELETE FROM #{CLDAT}.CLDRLE
+					WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- GRUPO ECONOMICO -->
+	
+	<int:channel id="deleteGrupoEconomicoRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="deleteGrupoEconomicoAdapter" data-source="dataSource" channel="deleteGrupoEconomicoRequestChannel" query="#{sqlDeleteGrupoEconomico}" />
+	<bean id="sqlDeleteGrupoEconomico" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+					DELETE FROM #{CLDAT}.CLAGCL
+					WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND CLCTGR = :payload.id.tipoGrupo AND CLGRCO = :payload.id.grupo
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- TODOS LOS GRUPOS ECONOMICOS -->
+	
+	<int:channel id="deleteGruposEconomicosRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="deleteGruposEconomicosAdapter" data-source="dataSource" channel="deleteGruposEconomicosRequestChannel" query="#{sqlDeleteGruposEconomicos}" />
+	<bean id="sqlDeleteGruposEconomicos" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+					DELETE FROM #{CLDAT}.CLAGCL
+					WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- ############## REFERENCIAS ############## -->
+	
+	<!-- REFERENCIAS DE DEPENDIENTES -->
+	
+	<int:channel id="deleteReferenciasDependientesRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="deleteReferenciasDependientesAdapter" data-source="dataSource" channel="deleteReferenciasDependientesRequestChannel" query="#{sqlDeleteReferenciasDependientes}" />
+	<bean id="sqlDeleteReferenciasDependientes" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+					DELETE FROM #{CLDAT}.CLREFD
+					WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND RFDCOR = :payload.correlativo
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- REFERENCIAS DE ACCIONISTA -->
+	
+	<int:channel id="deleteReferenciasAccionistaRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="deleteReferenciasAccionistaAdapter" data-source="dataSource" channel="deleteReferenciasAccionistaRequestChannel" query="#{sqlDeleteReferenciasAccionista}" />
+	<bean id="sqlDeleteReferenciasAccionista" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+					DELETE FROM #{CLDAT}.CLACCI
+					WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND ACCCOR = :payload.correlativoReferencia
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- REFERENCIAS DE ACCIONISTA -->
+	
+	<int:channel id="deleteReferenciasCreditoRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="deleteReferenciasCreditoAdapter" data-source="dataSource" channel="deleteReferenciasCreditoRequestChannel" query="#{sqlDeleteReferenciasCredito}" />
+	<bean id="sqlDeleteReferenciasCredito" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+					DELETE FROM #{CLDAT}.CLREFT
+					WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND TARCOR = :payload.correlativoReferencia
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- REFERENCIAS DE CUENTA -->
+	
+	<int:channel id="deleteReferenciasCuentaRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="deleteReferenciasCuentaAdapter" data-source="dataSource" channel="deleteReferenciasCuentaRequestChannel" query="#{sqlDeleteReferenciasCuenta}" />
+	<bean id="sqlDeleteReferenciasCuenta" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+					DELETE FROM #{CLDAT}.CLSOCTAS
+					WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND BANTIP = :payload.codigoTipoInstitucion AND BANCOD = :payload.codigoInstitucion AND BANCTA = :payload.codigoNumeroCuenta
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- REFERENCIAS PERSONALES FAMILIARES -->
+	
+	<int:channel id="deleteReferenciasPersonalesFamiliaresRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="deleteReferenciasPersonalesFamiliaresAdapter" data-source="dataSource" channel="deleteReferenciasPersonalesFamiliaresRequestChannel" query="#{sqlDeleteReferenciasPersonalesFamiliares}" />
+	<bean id="sqlDeleteReferenciasPersonalesFamiliares" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+					DELETE FROM #{CLDAT}.CLREFP
+					WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND PFACOR = :payload.correlativoReferencia		
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- REFERENCIAS PERSONALES VEHICULOS -->
+	
+	<int:channel id="deleteReferenciasVehiculosRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="deleteReferenciasVehiculosAdapter" data-source="dataSource" channel="deleteReferenciasVehiculosRequestChannel" query="#{sqlDeleteReferenciasVehiculos}" />
+	<bean id="sqlDeleteReferenciasVehiculos" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+					DELETE FROM #{CLDAT}.CLSOVEHI
+					WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND VEHPLA = :payload.placa		
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- REFERENCIAS DE SEGUROSS -->
+	
+	<int:channel id="deleteReferenciasSegurosRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="deleteReferenciasSegurosAdapter" data-source="dataSource" channel="deleteReferenciasSegurosRequestChannel" query="#{sqlDeleteReferenciasSeguros}" />
+	<bean id="sqlDeleteReferenciasSeguros" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+					DELETE FROM #{CLDAT}.CLSOSEGU
+					WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND ASECOD = :payload.codigoAseguradora	
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- REFERENCIAS PARENTESCO EMPLEADOS -->
+	
+	<int:channel id="deleteReferenciasParentescoEmpleadosRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="deleteReferenciasParentescoEmpleadosAdapter" data-source="dataSource" channel="deleteReferenciasParentescoEmpleadosRequestChannel" query="#{sqlDeleteReferenciasParentescoEmpleados}" />
+	<bean id="sqlDeleteReferenciasParentescoEmpleados" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+					DELETE FROM #{CLDAT}.CLPAEM
+					WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND PEMCEM = :payload.empleado.id.codigo					
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- REFERENCIAS LABORALES -->
+	
+	<int:channel id="deleteReferenciasLaboralesRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="deleteReferenciasLaboralesAdapter" data-source="dataSource" channel="deleteReferenciasLaboralesRequestChannel" query="#{sqlDeleteReferenciasLaborales}" />
+	<bean id="sqlDeleteReferenciasLaborales" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+					DELETE FROM #{CLDAT}.CLREFL
+					WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND LABCOR = :payload.correlativoReferencia
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- REFERENCIAS PROVEEDORES -->
+	
+	<int:channel id="deleteReferenciasProveedoresRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="deleteReferenciasProveedoresAdapter" data-source="dataSource" channel="deleteReferenciasProveedoresRequestChannel" query="#{sqlDeleteReferenciasProveedores}" />
+	<bean id="sqlDeleteReferenciasProveedores" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+					DELETE FROM #{CLDAT}.CLREPR
+					WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND PROCOR = :payload.correlativoReferencia
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- REFERENCIAS COMERCIANTE -->
+	
+	<int:channel id="deleteReferenciaComercianteRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="deleteReferenciaComercianteAdapter" data-source="dataSource" channel="deleteReferenciaComercianteRequestChannel" query="#{sqlDeleteReferenciaComerciante}" />
+	<bean id="sqlDeleteReferenciaComerciante" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+					DELETE FROM #{CLDAT}.CLDNEG
+					WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND NEGCOR = :payload.correlativoReferencia
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- REFERENCIAS COMERCIANTE DATOS CONTADOR-->
+	
+	<int:channel id="deleteReferenciasComercianteDatosContadorRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="deleteReferenciasComercianteDatosContadorAdapter" data-source="dataSource" channel="deleteReferenciasComercianteDatosContadorRequestChannel" query="#{sqlDeleteReferenciasComercianteDatosContador}" />
+	<bean id="sqlDeleteReferenciasComercianteDatosContador" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+					DELETE FROM #{CLDAT}.CLDCON
+					WHERE CLTDOC = :payload.tipoDocumento AND CLDOC = :payload.documento AND CONCOR = :payload.contador.correlativoContador
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+</beans>

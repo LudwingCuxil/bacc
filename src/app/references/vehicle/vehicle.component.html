@@ -1,0 +1,180 @@
+<div [ngBusy]="busy">
+  <form [formGroup]="formGroup" id="formGroup" name="formGroup" autocomplete="off">
+    <div class="row">
+      <div class="col-lg-7">
+        <div class="row">
+          <div class="col-lg-12">
+            <label class="control-label" [translate]="'referencias-vehiculo.empresa'">t</label>
+            <div class="form-group"
+                 [ngClass]="{ 'has-error': businessFinancing.touched && businessFinancing.invalid}">
+              <input type="text" class="form-control" name="businessFinancing" formControlName="businessFinancing"
+                     [(ngModel)]="vehicle.empresaFinancia" [(uppercase)]="vehicle.empresaFinancia" [maxLength]="30"/>
+              <pl-errors-message [control]="businessFinancing">
+                <div *ngIf="businessFinancing.hasError('minlength')"><span>{{'messages.minlength' | translate}}</span>
+                  30
+                </div>
+                <div *ngIf="businessFinancing.hasError('maxlength')"><span>{{'messages.maxlength' | translate}}</span>
+                  30
+                </div>
+              </pl-errors-message>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <label class="control-label" [translate]="'referencias-vehiculo.saldo'">t</label>
+            <div class="form-group" [ngClass]="{ 'has-error': balance.touched && balance.invalid}">
+              <input type="text" class="form-control" name="balance" formControlName="balance" min="0"
+                     [(ngModel)]="vehicle.saldoFinanciamiento" [maxLength]="11"
+                     onkeydown="numbersOnlyWithDecimal(this, event);" onblur="applyMoneyPattern(this, '');"
+                     onfocus="removeMoneyMask(this);"/>
+              <pl-errors-message [control]="balance">
+                <div *ngIf="balance.hasError('minlength')"><span>{{'messages.minlength' | translate}}</span> 11</div>
+                <div *ngIf="balance.hasError('maxlength')"><span>{{'messages.maxlength' | translate}}</span> 11</div>
+              </pl-errors-message>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="panel panel-primary-custom">
+          <div class="panel-heading">
+            <label class="control-label">{{'referencias-vehiculo.datos-vehiculo.title' | translate}}</label>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-lg-12">
+                <label class="control-label" [translate]="'referencias-vehiculo.datos-vehiculo.placa'">t</label>
+                <div class="form-group required"
+                     [ngClass]="{ 'has-error': licencePlate.touched && licencePlate.invalid}">
+                  <input type="text" class="form-control" name="licencePlate" formControlName="licencePlate"
+                         [(ngModel)]="vehicle.placaVehiculo" [(uppercase)]="vehicle.placaVehiculo" [maxLength]="15"/>
+                  <pl-errors-message [control]="licencePlate">
+                    <div *ngIf="licencePlate.hasError('minlength')"><span>{{'messages.minlength' | translate}}</span> 15
+                    </div>
+                    <div *ngIf="licencePlate.hasError('maxlength')"><span>{{'messages.maxlength' | translate}}</span> 15
+                    </div>
+                  </pl-errors-message>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12">
+                <label class="control-label" [translate]="'referencias-vehiculo.datos-vehiculo.marca'">t</label>
+                <div class="form-group required" [ngClass]="{ 'has-error': brand.touched && brand.invalid}">
+                  <input type="text" class="form-control" name="brand" formControlName="brand"
+                         [(ngModel)]="vehicle.marca" [(uppercase)]="vehicle.marca" [maxLength]="25"/>
+                  <pl-errors-message [control]="brand">
+                    <div *ngIf="brand.hasError('minlength')"><span>{{'messages.minlength' | translate}}</span> 25</div>
+                    <div *ngIf="brand.hasError('maxlength')"><span>{{'messages.maxlength' | translate}}</span> 25</div>
+                  </pl-errors-message>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12">
+                <label class="control-label" [translate]="'referencias-vehiculo.datos-vehiculo.modelo'">t</label>
+                <div class="form-group required" [ngClass]="{ 'has-error': model.touched && model.invalid}">
+                  <input type="text" class="form-control" name="model" formControlName="model"
+                         [(ngModel)]="vehicle.modelo" [maxLength]="4" onkeydown="numbersOnly(event);"/>
+                  <pl-errors-message [control]="model">
+                    <div *ngIf="model.hasError('minlength')"><span>{{'messages.minlength' | translate}}</span> 4</div>
+                    <div *ngIf="model.hasError('maxlength')"><span>{{'messages.maxlength' | translate}}</span> 4</div>
+                  </pl-errors-message>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row panel-buttons">
+      <div class="col-lg-12 text-right">
+        <button type="button" [disabled]="!formGroup.valid"
+                [ngClass]="edit ? 'btn btn-primary btn-radio' : 'btn btn-success btn-radio'"
+                (click)="addReference()" data-toggle="tooltip" data-placement="left"
+                attr.data-original-title="{{'tooltip.agregar-datos' | translate}}">
+          <i class="material-icons md-18">{{edit? 'done' : 'add'}}</i>{{'buttons.accept' | translate}}
+          <div class="ripple-container"></div>
+        </button>
+        <button type="button" [disabled]="!formGroup.valid" class="btn btn-danger btn-radio"
+                (click)="removeReference()"
+                *ngIf="edit" data-toggle="tooltip" data-placement="left"
+                attr.data-original-title="{{'tooltip.eliminar-datos' | translate}}">
+          <i class="material-icons md-18">delete</i> {{'buttons.delete' | translate}}
+          <div class="ripple-container"></div>
+        </button>
+        <button type="button" class="btn btn-danger btn-radio" *ngIf="edit" (click)="clean()"
+                data-toggle="tooltip"
+                data-placement="left"
+                attr.data-original-title="{{'tooltip.cancelar' | translate}}">
+          <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+          <div class="ripple-container"></div>
+        </button>
+      </div>
+    </div>
+    <div class="row panel-buttons">
+      <div class="col-lg-12">
+        <ng-template #actionsTemplate let-item="item">
+          <div class="btn-group-md">
+            <a id="delete-button-value" [ngClass]="item.modalidad == mode.I? 'btn btn-fab btn-fab-mini btn-primary btn-raised' :
+                                                item.modalidad == mode.U? 'btn btn-fab btn-fab-mini btn-warning btn-raised' :
+                                                item.modalidad == mode.D? 'btn btn-fab btn-fab-mini btn-danger btn-raised' :
+                                                'btn btn-fab btn-fab-mini btn-info btn-raised'"
+               [popover]="optionPopover" *ngIf="item.modalidad != null">
+              <i class="material-icons md-18">
+                {{item.modalidad == mode.I? 'add' : item.modalidad == mode.U? 'mode_edit' : item.modalidad ==
+                mode.D?
+                'delete' : 'add'}}
+              </i>
+              {{'table.restore-title' | translate}}
+              <div class="ripple-container"></div>
+            </a>
+          </div>
+          <popover-content #optionPopover
+                           title="{{'table.restore-title' | translate}}"
+                           placement="right"
+                           [animation]="true"
+                           [closeOnClickOutside]="true">
+            <button type="button" class="btn btn-primary btn-raised" [disabled]="item.modalidad == mode.I"
+                    (click)="restoreReference(item)">
+              <i class="material-icons md-18">delete</i> {{'buttons.accept' | translate}}
+              <div class="ripple-container"></div>
+            </button>
+          </popover-content>
+        </ng-template>
+        <sa-data-table [pager]="undefined" [actionTemplate]="editMode ? actionsTemplate : undefined"
+                       [data]="client.referencias.referenciasVehiculos" [useTableTemplate]="true"
+                       [heading]="editMode? headingEdit: heading" [values]="values" [useServicePager]="false"
+                       (rowSelected)="selectRecord($event)">
+        </sa-data-table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="panel-footer text-right col-lg-12">
+        <button type="button" [disabled]="false" class="btn btn-success btn-radio" *ngIf="!editMode" (click)="validateForm()"
+                data-toggle="tooltip" data-placement="left">
+          <i class="material-icons md-18">check</i> {{'buttons.accept' | translate}}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal fade" id="authorizationModalVehicle" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><i class="material-icons md-18">check_circle</i>
+          {{'authorization.title' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <pl-authorization [authorization]="authorization"
+                          (changeAuthorization)="changeAuthorization($event)"></pl-authorization>
+      </div>
+    </div>
+  </div>
+</div>
+
+<simple-notifications [options]="options"></simple-notifications>

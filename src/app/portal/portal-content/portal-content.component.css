@@ -1,0 +1,44 @@
+a .ocultar {
+  display: none;
+  height: 0px;
+}
+
+a .mostrar {
+  display: block;
+  height: inherit;
+}
+
+/*************  STATUS  *************/
+
+.completed,
+.pending {
+  border-radius: 100px;
+  padding: 2px;
+}
+
+.completed {
+  border: 2px solid #00BC65;
+  color: #fff !important;
+  font-size: 16px !important;
+  background-color: #00BC65 !important;
+}
+
+.portal-create-component .nav i + i {
+  display: none;
+}
+
+.portal-create-component .nav i.completed + i {
+  display: block;
+  position: absolute;
+  left: 23px;
+  top: 30px;
+  font-size: 14px;
+  color: #009a53;
+}
+
+.pending {
+  border: 2px solid #FFB300;
+  color: #fff !important;
+  font-size: 16px !important;
+  background-color: #FFB300 !important;
+}

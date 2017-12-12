@@ -1,0 +1,163 @@
+<div [ngBusy]="busy"></div>
+<div class="container-fluid">
+  <form [formGroup]="formGroup" name="joint-account-form" role="form" autocomplete="off" (ngSubmit)="partialSave()">
+    <div class="panel panel-custom animated fadeIn">
+      <div class="panel-heading">
+        <h2 [translate]="'cuenta_mancomunada.title'">{{'cuenta_mancomunada.title' | translate}}</h2>
+      </div>
+      <div class="panel-body">
+        <div class="row form-inline search custom-search">
+          <div class="form-group col-lg-12">
+            <label class="control-label col-lg-2" [translate]="'firmas.cliente'">{{'firmas.cliente' | translate}}</label>
+            <div class="input-group col-lg-10">
+              <div class="form-control disabled">
+                <input formControlName="codeClient"
+                  [ngClass]="{'has-error': codeClient.touched && codeClient.invalid}" type="text"
+                  class="form-control col-lg-5" name="codeClient"
+                  [ngModel]="jointAccount.cliente?.id?.identificacion" [maxLength]="35"/>
+                <pl-errors-message [control]="codeClient"></pl-errors-message>
+                <input formControlName="nameClient"
+                  [ngClass]="{'has-error': nameClient.touched && nameClient.invalid}" type="text"
+                  class="form-control" name="nameClient"
+                  [ngModel]="jointAccount.cliente?.nombre" [maxLength]="70" />
+                <pl-errors-message [control]="nameClient"></pl-errors-message>
+              </div>
+              <span class="input-group-btn">
+                <button type="button" (click)="openClientModal()" class="btn btn-primary btn-radio btn-margin-reset animated bounceIn"
+                  [disabled]="relation.disabled">
+                  <i class="material-icons md-18">search</i> {{'busqueda-barrio.title' | translate}}
+                  <div class="ripple-container"></div>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+		    <div class="row panel-buttons">
+          <div class="col-lg-12 text-right">
+            <button type="button" [disabled]="jointAccount.cliente?.nombre == null && jointAccount.cliente?.id?.identificacion == null"
+                    [ngClass]="modifyJoint ? 'btn btn-primary btn-radio' : 'btn btn-success btn-radio'"
+                    (click)="addJoint(jointAccount)" data-toggle="tooltip" data-placement="left"
+                    attr.data-original-title="{{'tooltip.agregar-datos' | translate}}">
+              <i class="material-icons md-18">{{modifyJoint? 'done' : 'add'}}</i>{{modifyJoint? ('buttons.accept' | translate) :
+              ('buttons.add' | translate)}}
+              <div class="ripple-container"></div>
+            </button>
+            <button type="button" class="btn btn-danger btn-radio"
+                    (click)="removeJoint(jointAccount)"
+                    *ngIf="modifyJoint" data-toggle="tooltip" data-placement="left"
+                    attr.data-original-title="{{'tooltip.eliminar-datos' | translate}}">
+              <i class="material-icons md-18">delete</i> {{'buttons.delete' | translate}}
+              <div class="ripple-container"></div>
+            </button>
+            <button type="button" class="btn btn-danger btn-radio" (click)="clean()"
+                    data-toggle="tooltip" data-placement="left"
+                    attr.data-original-title="{{'tooltip.cancelar' | translate}}"
+                    *ngIf="jointAccount.cliente?.nombre != null && jointAccount.cliente?.id?.identificacion != null">
+              <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+              <div class="ripple-container"></div>
+            </button>
+          </div>
+        </div>
+		    <div class="row">
+		      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="table-responsive">
+              <ng-template #firstTemplate let-item="item">
+                <input formControlName="relation" type="checkbox" id="relation-{{item.cliente.id.identificacion}}" name="relation"
+                  [checked]="item.relacionIncluyente" (click)="changeRelation(item)"/>
+              </ng-template>
+              <ng-template #actionTemplate let-item="item">
+                <div class="btn-group-md">
+                  <a id="delete-button-value" [ngClass]="item.modalidad == mode.I? 'btn btn-fab btn-fab-mini btn-primary btn-raised' :
+                                                    item.modalidad == mode.U? 'btn btn-fab btn-fab-mini btn-warning btn-raised' :
+                                                    item.modalidad == mode.D? 'btn btn-fab btn-fab-mini btn-danger btn-raised' :
+                                                    'btn btn-fab btn-fab-mini btn-info btn-raised'" [popover]="optionPopover" *ngIf="item.modalidad != null">
+                    <i class="material-icons md-18">
+                      {{item.modalidad == mode.I? 'add' : item.modalidad == mode.U? 'mode_edit' : item.modalidad == mode.D? 'delete' : 'add'}}
+                    </i>
+                    {{'table.restore-title' | translate}}
+                    <div class="ripple-container"></div>
+                  </a>
+                </div>
+                <popover-content #optionPopover
+                  title="{{'table.restore-title' | translate}}"
+                  placement="right"
+                  [animation]="true"
+                  [closeOnClickOutside]="true" >
+                  <button type="button" class="btn btn-primary btn-raised" [disabled]="item.modalidad == mode.I" (click)="restoreJoint(item)">
+                    <i class="material-icons md-18">delete</i> {{'buttons.accept' | translate}}
+                    <div class="ripple-container"></div>
+                  </button>
+                </popover-content>
+              </ng-template>
+              <pl-data-table [data]="account.personasAsociadas" [heading]="editMode? headingUpdate : heading" [values]="values"
+                [pager]="undefined" [firstTemplate]="firstTemplate" [actionTemplate]="editMode ? actionTemplate : ''" [useTableTemplate]="true" [useServicePager]="false" (rowSelected)="modify($event)"></pl-data-table>
+            </div>
+          </div>
+		    </div>
+      </div>
+          <div class="panel-footer text-right col-lg-10">
+              <div class="row">
+                  <span data-toggle="tooltip" data-placement="left" title=""
+                      attr.data-original-title="{{'buttons.cancel' | translate}}">
+                      <a class="btn btn-warning btn-raised btn-fab" (click)="changeControl()" *ngIf="!cancelAccount && relation.disabled">
+                          <i class="material-icons md-18">create</i> {{'buttons.update' | translate}}
+                          <div class="ripple-container"></div>
+                      </a>
+                  </span>
+                  <button type="button" class="btn btn-danger btn-radio animated bounceIn" (click)="editMode? restoreData() : cancel()"
+                    *ngIf="relation.enabled">
+                      <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+                      <div class="ripple-container"></div>
+                  </button>
+                  <button type="submit" class="btn btn-success" [disabled]="account.personasAsociadas.length == 0"
+                      data-toggle="tooltip" data-placement="left" *ngIf="relation.enabled"
+                      attr.data-original-title="{{'buttons.continue' | translate}}">
+                      {{'buttons.continue' | translate}} <i class="material-icons md-18">chevron_right</i>
+                      <div class="ripple-container"></div>
+                  </button>
+              </div>
+          </div>
+        </div>
+    </form>
+</div>
+<cancel-confirmation [account]="true"></cancel-confirmation>
+<div class="modal fade" id="authorizationModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><i class="material-icons md-18">check_circle</i>
+          {{'authorization.title' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <pl-authorization [authorization]="authorization"
+                          (changeAuthorization)="changeAuthorization($event)"></pl-authorization>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="findClient" tabindex="-1" role="dialog" aria-labelledby="myModalCreateLabel">
+  <div class="modal-lg modal-dialog" role="document">
+    <div class="modal-content">
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">{{'menu.client' | translate}}</h4>
+        </div>
+
+        <div class="modal-body">
+          <ba-core-client-search class="col-lg-12" #buscador (clientSelection)="clientSelection($event)"></ba-core-client-search>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal" (click)="reset()" [translate]="'buttons.close'">{{'buttons.close' | translate}}
+          </button>
+          <button type="submit" class="btn btn-success animated bounceIn" (click)="createClient()" data-dismiss="modal">
+            <i class="material-icons md-18">add</i> {{'buttons.create' | translate}}
+          </button>
+        </div>
+
+    </div>
+  </div>
+</div>
+<simple-notifications [options]="options"></simple-notifications>

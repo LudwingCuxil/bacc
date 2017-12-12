@@ -1,0 +1,125 @@
+<div [ngBusy]="busy"></div>
+<form [formGroup]="formGroup" id="formGroup" name="formGroup" autocomplete="off" (ngSubmit)="getOpeningValue()">
+  <div class="container-fluid animated fadeIn">
+    <div class="panel panel-custom">
+      <div class="panel-heading">
+        <h2>{{'create-account.product.selection.title' | translate}}</h2>
+      </div>
+      <div class="panel-body">
+        <section class="table row">
+          <article class="table-cell col-lg-4">
+            <div class="form-group required">
+              <pl-currency-select [autocomplete]="false" [controlName]="'currency'" [formGroup]="formGroup" [currency]="account.moneda" (currencyUpdated)="onCurrencyChange($event)"></pl-currency-select>
+              <pl-errors-message [control]="currency"></pl-errors-message>
+            </div>
+          </article>
+          <article class="table-cell col-lg-4">
+            <div class="form-group required-1 radio-select">
+              <pl-type-product-select [radioMode]="true" [disabled]="productType.disabled" [controlName]="'productType'" [formGroup]="formGroup" [productType]="account.tipoProducto" (changeProductType)="onProductTypeChange($event)"></pl-type-product-select>
+              <pl-errors-message [control]="productType"></pl-errors-message>
+            </div>
+          </article>
+          <article class="table-cell col-lg-4">
+            <div class="form-group required" [ngClass]="{'has-error': product.touched && product.invalid}">
+              <pl-product-select [autocomplete]="false" (changeProduct)="onProductChange($event)" [formGroup]="formGroup" [controlName]="'product'" [productSelected]="productSelection" [product]="account.producto"></pl-product-select>
+              <pl-errors-message [control]="product"></pl-errors-message>
+            </div>
+          </article>
+        </section>
+      </div>
+      <div class="panel-footer text-right col-lg-10">
+        <div class="row">
+          <span data-toggle="tooltip" data-placement="left" title="" *ngIf="!disabledField" attr.data-original-title="{{'buttons.cancel' | translate}}">
+            <a class="btn btn-danger btn-raised btn-fab" (click)="cancel()">
+                <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+                <div class="ripple-container"></div>
+            </a>
+          </span>
+          <button type="button" (click)="showEdit()" class="btn btn-warning btn-radio animated bounceIn" *ngIf="navigationService.account.product">
+            <i class="material-icons md-18">create</i> {{'buttons.update' | translate}}
+            <div class="ripple-container"></div>
+          </button>
+          <button type="submit" class="btn btn-success btn-radio animated bounceIn" [disabled]="formGroup.invalid" *ngIf="!disabledField"
+                  data-toggle="tooltip" data-placement="top" attr.data-original-title="{{'buttons.autorization' | translate}}">
+            {{'buttons.continue' | translate}} <i class="material-icons md-18">chevron_right</i>
+            <div class="ripple-container"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="modal fade" id="authorizationModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">{{'authorization.title'|translate}}<i class="material-icons md-18">check_circle</i></h4>
+      </div>
+      <div class="modal-body">
+        <pl-authorization [authorization]="authorization"
+                          (changeAuthorization)="changeAuthorization($event)"></pl-authorization>
+      </div>
+    </div>
+  </div>
+</div>
+
+<cancel-confirmation [account]="true"></cancel-confirmation>
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="editSection()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel" [translate]="'messages.editar-cuenta'"><i class="material-icons md-18">create</i>
+          {{'messages.editar-cuenta' | translate}}</h4>
+      </div>
+      <div class="modal-body text-right">
+        <button type="button" class="btn btn-danger btn-radio animated bounceIn"
+                data-toggle="tooltip" data-placement="top" translate data-dismiss="modal"
+                translate-attr-data-original-title="tooltip.buscar">
+          <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+        </button>
+        <button type="button" class="btn btn-success btn-radio animated bounceIn" data-dismiss="modal" (click)="editSection()"
+                data-toggle="tooltip" data-placement="top" translate
+                translate-attr-data-original-title="tooltip.buscar">
+          <i class="material-icons md-18">check</i> {{'buttons.accept' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="loadPartialModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="deletePartial()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="loadPartialModalLabel" [translate]="'modal.cargar-title'"><i class="material-icons md-18">check_circle</i>
+          {{'modal.cargar-title' | translate}}</h4>
+      </div>
+      <div class="modal-body text-right">
+        <div class="row">
+          <div class="col-lg-6 col-lg-offset-3" ng-if="init">
+            <div class="panel panel-default solicitudes">
+              <div class="panel-body">
+                {{'autorizacion.cancelar-formulario' | translate}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-danger btn-radio animated bounceIn"
+                data-toggle="tooltip" data-placement="top" data-dismiss="modal" (click)="deletePartial()">
+          <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+        </button>
+        <button type="button" class="btn btn-success btn-radio animated bounceIn" (click)="loadPartial()"
+                data-toggle="tooltip" data-placement="top"  data-dismiss="modal">
+          <i class="material-icons md-18">check</i> {{'buttons.accept' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

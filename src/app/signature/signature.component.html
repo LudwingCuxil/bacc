@@ -1,0 +1,223 @@
+<div [ngBusy]="busy"></div>
+<div class="container-fluid">
+  <form [formGroup]="formGroup" name="signature-form" role="form" autocomplete="off" (ngSubmit)="partialSave()">
+    <div class="panel panel-custom animated fadeIn">
+      <div class="panel-heading">
+        <h2 [translate]="'firmas.title'">{{'firmas.title' | translate}}</h2>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-4">
+            <label class="control-label" [translate]="'firmas.firmasregistradas'">{{'firmas.firmasregistradas' |
+              translate}}</label>
+            <div class="form-group" [ngClass]="{'has-error': registered?.touched && registered?.invalid}">
+              <input formControlName="registered" type="number" class="form-control" name="registered"
+                     [(ngModel)]="account.firma.firmasRegistradas" [maxLength]="2" min="1"/>
+              <pl-errors-message [control]="registered"></pl-errors-message>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <label class="control-label" [translate]="'firmas.firmasparagirar'">{{'firmas.firmasparagirar' |
+              translate}}</label>
+            <div class="form-group required" [ngClass]="{'has-error': turn.touched && turn.invalid}">
+              <input formControlName="turn" type="number" class="form-control" name="turn"
+                     [(ngModel)]="account.firma.firmasParaGirar" [maxLength]="2"
+                     min="1" max="{{account.firma.firmasRegistradas}}"/>
+              <pl-errors-message [control]="turn">
+                <div *ngIf="turn?.hasError('max')"><span>{{'firmas.firma-mayor' | translate}}</span></div>
+                <div *ngIf="turn?.hasError('min')"><span>{{'messages.min' | translate}}</span> 0</div>
+              </pl-errors-message>
+            </div>
+          </div>
+          <div class="col-lg-5"></div>
+        </div>
+        <div class="panel panel-primary-custom">
+          <header class="panel-heading text-center">
+            <h3 [translate]="'firmas.firmante'">{{'firmas.firmante' | translate}}</h3>
+          </header>
+          <div class="panel-body">
+            <div class="row form-inline search custom-search">
+              <div class="form-group col-lg-12">
+                <label class="control-label col-lg-2" [translate]="'firmas.cliente'">{{'firmas.cliente' |
+                  translate}}</label>
+                <div class="input-group col-lg-10">
+                  <div class="form-control disabled">
+                    <input formControlName="codeClient"
+                           [ngClass]="{'has-error': codeClient.touched && codeClient.invalid}" type="text"
+                           class="form-control col-lg-5" name="codeClient"
+                           [ngModel]="signatory.cliente?.numeroIdentificacion" [maxLength]="35"/>
+                    <pl-errors-message [control]="codeClient"></pl-errors-message>
+                    <input formControlName="nameClient"
+                           [ngClass]="{'has-error': nameClient.touched && nameClient.invalid}" type="text"
+                           class="form-control" name="nameClient"
+                           [ngModel]="signatory.cliente?.nombre" [maxLength]="70"/>
+                    <pl-errors-message [control]="nameClient"></pl-errors-message>
+                  </div>
+                  <span class="input-group-btn">
+                    <button type="button" (click)="openClientModal()" [disabled]="!signatory.editable" *ngIf="!observations.disabled"
+                            class="btn btn-primary btn-radio btn-margin-reset animated bounceIn">
+                      <i class="material-icons md-18">search</i> {{'busqueda-barrio.title' | translate}}
+                      <div class="ripple-container"></div>
+                    </button>
+                  </span>
+                </div>
+
+
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-8">
+                <label class="control-label" [translate]="'firmas.observaciones'">{{'firmas.observaciones' |
+                  translate}}</label>
+                <div class="form-group" [ngClass]="{'has-error': observations.touched && observations.invalid}">
+                  <input formControlName="observations" type="text" class="form-control" name="observations"
+                         [(ngModel)]="signatory.observacion" [maxLength]="60" [(uppercase)]='signatory.observacion'/>
+                  <pl-errors-message [control]="observations"></pl-errors-message>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row panel-buttons">
+          <div class="col-lg-12 text-right">
+            <button type="button" [disabled]="modifySignature ? isValidChange() : (signatory.cliente?.nombre == null && signatory.cliente?.numeroIdentificacion == null)"
+                    [ngClass]="modifySignature ? 'btn btn-primary btn-radio' : 'btn btn-success btn-radio'"
+                    (click)="addSignature(signatory)" data-toggle="tooltip" data-placement="left"
+                    attr.data-original-title="{{'tooltip.agregar-datos' | translate}}">
+              <i class="material-icons md-18">{{modifySignature? 'done' : 'add'}}</i>{{modifySignature? ('buttons.accept' | translate) :
+              ('buttons.add' | translate)}}
+              <div class="ripple-container"></div>
+            </button>
+            <button type="button" class="btn btn-danger btn-radio"
+                    (click)="removeSignature(signatory)"
+                    *ngIf="deleteSignature" data-toggle="tooltip" data-placement="left"
+                    attr.data-original-title="{{'tooltip.eliminar-datos' | translate}}">
+              <i class="material-icons md-18">delete</i> {{'buttons.delete' | translate}}
+              <div class="ripple-container"></div>
+            </button>
+            <button type="button" class="btn btn-danger btn-radio" (click)="clean()"
+                    data-toggle="tooltip" data-placement="left"
+                    attr.data-original-title="{{'tooltip.cancelar' | translate}}"
+                    *ngIf="signatory.cliente?.nombre != null && signatory.cliente?.numeroIdentificacion != null">
+              <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+              <div class="ripple-container"></div>
+            </button>
+          </div>
+        </div>
+        <div class="panel panel-primary-custom">
+          <header class="panel-heading text-center">
+            <h3 [translate]="'firmas.listafirmasregistradas'">{{'firmas.listafirmasregistradas' | translate}}</h3>
+          </header>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="table-responsive">
+		              <ng-template #actionTemplate let-item="item">
+		                <div class="btn-group-md">
+		                  <a id="delete-button-value" [ngClass]="item.modalidad == mode.I? 'btn btn-fab btn-fab-mini btn-primary btn-raised' :
+		                                                    item.modalidad == mode.U? 'btn btn-fab btn-fab-mini btn-warning btn-raised' :
+		                                                    item.modalidad == mode.D? 'btn btn-fab btn-fab-mini btn-danger btn-raised' :
+		                                                    'btn btn-fab btn-fab-mini btn-info btn-raised'" [popover]="optionPopover" *ngIf="item.modalidad != null">
+		                    <i class="material-icons md-18">
+		                      {{item.modalidad == mode.I? 'add' : item.modalidad == mode.U? 'mode_edit' : item.modalidad == mode.D? 'delete' : 'add'}}
+		                    </i>
+		                    {{'table.restore-title' | translate}}
+		                    <div class="ripple-container"></div>
+		                  </a>
+		                </div>
+		                <popover-content #optionPopover
+		                  title="{{'table.restore-title' | translate}}"
+		                  placement="right"
+		                  [animation]="true"
+		                  [closeOnClickOutside]="true" >
+		                  <button type="button" class="btn btn-primary btn-raised" [disabled]="item.modalidad == mode.I" (click)="restoreSignature(item)">
+		                    <i class="material-icons md-18">delete</i> {{'buttons.accept' | translate}}
+		                    <div class="ripple-container"></div>
+		                  </button>
+		                </popover-content>
+		              </ng-template>
+                  <sa-data-table [data]="account.firma?.firmantes" [heading]="editMode ? headingUpdate : heading" [values]="values"
+                                 [pager]="undefined" [actionTemplate]="editMode ? actionTemplate : ''" [useTableTemplate]="true"
+                                 [useServicePager]="false" (rowSelected)="modify($event)"></sa-data-table>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group required" [ngClass]="{ 'has-error': condition.touched && condition.invalid}">
+                  <textarea formControlName="condition" [(uppercase)]='account.firma.condiciones' class="form-control"
+                            name="condition" id="condition"
+                            [(ngModel)]="account.firma.condiciones" [maxLength]="300" rows="3" cols="100"
+                            placeholder="{{ 'firmas.condicion' | translate}}"></textarea>
+                  <pl-errors-message [control]="condition"></pl-errors-message>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer text-right col-lg-10">
+        <div class="row">
+                  <span data-toggle="tooltip" data-placement="left" title=""
+                        attr.data-original-title="{{'buttons.cancel' | translate}}">
+                      <a class="btn btn-warning btn-raised btn-fab" (click)="changeControl()" *ngIf="!cancelAccount && observations.disabled">
+                          <i class="material-icons md-18">create</i> {{'buttons.update' | translate}}
+                          <div class="ripple-container"></div>
+                      </a>
+                  </span>
+          <button type="button" class="btn btn-danger btn-radio animated bounceIn" (click)="editMode ? restoreData() : cancel()"
+            *ngIf="observations.enabled">
+            <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+            <div class="ripple-container"></div>
+          </button>
+          <button type="submit" class="btn btn-success" [disabled]="!formGroup.valid" *ngIf="observations.enabled"
+                  data-toggle="tooltip" data-placement="left"
+                  attr.data-original-title="{{'buttons.continue' | translate}}">
+            {{'buttons.continue' | translate}} <i class="material-icons md-18">chevron_right</i>
+            <div class="ripple-container"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal fade" id="authorizationModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><i class="material-icons md-18">check_circle</i>
+          {{'authorization.title' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <pl-authorization [authorization]="authorization"
+                          (changeAuthorization)="changeAuthorization($event)"></pl-authorization>
+      </div>
+    </div>
+  </div>
+</div>
+<form>
+<cancel-confirmation [account]="true"></cancel-confirmation>
+<div class="modal fade" id="findClient" tabindex="-1" role="dialog" aria-labelledby="myModalCreateLabel">
+  <div class="modal-lg modal-dialog" role="document">
+    <div class="modal-content">
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">{{'menu.client' | translate}}</h4>
+        </div>
+
+        <div class="modal-body">
+          <ba-core-client-search class="col-lg-12" #buscador (clientSelection)="clientSelection($event)"></ba-core-client-search>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal" (click)="reset()" [translate]="'buttons.close'">{{'buttons.close' | translate}}
+          </button>
+          <button type="submit" class="btn btn-success animated bounceIn" (click)="createClient()" data-dismiss="modal">
+            <i class="material-icons md-18">add</i> {{'buttons.create' | translate}}
+          </button>
+        </div>
+
+    </div>
+  </div>
+</div>
+</form>

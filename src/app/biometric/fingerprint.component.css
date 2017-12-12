@@ -1,0 +1,26 @@
+.logos{
+  background: transparent url('../../assets/img/fingerprint.svg') no-repeat center center;
+    width: 100px;
+    height: 100px;
+    display: block;
+    margin: 0px auto;
+}
+.finger{
+  background: transparent url('../../assets/img/finger.svg') no-repeat center center;
+    width: 100px;
+    height: 100px;
+    display: block;
+    margin: 0px auto;
+    float: left;
+}
+.redial{
+  background: transparent url('../../assets/img/finger-redial.svg') no-repeat center center;
+    width: 100px;
+    height: 100px;
+    display: block;
+    margin: 0px auto;
+    float: left;
+}
+.count{
+    font-size: 100px !important;
+}

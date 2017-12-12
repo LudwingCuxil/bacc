@@ -1,0 +1,342 @@
+<div [ngBusy]="busy"></div>
+<ngb-tabset type="pills" class="portal-content" (tabChange)="tabChange()">
+  <ngb-tab id="account" *ngIf="clientInformation">
+    <ng-template ngbTabTitle>
+      <i class="material-icons md-18">account_balance_wallet</i>{{'portal.side-bar.account' | translate}}
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-account [inactive]="clientInformation.estado === 'I' || !VALID_ECONOMIC_PROFILE || !VALID_LEGAL_REPRESENTATIVE"></pl-account>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab id="type-person" *ngIf="false">
+    <ng-template ngbTabTitle>
+      <i class="material-icons md-18">person</i>{{'portal.side-bar.type-person' | translate}}
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-person-type></pl-person-type>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+
+  <ngb-tab id="general-data-client" *ngIf="clientInformation">
+    <ng-template ngbTabTitle>
+      <span *ngIf="clientInformation?.tipoPersona === 'N'">
+        <i class="material-icons md-18">content_paste</i>{{'portal.side-bar.natural-general-data' | translate}}
+      </span>
+      <span *ngIf="clientInformation?.tipoPersona === 'J'">
+        <i class="material-icons md-18">content_paste</i>{{'portal.side-bar.legal-general-data' | translate}}
+      </span>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-natural-general-data [editMode]="true" *ngIf="clientInformation?.tipoPersona === 'N'"></pl-natural-general-data>
+        <pl-legal-general-data [editMode]="true" *ngIf="clientInformation?.tipoPersona === 'J'"></pl-legal-general-data>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab id="fixed-term" *ngIf="accountInformation && navigationService.account.fixed">
+    <ng-template ngbTabTitle>
+      <span>
+        <i class="material-icons md-18">assignment</i>{{'portal.side-bar.fixed-term' | translate}}
+      </span>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-fixed-term [editMode]="true" ></pl-fixed-term>
+      </div>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab id="general-data" *ngIf="accountInformation" [disabled]="navigationService.account.jointRequired || navigationService.account.finalRequired">
+    <ng-template ngbTabTitle>
+      <span>
+        <i class="material-icons md-18" [ngStyle]="{'color': !VALID_DATO_GENERAL ? '#F44336' : ''}">content_paste</i>{{'portal.side-bar.general-data' | translate}}
+      </span>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-data-customer [editMode]="true" [cancelAccount]="accountInformation.estado === 'C'" (validSectAccount)="validSectionAccount()"></pl-data-customer>
+<!--         <pl-signature [editMode]="true" [cancelAccount]="accountInformation.estado === 'C'" *ngIf="signatureEdit"></pl-signature> -->
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab [id]="section.jointAccount" *ngIf="accountInformation && navigationService.account.joint" [disabled]="navigationService.account.finalRequired">
+    <ng-template ngbTabTitle>
+      <span>
+        <i class="material-icons md-18">content_paste</i>{{'portal.side-bar.joint-account' | translate}}
+      </span>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-joint-account [editMode]="true" [cancelAccount]="accountInformation.estado === 'C'"></pl-joint-account>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab id="administration-interests" [disabled]="navigationService.account.jointRequired || navigationService.account.finalRequired"
+    *ngIf="accountInformation && navigationService.account.interest">
+    <ng-template ngbTabTitle>
+      <i class="material-icons md-18">trending_up</i>{{'portal.side-bar.administration-interests' | translate}}
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-administration-interests [editMode]="true" [cancelAccount]="accountInformation.estado === 'C'"></pl-administration-interests>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab id="transfer-account" [disabled]="navigationService.account.jointRequired || navigationService.account.finalRequired"
+    *ngIf="accountInformation && navigationService.account.transferAccount || navigationService.account.specialProduct">
+    <ng-template ngbTabTitle>
+      <i class="material-icons md-18" [ngStyle]="{'color': navigationService.account.transferRequired ? '#F44336' : ''}">swap_horiz</i>{{'portal.side-bar.transfer-account' | translate}}
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-transfer-account [editMode]="true" [cancelAccount]="accountInformation.estado === 'C'" [currency]="accountInformation.moneda"></pl-transfer-account>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab id="administration-checkbook" [disabled]="navigationService.account.jointRequired || navigationService.account.finalRequired" *ngIf="accountInformation && navigationService.account.checkbook">
+    <ng-template ngbTabTitle>
+      <i class="material-icons md-18">book</i>{{'portal.side-bar.administration-checkbook' | translate}}
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-administration-checkbooks [editMode]="true" [cancelAccount]="accountInformation.estado === 'C'"></pl-administration-checkbooks>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab id="beneficiaries" *ngIf="accountInformation && navigationService.account.beneficiaries" [disabled]="navigationService.account.jointRequired || navigationService.account.finalRequired">
+    <ng-template ngbTabTitle>
+      <i class="material-icons md-18">attach_money</i>{{'portal.side-bar.beneficiaries' | translate}}
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-beneficiary [editMode]="true" [cancelAccount]="accountInformation.estado === 'C'"></pl-beneficiary>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab [id]="section.signature" *ngIf="accountInformation" [disabled]="navigationService.account.jointRequired || navigationService.account.finalRequired">
+    <ng-template ngbTabTitle>
+      <i class="material-icons md-18">gesture</i>{{'portal.side-bar.signature' | translate}}
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-signature [editMode]="true" [cancelAccount]="accountInformation.estado === 'C'"></pl-signature>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab id="electronic-service" *ngIf="accountInformation" [disabled]="navigationService.account.jointRequired || navigationService.account.finalRequired">
+    <ng-template ngbTabTitle>
+      <i class="material-icons md-18">touch_app</i>{{'portal.side-bar.electronic-services' | translate}}
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-electronic-service [editMode]="true" [cancelAccount]="accountInformation.estado === 'C'" (validSectAccount)="validSectionAccount()"></pl-electronic-service>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab [id]="section.beneficiariesFinal" *ngIf="accountInformation && navigationService.account.beneficiariesFinal" [disabled]="navigationService.account.jointRequired">
+    <ng-template ngbTabTitle>
+      <i class="material-icons md-18" [ngStyle]="{'color': !VALID_BEN_FIN ? '#F44336' : ''}">attach_money</i>{{'portal.side-bar.beneficiaries-final' | translate}}
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-beneficiary-final [editMode]="true" [cancelAccount]="accountInformation.estado === 'C'" (validSectAccount)="validSectionAccount()"></pl-beneficiary-final>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab id="economic-profile" *ngIf="clientInformation">
+    <ng-template ngbTabTitle>
+      <i class="material-icons md-18" [ngStyle]="{'color': !VALID_ECONOMIC_PROFILE ? '#F44336' : ''}">attach_money</i>{{'portal.side-bar.economic-profile' | translate}}
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-economic-profile [editMode]="true" (notifyHeader)="updateEconomicProfile()" (validProfile)="isValidEconomicProfile()"></pl-economic-profile>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab id="merchant-references" *ngIf="client?.perfilEconomico?.relacionEconomica === ECONOMIC_RELATIONSHIP_MERCHANT || client?.perfilEconomico?.relacionEconomica === ECONOMIC_RELATIONSHIP_BOTH">
+    <ng-template ngbTabTitle>
+      <i class="material-icons md-18" [ngStyle]="{'color': testMerchantReference()}" >store</i>{{'portal.side-bar.merchant-references' | translate}}
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-business-data-legal [editMode]="true" (notifyHeader)="updateEconomicProfile()" ></pl-business-data-legal>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab id="provider-references" *ngIf="client?.perfilEconomico?.relacionEconomica === ECONOMIC_RELATIONSHIP_BOTH || client?.perfilEconomico?.relacionEconomica === ECONOMIC_RELATIONSHIP_MERCHANT ||
+    clientInformation?.tipoPersona === 'J'">
+    <ng-template ngbTabTitle>
+      <i class="material-icons md-18">assignment_ind</i>{{'portal.side-bar.providers-references' | translate}}
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-supplier-reference *ngIf="clientInformation" [editMode]="true"></pl-supplier-reference>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab id="legal-representative" *ngIf="clientInformation">
+    <ng-template ngbTabTitle>
+      <i class="material-icons md-18" [ngStyle]="{'color': testLegalRepresentative() || !VALID_LEGAL_REPRESENTATIVE ? '#F44336' : ''}">group</i>{{'portal.side-bar.legal-representative' | translate}}
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-legal-representative [editMode]="true" (validProfile)="isValidEconomicProfile()"></pl-legal-representative>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab id="laboral-references" *ngIf="client?.perfilEconomico?.relacionEconomica === ECONOMIC_RELATIONSHIP_SALARIED || client?.perfilEconomico?.relacionEconomica === ECONOMIC_RELATIONSHIP_BOTH">
+    <ng-template ngbTabTitle>
+      <i class="material-icons md-18" [ngStyle]="{'color': testSalariedReference()}">book</i>{{'portal.side-bar.laboral-references' | translate}}
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-laboral-reference *ngIf="clientInformation" [editMode]="true" (notifyHeader)="updateEconomicProfile()"></pl-laboral-reference>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab id="independent-references" *ngIf="clientInformation?.tipoPersona === 'N'">
+    <ng-template ngbTabTitle>
+      <i class="material-icons md-18">book</i>{{'portal.side-bar.dependent-references' | translate}}
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-dependent *ngIf="clientInformation" [editMode]="true"></pl-dependent>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab id="presented-documents" *ngIf="clientInformation">
+    <ng-template ngbTabTitle>
+      <i class="material-icons md-18">book</i>{{'portal.side-bar.documents-presented' | translate}}
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-presented-documents [editMode]="true"></pl-presented-documents>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab id="general-info" *ngIf="clientInformation">
+    <ng-template ngbTabTitle>
+      <i class="material-icons md-18" [ngStyle]="{'color': testAddressReferences()}">domain</i>{{'portal.side-bar.neighborhood' | translate}}
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-general-information [editMode]="true" (notifyHeader)="updateEconomicProfile()"></pl-general-information>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab id="references" *ngIf="clientInformation">
+    <ng-template ngbTabTitle>
+      <i class="material-icons md-18">link</i>{{'portal.side-bar.references' | translate}}
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-references [editMode]="true"></pl-references>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab id="update-name" [disabled]="navigationService.account.jointRequired || navigationService.account.finalRequired">
+    <ng-template ngbTabTitle>
+      <i class="material-icons md-18">create</i>{{'portal.side-bar.update-name' | translate}}
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-lg-10 content-data" *ngIf="clientInformation">
+        <pl-update-name></pl-update-name>
+      </div>
+      <div class="col-lg-offset-2 col-lg-10 content-data" *ngIf="accountInformation">
+        <pl-update-account-name [cancelAccount]="accountInformation.estado === 'C'"></pl-update-account-name>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+
+    <ngb-tab id="face" *ngIf="showPhoto">
+    <ng-template ngbTabTitle>
+       <div  (click)="face()" >
+      <i class="material-icons md-18">camera_enhance</i>{{'photoprint.photo-change' | translate}}
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+
+      </div>
+    </ng-template>
+  </ngb-tab>
+    <ngb-tab id="finger" *ngIf="showFinger">
+    <ng-template ngbTabTitle>
+     <div  (click)="finger()" >
+      <i class="material-icons md-18">fingerprint</i>{{'fingerprint.finger-change' | translate}}
+     </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab id="reprint-form" *ngIf="accountInformation" [disabled]="navigationService.account.jointRequired || navigationService.account.finalRequired || !VALID_DATO_GENERAL || !VALID_BEN_FIN">
+    <ng-template ngbTabTitle >
+     <div  (click)="reprint()" >
+      <i class="material-icons md-18">receipt</i>{{'portal.side-bar.reprint-form' | translate}}
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-lg-10 content-data" >
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab id="update-id">
+    <ng-template ngbTabTitle>
+      <i class="material-icons md-18">create</i>{{'portal.side-bar.update-id' | translate}}
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-lg-10 content-data">
+        <pl-update-id></pl-update-id>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+</ngb-tabset>
+<simple-notifications [options]="options"></simple-notifications>
+<div class="modal fade" id="authorizationModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel" [translate]="'authorization.title'"><i
+                        class="material-icons md-18">check_circle</i>
+                    {{'authorization.title'| translate}}</h4>
+            </div>
+            <div class="modal-body">
+                <pl-authorization [authorization]="authorization"
+                    (changeAuthorization)="changeAuthorization($event)"></pl-authorization>
+            </div>
+        </div>
+    </div>
+</div>

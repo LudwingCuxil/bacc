@@ -1,0 +1,150 @@
+<div [ngBusy]="busy"></div>
+<form name="supplier-reference-form" autocomplete="off" role="form" (ngSubmit)="partialSave()" [formGroup]="formGroup" >
+    <div class="container-fluid animated fadeIn" >
+        <div class="panel panel-custom">
+            <div class="panel-heading">
+                <h2 [translate]="'supplier-reference.title'">{{'supplier-reference.title' | translate}}</h2>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label class="control-label" [translate]="'supplier-reference.name'">t</label>
+                        <div class="form-group required" [ngClass]="{'has-error': name?.invalid && name?.touched}" >
+                             <input type="text" [(uppercase)]='providerReference.nombre' class="form-control"  formControlName="name"
+                               name="nombre" [(ngModel)]="providerReference.nombre" [maxLength]="40"/>
+                            <pl-errors-message [control]="name"></pl-errors-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label class="control-label" [translate]="'supplier-reference.address'">t</label>
+                        <div class="form-group required" [ngClass]="{'has-error': address?.invalid && address?.touched}" >
+                             <input type="text" class="form-control" formControlName="address" name="direccion" [(ngModel)]="providerReference.direccion"
+                               [maxLength]="40" [(uppercase)]='providerReference.direccion'/>
+                            <pl-errors-message [control]="address"></pl-errors-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label class="control-label" [translate]="'supplier-reference.giro'">t</label>
+                        <div class="form-group required" [ngClass]="{'has-error': businessTurn?.invalid && businessTurn?.touched}">
+                             <input type="text" class="form-control" formControlName="businessTurn" name="giro" [(ngModel)]="providerReference.giroNegocio"
+                               [maxLength]="60" [(uppercase)]='providerReference.giroNegocio'/>
+                            <pl-errors-message [control]="businessTurn"></pl-errors-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label class="control-label" [translate]="'supplier-reference.phone'">t</label>
+                        <div class="form-group required" [ngClass]="{'has-error': phone?.invalid && phone?.touched}" >
+                             <input type="text" class="form-control" formControlName="phone" name="telefono" [(ngModel)]="providerReference.telefono1"
+                               [maxLength]="15" numberOnly/>
+                            <pl-errors-message [control]="phone" [integer]="true"></pl-errors-message>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="control-label" [translate]="'supplier-reference.phone-2'">t</label>
+                        <div class="form-group margin-reset" [ngClass]="{'has-error': phone2?.invalid && phone2?.touched}">
+                             <input type="text" class="form-control" formControlName="phone2" name="telefono2" [(ngModel)]="providerReference.telefono2"
+                               [maxLength]="15" numberOnly/>
+                            <pl-errors-message [control]="phone2" [integer]="true"></pl-errors-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="row panel-buttons">
+                    <div class="col-lg-12 text-right">
+                        <button type="button" [disabled]="edit && formGroup.valid? isValidChange() : !formGroup.valid" [ngClass]="edit ? 'btn btn-primary btn-radio' : 'btn btn-success btn-radio'"
+                                (click)="addReferencia(providerReference)" data-toggle="tooltip" data-placement="left" attr.data-original-title="{{'tooltip.agregar-datos' | translate}}">
+                                <i class="material-icons md-18">{{edit? 'done' : 'add'}}</i>{{edit? ('buttons.accept' | translate) : ('buttons.add' | translate)}}
+                            <div class="ripple-container"></div>
+                        </button>
+                        <button type="button" [disabled]="!formGroup.valid"  class="btn btn-danger btn-radio" (click)="removeReferencia(providerReference)"
+                                *ngIf="modifying" data-toggle="tooltip" data-placement="left" attr.data-original-title="{{'tooltip.eliminar-datos' | translate}}">
+                            <i class="material-icons md-18">delete</i> {{'buttons.delete' | translate}}
+                            <div class="ripple-container"></div>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-radio" *ngIf="modifying" (click)="clean()" data-toggle="tooltip" data-placement="left"
+                                attr.data-original-title="{{'tooltip.cancelar' | translate}}">
+                            <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+                            <div class="ripple-container"></div>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="table-responsive">
+                          <ng-template #actionsTemplate let-item="item">
+				                    <div class="btn-group-md">
+				                      <a id="delete-button-value" [ngClass]="item.modalidad == mode.I? 'btn btn-fab btn-fab-mini btn-primary btn-raised' :
+				                                                        item.modalidad == mode.U? 'btn btn-fab btn-fab-mini btn-warning btn-raised' :
+				                                                        item.modalidad == mode.D? 'btn btn-fab btn-fab-mini btn-danger btn-raised' :
+				                                                        'btn btn-fab btn-fab-mini btn-info btn-raised'" [popover]="optionPopover" *ngIf="item.modalidad != null">
+				                        <i class="material-icons md-18">
+				                          {{item.modalidad == mode.I? 'add' : item.modalidad == mode.U? 'mode_edit' : item.modalidad == mode.D? 'delete' : 'add'}}
+				                        </i>
+				                        {{'table.restore-title' | translate}}
+				                        <div class="ripple-container"></div>
+				                      </a>
+				                    </div>
+				                    <popover-content #optionPopover
+				                      title="{{'table.restore-title' | translate}}"
+				                      placement="right"
+				                      [animation]="true"
+				                      [closeOnClickOutside]="true" >
+				                      <button type="button" class="btn btn-primary btn-raised" [disabled]="item.modalidad == mode.I" (click)="restoreProvider(item)">
+				                        <i class="material-icons md-18">delete</i> {{'buttons.accept' | translate}}
+				                        <div class="ripple-container"></div>
+				                      </button>
+				                    </popover-content>
+				                  </ng-template>
+                          <sa-data-table [data]="client.referencias?.referenciasProveedores" [heading]="editMode? headingUpdate: heading" [values]="values"
+                            [pager]="undefined" [actionTemplate]="editMode ? actionsTemplate : undefined" [useTableTemplate]="true" [useServicePager]="false" (rowSelected)="modify($event)"></sa-data-table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer text-right col-lg-10" >
+                <div class="row">
+                    <button type="button" class="btn btn-warning btn-raised btn-fab" *ngIf="name.disabled" (click)="changeControl()">
+                        <i class="material-icons md-18">create</i> {{'buttons.update'| translate}}
+                    </button>
+                    <button type=button (click)="editMode? cancelProviders() : cancel()"
+                      *ngIf="name.enabled"
+                            class="btn btn-danger btn-radio animated bounceIn"
+                            data-toggle="tooltip" data-placement="top" translate
+                            translate-attr-data-original-title="buttons.cancel">
+                            <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+                        <div class="ripple-container"></div>
+                    </button>
+                    <button type="submit" *ngIf="name.enabled"  [disabled]="client.referencias?.referenciasProveedores?.length > 0 ? isValidCancel() : editMode ? true : false"  class="btn btn-success btn-radio animated bounceIn"
+                        data-toggle="tooltip" data-placement="top" translate
+                        translate-attr-data-original-title="buttons.continue">
+                        {{'buttons.continue' | translate}} <i class="material-icons md-18">chevron_right</i>
+                        <div class="ripple-container"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="modal fade" id="authorizationModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><i class="material-icons md-18">check_circle</i>
+          {{'authorization.title' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <pl-authorization [authorization]="authorization"
+                          (changeAuthorization)="changeAuthorization($event)"></pl-authorization>
+      </div>
+    </div>
+  </div>
+</div>
+<cancel-confirmation></cancel-confirmation>
+<simple-notifications [options]="options"></simple-notifications>

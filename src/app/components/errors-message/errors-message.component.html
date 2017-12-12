@@ -1,0 +1,9 @@
+<div *ngIf="control?.invalid && (withoutTouch || control.touched) " class="help-block animated fadeInUp" role="alert">
+  <div *ngIf="control?.hasError('required')"><span>{{'messages.required' | translate}}</span></div>
+  <div *ngIf="control?.hasError('maxlength')"><span>{{'messages.maxlength' | translate}} {{maxLength}}</span></div>
+  <div *ngIf="control?.hasError('minlength')"><span>{{'messages.minlength' | translate}} {{minLength}}</span></div>
+  <div *ngIf="control?.hasError('date')"><span>{{'messages.invalid-date' | translate}}</span></div>
+  <div *ngIf="control?.hasError('pattern') && !integer && !customPatter"><span>{{'messages.pattern' | translate}}</span></div>
+  <div *ngIf="control?.hasError('pattern') && integer && !customPatter"><span>{{'messages.pattern-number' | translate}}</span></div>
+  <ng-content></ng-content>
+</div>

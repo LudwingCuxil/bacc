@@ -1,0 +1,254 @@
+<div [ngBusy]="busy"></div>
+<form [formGroup]="formGroup" id="formGroup" autocomplete="off" (ngSubmit)="validateForm()">
+  <section class="container-fluid animated fadeIn">
+    <div class="panel panel-custom">
+      <div class="panel-heading">
+        <h2>{{'create-account.beneficiaries.title' | translate}}</h2>
+      </div>
+      <div class="panel-body">
+        <section class="table row">
+          <article class="table-cell col-lg-3">
+            <div class="form-group margin-reset" [ngClass]="{ 'has-error': documentIdentification.touched && documentIdentification.invalid}">
+              <label class="control-label">{{'create-account.beneficiaries.subtitles.document' | translate}}</label>
+              <div class="form-group required">
+                <pl-type-document-select id="typedoc" #docType [controlName]="'documentIdentification'" [formGroup]="formGroup" [documentIdentification]="beneficiary.tipoDocumento"
+                                         (changeTypeDocument)="onDocumentChange($event)" [autocomplete]="false" [modeView]="modeView"></pl-type-document-select>
+                <pl-errors-message [control]="documentIdentification"></pl-errors-message>
+              </div>
+            </div>
+          </article>
+          <article class="table-cell col-lg-3">
+            <div class="form-group margin-reset" [ngClass]="{ 'has-error': identification.touched && identification.invalid}">
+              <label class="control-label">{{'create-account.beneficiaries.subtitles.noDocument' | translate}}</label>
+              <div class="required">
+                <input style="text-transform: uppercase;" [textMask]="{mask: docType.mascara, guide: true, modelClean: true, placeholderChar: docType.maskCharacter}" id="identification" (blur)="onBlurIdentification($event)"
+                       class="form-control" name="identification" formControlName="identification" (ngModelChange)="valueChange($event, guide)" [(ngModel)]="beneficiary.numeroDocumento"
+                       placeholder="{{docType.placeHolder}}" model-view-value="true" aria-describedby="identificacion-validator-help"/>
+                <pl-errors-message [control]="identification" [customPatter]="true">
+                  <div *ngIf="identification?.hasError('pattern')">
+                    <span>{{'messages.error-mask' | translate }}</span>
+                  </div>
+                </pl-errors-message>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <section class="row">
+              <article class="col-lg-5c">
+                <div class="form-group margin-reset" [ngClass]="{ 'has-error': firstSurname.invalid && firstSurname.touched }">
+                  <label class="control-label">{{'create-account.beneficiaries.subtitles.firstSurname' | translate}}</label>
+                  <div class="required">
+                    <input type="text" class="form-control" [(uppercase)]="beneficiary.primerApellido" name="firstSurname" formControlName="firstSurname" [(ngModel)]="beneficiary.primerApellido"
+                           (ngModelChange)="nameChange()" [maxLength]="15" required/>
+                    <pl-errors-message [control]="firstSurname">
+                      <div *ngIf="firstSurname.hasError('maxLength')"><span translate="messages.maxlength"></span> 20</div>
+                      <div *ngIf="firstSurname.hasError('minLength')"><span translate="messages.minlength"></span> 20</div>
+                    </pl-errors-message>
+                  </div>
+                </div>
+              </article>
+              <article class="col-lg-5c">
+                <div class="form-group margin-reset">
+                  <div [ngClass]="{ 'has-error': secondSurname.invalid}">
+                    <label class="control-label">{{'create-account.beneficiaries.subtitles.secondSurname' | translate}}</label>
+                    <input type="text" class="form-control" [(uppercase)]="beneficiary.segundoApellido" name="secondSurname" formControlName="secondSurname" [(ngModel)]="beneficiary.segundoApellido"
+                           (ngModelChange)="nameChange()" [maxLength]="15"/>
+                    <pl-errors-message [control]="secondSurname">
+                      <div *ngIf="secondSurname.hasError('maxLength')"><span translate="messages.maxlength"></span> 20</div>
+                      <div *ngIf="secondSurname.hasError('minLength')"><span translate="messages.minlength"></span> 20</div>
+                    </pl-errors-message>
+                  </div>
+                </div>
+              </article>
+              <article class="col-lg-5c">
+                <div class="form-group margin-reset">
+                  <div [ngClass]="{ 'has-error': marriedSurname.invalid}">
+                    <label class="control-label">{{'create-account.beneficiaries.subtitles.marriedSurname' | translate}}</label>
+                    <input type="text" class="form-control" [(uppercase)]="beneficiary.apellidoCasada" name="marriedSurname" formControlName="marriedSurname" [(ngModel)]="beneficiary.apellidoCasada"
+                           (ngModelChange)="nameChange()" [maxLength]="15"/>
+                    <pl-errors-message [control]="marriedSurname">
+                      <div *ngIf="marriedSurname.hasError('maxLength')"><span translate="messages.maxlength"></span> 20</div>
+                      <div *ngIf="marriedSurname.hasError('minLength')"><span translate="messages.minlength"></span> 20</div>
+                    </pl-errors-message>
+                  </div>
+                </div>
+              </article>
+              <article class="col-lg-5c">
+                <div class="form-group margin-reset required" [ngClass]="{ 'has-error': firstName.invalid && firstName.touched }">
+                  <label class="control-label">{{'create-account.beneficiaries.subtitles.firstName' | translate}}</label>
+                  <div class="required">
+                    <input type="text" class="form-control" [(uppercase)]="beneficiary.primerNombre" name="firstName" formControlName="firstName" [(ngModel)]="beneficiary.primerNombre"
+                           (ngModelChange)="nameChange()" [maxLength]="15" required/>
+                    <pl-errors-message [control]="firstName">
+                      <div *ngIf="firstName.hasError('maxLength')"><span translate="messages.maxlength"></span> 20</div>
+                      <div *ngIf="firstName.hasError('minLength')"><span translate="messages.minlength"></span> 20</div>
+                    </pl-errors-message>
+                  </div>
+                </div>
+              </article>
+              <article class="col-lg-5c">
+                <div class="form-group margin-reset">
+                  <div [ngClass]="{ 'has-error': secondName.invalid}">
+                    <label class="control-label">{{'create-account.beneficiaries.subtitles.secondName' | translate}}</label>
+                    <input type="text" class="form-control" [(uppercase)]="beneficiary.segundoNombre" name="secondName" formControlName="secondName" [(ngModel)]="beneficiary.segundoNombre"
+                           (ngModelChange)="nameChange()" [maxLength]="15"/>
+                    <pl-errors-message [control]="secondName">
+                      <div *ngIf="secondName.hasError('maxLength')"><span translate="messages.maxlength"></span> 20</div>
+                      <div *ngIf="secondName.hasError('minLength')"><span translate="messages.minlength"></span> 20</div>
+                    </pl-errors-message>
+                  </div>
+                </div>
+              </article>
+            </section>
+          </div>
+        </div>
+
+        <section class="table row">
+          <article class="table-cell col-lg-8">
+            <div class="form-group margin-reset">
+              <div [ngClass]="{ 'has-error': address.touched && address.invalid}">
+                <label class="control-label">{{'create-account.beneficiaries.subtitles.address' | translate}}</label>
+                <div class="required">
+                  <input type="text" class="form-control" [(uppercase)]="beneficiary.direccion" name="address" formControlName="address" [(ngModel)]="beneficiary.direccion" [maxLength]="50"/>
+                  <pl-errors-message [control]="address"></pl-errors-message>
+                </div>
+              </div>
+            </div>
+          </article>
+          <article class="table-cell col-lg-4">
+            <div class="form-group margin-reset">
+              <div [ngClass]="{ 'has-error': phoneNumber.touched && phoneNumber.invalid}">
+                <label class="control-label">{{'create-account.beneficiaries.subtitles.phonenumber' | translate}}</label>
+                <div class="required">
+                  <input type="text" class="form-control" onkeydown="numbersOnly(event)" name="phoneNumber" formControlName="phoneNumber" [(ngModel)]="beneficiary.telefono" [maxLength]="10"/>
+                  <pl-errors-message [control]="phoneNumber">
+                    <div *ngIf="phoneNumber.hasError('maxLength')"><span translate="messages.maxlength"></span> 10</div>
+                    <div *ngIf="phoneNumber.hasError('minLength')"><span translate="messages.minlength"></span> 10</div>
+                  </pl-errors-message>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="table row">
+          <article class="table-cell col-lg-3">
+            <div class="form-group margin-reset" [ngClass]="{ 'has-error': relationship.touched && relationship.invalid}">
+              <label class="control-label">{{'create-account.beneficiaries.subtitles.relationship' | translate}}</label>
+              <label class="control-label" *ngIf="beneficiary && beneficiary.parentescoDescripcion">{{beneficiary?.parentescoDescripcion}}</label>
+              <div class="form-group required">
+                <pl-relationship-select [formGroup]="formGroup" [controlName]="'relationship'" [relationship]="beneficiary.parentesco" [autocomplete]="false" (changeRelationship)="onChangeRelationship($event)"></pl-relationship-select>
+                <pl-errors-message [control]="relationship"></pl-errors-message>
+              </div>
+            </div>
+          </article>
+          <article class="table-cell col-lg-3">
+            <div class="form-group margin-reset" [ngClass]="{ 'has-error': percentage.touched && percentage.invalid}">
+              <label class="control-label">{{'create-account.beneficiaries.subtitles.percentage' | translate}}</label>
+              <div class="required">
+                <input type="text" class="form-control" name="percentage" formControlName="percentage" [(ngModel)]="beneficiary.porcentaje" onkeydown="numbersOnlyWithDecimal(this, event);"
+                       onblur="applyMoneyPattern(this, '');" [maxLength]="6" onfocus="removeMoneyMask(this);"/>
+                <pl-errors-message [control]="percentage">
+                  <div *ngIf="percentage.hasError('invalidPercentage')"><span translate="messages.invalidPercentage"></span></div>
+                </pl-errors-message>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section *ngIf="!itemEditMode" class="row col-lg-12 panel-buttons text-right">
+          <button type="button" [ngClass]="editMode ? 'btn btn-primary btn-radio' : 'btn btn-success btn-radio'" [disabled]="formGroup.invalid || disabledField"
+                  (click)="addBeneficiary(beneficiary)" data-toggle="tooltip" data-placement="left" attr.data-original-title="{{'tooltip.agregar-datos' | translate}}">
+            <i class="material-icons md-18">{{edit? 'done' : 'add'}}</i>{{editMode ? ('buttons.accept' | translate) : ('buttons.add' | translate)}}
+            <div class="ripple-container"></div>
+          </button>
+          <button type="button" class="btn btn-danger btn-radio" (click)="clean()" [disabled]="disabledField"
+                  data-toggle="tooltip" data-placement="left" attr.data-original-title="{{'tooltip.eliminar-datos' | translate}}">
+            <i class="material-icons md-18">delete</i> {{'buttons.delete' | translate}}
+            <div class="ripple-container"></div>
+          </button>
+        </section>
+
+        <section *ngIf="itemEditMode" class="row col-lg-12 panel-buttons text-right">
+          <button type="button" class="btn btn-primary btn-radio" (click)="saveItem()" data-toggle="tooltip" data-placement="left" attr.data-original-title="{{'' | translate}}">
+            <i class="material-icons md-18">done</i> {{'buttons.accept' | translate}}
+            <div class="ripple-container"></div>
+          </button>
+          <button type="button" class="btn btn-danger btn-radio" (click)="deleteItem()" data-toggle="tooltip" data-placement="left" attr.data-original-title="{{'' | translate}}">
+            <i class="material-icons md-18">delete</i> {{'buttons.delete' | translate}}
+            <div class="ripple-container"></div>
+          </button>
+          <button type="button" class="btn btn-danger btn-radio" (click)="clearEdit()" data-toggle="tooltip" data-placement="left" attr.data-original-title="{{'' | translate}}">
+            <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+            <div class="ripple-container"></div>
+          </button>
+        </section>
+
+        <section class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="table-responsive">
+              <ng-template #actionsTemplate let-item="item">
+                <div class="btn-group-md">
+                  <a id="delete-button-value" [ngClass]="'btn btn-fab btn-fab-mini btn-raised ' + (item.modalidad === mode.I ? 'btn-primary' :
+                                                         item.modalidad === mode.U ? 'btn-warning' :
+                                                         item.modalidad === mode.D ? 'btn-danger' : 'btn-info')" [popover]="optionPopover" *ngIf="item.modalidad !== null && item.modalidad !== undefined">
+                    <i class="material-icons md-18">
+                      {{item.modalidad === mode.I ? 'add' : item.modalidad === mode.U ? 'mode_edit' : item.modalidad === mode.D ? 'delete' : 'add'}}
+                    </i>
+                    {{'table.restore-title' | translate}}
+                    <div class="ripper-container"></div>
+                  </a>
+                </div>
+                <popover-content #optionPopover title="{{'create-account.beneficiaries.restore' | translate}}" placement="left" [animation]="true" [closeOnClickOutside]="true">
+                  <button type="button" class="btn btn-primary btn-raised" (click)="restoreBeneficiary(item)">
+                    <i class="material-icons md-18">delete</i> {{'buttons.accept' | translate}}
+                    <div class="ripple-container"></div>
+                  </button>
+                </popover-content>
+              </ng-template>
+              <sa-data-table [data]="account.beneficiarios" [heading]="getHeader()" [values]="values"
+                             [pager]="undefined" [actionTemplate]="editMode ? actionsTemplate : undefined" [useTableTemplate]="true" [useServicePager]="false" (rowSelected)="modify($event)"></sa-data-table>
+            </div>
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right">
+            <label class="control-label" style="margin-right: 5px;">{{'create-account.beneficiaries.total' | translate}}</label>{{getTotalPercentage()}}<label class="control-label">%</label>
+          </div>
+        </section>
+      </div>
+      <div class="panel-footer text-right col-lg-12">
+        <div class="row">
+          <button type="button" class="btn btn-warning btn-raised btn-fab" *ngIf="!cancelAccount && editMode && disabledField" (click)="change()">
+            <i class="material-icons md-18">create</i> {{'buttons.update' | translate}}
+          </button>
+          <button type="button" class="btn btn-danger btn-radio animated bounceIn" *ngIf="!disabledField" (click)="cancel()" data-toggle="tooltip" data-placement="top" translate=""
+                  translate-attr-data-original-tittle="tooltip.buscar">
+            <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+          </button>
+          <button type="submit" class="btn btn-success btn-radio animated bounceIn" [disabled]="invalidPercentage()" *ngIf="!disabledField" data-toggle="tooltip" data-placement="top" attr.data-original-title="{{'buttons.autorization' | translate}}">
+            <i class="material-icons md-18">check</i> {{'buttons.continue' | translate}}
+            <div class="ripple-container"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</form>
+<div class="modal fade" id="authorizationModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">{{'authorization.title'|translate}}<i class="material-icons md-18">check_circle</i></h4>
+      </div>
+      <div class="modal-body">
+        <pl-authorization [authorization]="authorization"
+                          (changeAuthorization)="changeAuthorization($event)"></pl-authorization>
+      </div>
+    </div>
+  </div>
+</div>
+<cancel-confirmation></cancel-confirmation>

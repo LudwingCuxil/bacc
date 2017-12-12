@@ -1,0 +1,90 @@
+<div [ngBusy]="busy"></div>
+<form name="electronic-service-presented-form" autocomplete="off" role="form" (ngSubmit)="partialSave()"
+      [formGroup]="formGroup">
+  <div class="container-fluid animated fadeIn">
+    <div class="panel panel-custom">
+      <div class="panel-heading">
+        <h2 [translate]="'servicioelectronico.title'">{{'servicioelectronico.title' | translate}}</h2>
+      </div>
+      <div class="panel-body">
+        <div class="panel panel-custom">
+          <div class="row">
+            <div class="col-lg-12">
+              <label class="control-label" [translate]="'servicioelectronico.suscripcion'">{{'servicioelectronico.suscripcion'
+                | translate}}</label>
+              <div *ngFor="let item of account.serviciosElectronicos; let i = index">
+                <label class="control control--checkbox">
+                  <input formControlName="suscription" type="checkbox" id="{{item.id}}"
+                         [checked]="item.acepta" (click)="changeSuscription(item,i)"/>
+                  {{item.nombre}}
+                  <div class="control__indicator"></div>
+                </label>
+              </div>
+              <div *ngIf="account.serviciosElectronicos?.length == 0" class="">
+                <div class="alert alert-warning">
+                  <label class="control-label" [translate]="'servicioelectronico.no-existen-servicios'">{{'servicioelectronico.no-existen-servicios'
+                    | translate}}</label></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-custom">
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label class="control control--checkbox">
+                    <input formControlName="beneficiary" type="checkbox" id="beneficiary" name="beneficiary"
+                           [(ngModel)]="account.clienteEsBeneficiarioFinal"/>
+                    <label class="control-label" for="beneficiary">{{'servicioelectronico.final' | translate}}</label>
+                    <div class="control__indicator"></div>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer text-right col-lg-10">
+        <div class="row">
+          <button type=button (click)="editMode? restoreData() : cancel()" *ngIf="suscription.enabled"
+                  class="btn btn-danger btn-radio animated bounceIn"
+                  data-toggle="tooltip" data-placement="top" translate
+                  translate-attr-data-original-title="buttons.cancel">
+            <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+            <div class="ripple-container"></div>
+          </button>
+          <button type="button" (click)="editMode? changeControl() : showEdit()" *ngIf="!cancelAccount && suscription.disabled"
+           class="btn btn-warning btn-radio animated bounceIn">
+              <i class="material-icons md-18">create</i> {{'buttons.update' | translate}}
+              <div class="ripple-container"></div>
+          </button>
+          <button type="submit" *ngIf="suscription.enabled"
+                  class="btn btn-success btn-radio animated bounceIn"
+                  data-toggle="tooltip" data-placement="top" translate
+                  translate-attr-data-original-title="buttons.continue">
+            {{'buttons.continue' | translate}} <i class="material-icons md-18">chevron_right</i>
+            <div class="ripple-container"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<cancel-confirmation [account]="true"></cancel-confirmation>
+<div class="modal fade" id="authorizationModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><i class="material-icons md-18">check_circle</i>
+          {{'authorization.title' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <pl-authorization [authorization]="authorization"
+                          (changeAuthorization)="changeAuthorization($event)"></pl-authorization>
+      </div>
+    </div>
+  </div>
+</div>

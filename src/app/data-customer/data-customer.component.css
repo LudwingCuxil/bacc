@@ -1,0 +1,5 @@
+#futuroCreceModal .table>tbody>tr>td:first-child {
+  position: relative;
+  width: 300px;
+  text-align: left;
+}

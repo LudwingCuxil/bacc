@@ -1,0 +1,272 @@
+<div [ngBusy]="busy"></div>
+<form name="webformPersonaJuridica" autocomplete="off" novalidate="" [formGroup]="formGroup" (mouseover)="over()"
+      class="ng-pristine ng-valid-mask ng-invalid ng-invalid-required ng-valid-maxlength ng-valid-minlength ng-valid-date"
+      (ngSubmit)="validateForm()">
+  <div class="container-fluid animated fadeIn">
+    <div class="panel panel-custom">
+      <div class="panel-heading">
+        <h2 [translate]="'generaldatalegal.title'">t</h2>
+      </div>
+      <div class="panel-body">
+
+        <div class="row">
+          <div class="col-lg-12">
+            <label class="control-label" [translate]="'generaldatalegal.socialrazon'">t</label>
+            <div class="form-group required" [ngClass]="{'has-error': razonSocial.touched && razonSocial.invalid}">
+                             <textarea class="form-control" formControlName="razonSocial"
+                                       [(uppercase)]="client.datosGeneralesPersonaJuridica.razonSocial" required
+                                       name="razonSocial"
+                                       [(ngModel)]="client.datosGeneralesPersonaJuridica.razonSocial" [maxlength]="180"
+                                       aria-describedby="razonSocial-validator-help" rows="2" cols="50"></textarea>
+              <pl-errors-message [control]="razonSocial"></pl-errors-message>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <label class="control-label" [translate]="'generaldatalegal.comercial-name'">t</label>
+            <div class="form-group required"
+                 [ngClass]="{'has-error': nombreComercial.touched && nombreComercial.invalid}">
+                             <textarea class="form-control" capitalize="" required name="nombreComercial"
+                                       formControlName="nombreComercial" id="nombreComercial"
+                                       [(uppercase)]="client.datosGeneralesPersonaJuridica.nombreComercial"
+                                       [(ngModel)]="client.datosGeneralesPersonaJuridica.nombreComercial"
+                                       [maxlength]="80"
+                                       aria-describedby="nombreComercial-validator-help" rows="2" cols="50"></textarea>
+              <pl-errors-message [control]="nombreComercial"></pl-errors-message>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <label class="control-label" [translate]="'generaldatalegal.acronym'">t</label>
+            <div class="form-group">
+
+              <input type="text" capitalize="" formControlName="siglas" class="form-control" name="siglas"
+                     [(ngModel)]="client.datosGeneralesPersonaJuridica.siglas"
+                     [(uppercase)]="client.datosGeneralesPersonaJuridica.siglas" byte-max-length="" [maxlength]="15"
+                     aria-describedby="siglas-validator-help"/>
+              <pl-errors-message [control]="siglas"></pl-errors-message>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <label class="control-label" [translate]="'generaldatalegal.coutry-origin'">t</label>
+
+            <div class="form-group required" [ngClass]="{'has-error': country.touched && country.invalid}">
+              <pl-country-select id="originCountry" [formGroup]="formGroup"
+                                 [country]="client.paisOrigen"
+                                 (changeCountry)="selectCountry($event)" [autocomplete]="true"></pl-country-select>
+              <pl-errors-message [control]="country"></pl-errors-message>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <label class="control-label" [translate]="'generaldatalegal.account-officer'">t</label>
+            <div class="form-group required"
+                 [ngClass]="{'has-error': accountOfficer.touched && accountOfficer.invalid}">
+              <pl-account-officer id="accountOfficer" [formGroup]="formGroup"
+                                  [accountOfficer]="client.oficialDeCuentas"
+                                  (changeOficialDeCuentas)="selectAccountOfficer($event)"
+                                  [autocomplete]="true"></pl-account-officer>
+              <pl-errors-message [control]="accountOfficer"></pl-errors-message>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel-custom">
+          <div class="panel-heading text-center">
+            <h4 [translate]="'generaldatalegal.data-company-constitution'">Datos Constitucion Empresa</h4>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-lg-6">
+                <label class="control-label" [translate]="'generaldatalegal.type-society'">Tipo de Sociedad</label>
+                <div class="form-group required" [ngClass]="{'has-error': typeSociety.touched && typeSociety.invalid}">
+                  <pl-type-society id="typeSociety" [formGroup]="formGroup"
+                                   [typeSociety]="client.datosGeneralesPersonaJuridica.tipoSociedad"
+                                   (changeTipoSociedad)="selectTypeSociety($event)"
+                                   [autocomplete]="true"></pl-type-society>
+                  <pl-errors-message [control]="typeSociety"></pl-errors-message>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label class="control-label" [translate]="'generaldatalegal.sales-level'">Nivel de Ventas</label>
+                <div class="form-group required" [ngClass]="{'has-error': salesLevel.touched && salesLevel.invalid}">
+                  <pl-sales-level-select id="salesLevel" [formGroup]="formGroup"
+                                         [autocomplete]="false"
+                                         [salesLevel]="client.datosGeneralesPersonaJuridica.nivelVentas"
+                                         (changeNivelVentas)="selectSalesLevel($event)"></pl-sales-level-select>
+                  <pl-errors-message [control]="salesLevel"></pl-errors-message>
+
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-offset-4 col-lg-3 text-center">
+              <div class="checkbox">
+                <label class="control control--checkbox">
+                  <input type="checkbox" name="enFormacion" (change)="changeFormation($event)"
+                         formControlName="enFormacion" id="formacion"
+                         [(ngModel)]="client.datosGeneralesPersonaJuridica.enFormacion"/>
+                  <label [translate]="'generaldatalegal.formation'">t</label>
+                  <div class="control__indicator"></div>
+                </label>
+              </div>
+            </div>
+            <div class="row">
+
+              <div class="col-lg-6 required">
+                <label class="control-label">{{'generaldatalegal.registration-date' | translate}}</label>
+                <div class="form-group form-inline"
+                     [ngClass]="{'has-error': fechaRegistro.touched && fechaRegistro.invalid}">
+                  <div class="input-group">
+                    <sa-datepicker [(ngModel)]="registerDate" (ngModelChange)="changeDateRegister($event)"
+                                   name="fechaRegistro"
+                                   formControlName="fechaRegistro" [minDate]="minDateRegister"
+                                   [maxDate]="maxDateRegister"></sa-datepicker>
+                  </div>
+                  <pl-errors-message [control]="fechaRegistro">
+                    <div *ngIf="fechaRegistro?.hasError('maxDate')"><span>{{'messages.maxDate' | translate}} {{maxDate | json}}</span></div>
+                    <div *ngIf="fechaRegistro?.hasError('minDate')"><span>{{'messages.minDate' | translate}} {{maxDate | json}}</span></div>
+                  </pl-errors-message>
+                </div>
+              </div>
+              <div class="col-lg-6 required">
+                <label class="control-label">{{'generaldatalegal.start-date-operations' | translate}}</label>
+                <div class="form-group form-inline"
+                     [ngClass]="{'has-error': fechaInicioOperaciones.touched && fechaInicioOperaciones.invalid}">
+                  <div class="input-group">
+                    <sa-datepicker [(ngModel)]="startDate" (ngModelChange)="changeDateStart($event)"
+                                   name="fechaInicioOperaciones"
+                                   formControlName="fechaInicioOperaciones" [minDate]="minDateStart"
+                                   [maxDate]="maxDateStart"></sa-datepicker>
+                  </div>
+                  <pl-errors-message [control]="fechaInicioOperaciones">
+                    <div *ngIf="fechaInicioOperaciones?.hasError('maxDate')"><span>{{'messages.maxDate' | translate}} {{maxDate | json}}</span></div>
+                    <div *ngIf="fechaInicioOperaciones?.hasError('minDate')"><span>{{'messages.minDate' | translate}} {{maxDate | json}}</span></div>
+                  </pl-errors-message>
+                </div>
+
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <label class="control-label" [translate]="'generaldatalegal.trade-register'">Reg. Mercantil</label>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="form-group"
+                         [ngClass]="{'has-error': registroMercantilNumero.touched && registroMercantilNumero.invalid,'required': !client.datosGeneralesPersonaJuridica.enFormacion}">
+                      <input type="text" [(uppercase)]="client.datosGeneralesPersonaJuridica.registroMercantilNumero"
+                             class="form-control" name="registroMercantilNumero"
+                             formControlName="registroMercantilNumero"
+                             [(ngModel)]="client.datosGeneralesPersonaJuridica.registroMercantilNumero"
+                             [maxlength]="20"
+                             placeholder="{{'generaldatalegal.trade-number'| translate}}"/>
+                      <pl-errors-message [control]="registroMercantilNumero"></pl-errors-message>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="form-group"
+                         [ngClass]="{'has-error': registroMercantilTomo.touched && registroMercantilTomo.invalid,'required': !client.datosGeneralesPersonaJuridica.enFormacion}">
+                      <input type="text" [(uppercase)]="client.datosGeneralesPersonaJuridica.registroMercantilTomo"
+                             class="form-control" name="registroMercantilTomo" formControlName="registroMercantilTomo"
+                             [(ngModel)]="client.datosGeneralesPersonaJuridica.registroMercantilTomo"
+                             [maxlength]="5"
+                             placeholder="{{'generaldatalegal.trade-tome'| translate}}"/>
+                      <pl-errors-message [control]="registroMercantilTomo"></pl-errors-message>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="form-group"
+                         [ngClass]="{'has-error': registroMercantilPagina.touched && registroMercantilPagina.invalid,'required': !client.datosGeneralesPersonaJuridica.enFormacion}">
+                      <input type="text" class="form-control" name="pagina" formControlName="registroMercantilPagina"
+                             [(uppercase)]="client.datosGeneralesPersonaJuridica.registroMercantilPagina"
+                             [(ngModel)]="client.datosGeneralesPersonaJuridica.registroMercantilPagina"
+                             [maxlength]="5"
+                             placeholder="{{'generaldatalegal.trade-page'| translate}}"/>
+                      <pl-errors-message [control]="registroMercantilPagina"></pl-errors-message>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">
+                <label class="control-label" [translate]="'generaldatalegal.patent'">Patente de Com</label>
+                <div class="form-group" [ngClass]="{'has-error': patenteComercio.touched && patenteComercio.invalid}">
+                  <input type="text" [(uppercase)]="client.datosGeneralesPersonaJuridica.patenteComercio"
+                         class="form-control" name="patenteComercio"
+                         [(ngModel)]="client.datosGeneralesPersonaJuridica.patenteComercio"
+                         formControlName="patenteComercio" [maxlength]="15"/>
+                  <pl-errors-message [control]="patenteComercio"></pl-errors-message>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <label class="control-label" [translate]="'generaldatalegal.point-act'">t</label>
+                <div class="form-group" [ngClass]="{'has-error': puntoActa.touched && puntoActa.invalid}">
+                  <input type="text" [(uppercase)]="client.datosGeneralesPersonaJuridica.puntoActa"
+                         class="form-control" name="puntoActa"
+                         [(ngModel)]="client.datosGeneralesPersonaJuridica.puntoActa" formControlName="puntoActa"
+                         [maxlength]="12"/>
+                  <pl-errors-message [control]="puntoActa"></pl-errors-message>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <label class="control-label" [translate]="'generaldatalegal.writing-number'">No. Escritura/Permiso
+                  Oper.</label>
+                <div class="form-group required"
+                     [ngClass]="{'has-error': numeroEscrituraPermisoOperaciones.touched && numeroEscrituraPermisoOperaciones.invalid}">
+                  <input type="text"
+                         [(uppercase)]="client.datosGeneralesPersonaJuridica.numeroEscrituraPermisoOperaciones"
+                         class="form-control" name="numeroEscrituraPermisoOperaciones"
+                         [(ngModel)]="client.datosGeneralesPersonaJuridica.numeroEscrituraPermisoOperaciones"
+                         formControlName="numeroEscrituraPermisoOperaciones" [maxlength]="15"
+                         aria-describedby="noEscritura-validator-help"/>
+                  <pl-errors-message [control]="numeroEscrituraPermisoOperaciones"></pl-errors-message>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+        </div>
+      </div>
+      <div class="panel-footer text-right col-lg-10">
+        <div class="row">
+
+          <button type="button" class="btn btn-warning btn-raised btn-fab" *ngIf="editMode && !this.disabledField" (click)="change()">
+            <i class="material-icons md-18">create</i> {{'buttons.update'| translate}}
+
+          </button>
+
+          <button type="button" class="btn btn-danger btn-radio animated bounceIn" *ngIf="this.disabledField"  (click)="cancel()"
+                  data-toggle="tooltip" data-placement="top" translate
+                  translate-attr-data-original-title="tooltip.buscar">
+            <i class="material-icons md-18">clear</i> {{'buttons.cancel'| translate}}
+          </button>
+          <button type="submit" [disabled]="formGroup.invalid"  class="btn btn-success btn-radio animated bounceIn" *ngIf="this.disabledField"
+                  data-toggle="tooltip" data-placement="top" translate
+                  translate-attr-data-original-title="tooltip.continue">
+            {{editMode ? 'buttons.accept' : 'buttons.continue' | translate}} <i class="material-icons md-18">chevron_right</i>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</form>
+<cancel-confirmation></cancel-confirmation>
+<div class="modal fade" id="authorizationModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><i
+          class="material-icons md-18">check_circle</i>
+          {{'authorization.title' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <pl-authorization [authorization]="authorization"
+                          (changeAuthorization)="changeAuthorization($event)"></pl-authorization>
+      </div>
+    </div>
+  </div>
+</div>

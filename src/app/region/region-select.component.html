@@ -1,0 +1,13 @@
+<div [formGroup]="formGroup">
+  <select id="regionSelected" [formControlName]="controlName" [(ngModel)]="region" (ngModelChange)="onChangeObj($event)" class="form-control" required *ngIf="!autocomplete">
+    <option *ngFor="let p of regions" [ngValue]="p">{{p.descripcion}}</option>
+  </select>
+
+  <ng-template #rt let-r="result" let-t="term" style="width: 96%">
+    {{ r.descripcion }}
+  </ng-template>
+
+  <input (focus)="openAll($event)" [(ngModel)]="region" [formControlName]="controlName" [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="formatter"
+         class="form-control" style="text-transform: uppercase" required *ngIf="autocomplete"
+         (selectItem)="onChangeObj($event)" />
+</div>

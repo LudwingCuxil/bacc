@@ -1,0 +1,34 @@
+ import { SearchDataType } from 'security-angular/src/app/search';
+ import { Injectable } from '@angular/core';
+export class EconomicActivities {
+
+  dataType = SearchDataType;
+  
+  constructor(public codigo?:string, public descripcion?:string){
+      
+  }
+
+  public getFields() : string[]{
+    return ['codigo', 'descripcion'];
+  }
+
+  getDataTypesFields() : SearchDataType[]{
+    return [
+      this.dataType.string,
+      this.dataType.string];
+  }
+  getHeaders(): string[]{
+    return [
+      'economicActivity.codigo',
+      'economicActivity.descripcion'
+    ]
+  }
+
+  getDetails(): string {
+    return '[{"name":"codigo"},{"name":"descripcion"}]'
+  }
+
+}
+
+
+

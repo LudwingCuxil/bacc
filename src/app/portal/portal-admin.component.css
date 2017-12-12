@@ -1,0 +1,194 @@
+/*  ///////////////// MENU ASIDE  /////////////////// */
+
+.portal-create-component .nav::-webkit-scrollbar,
+.account-component .nav::-webkit-scrollbar {
+  width: 5px;
+}
+
+.portal-create-component .nav::-webkit-scrollbar-track,
+.account-component .nav::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.portal-create-component .nav::-webkit-scrollbar-thumb,
+.account-component .nav::-webkit-scrollbar-thumb {
+  border-radius: 100px;
+  background-color: rgba(43, 60, 66, 0.7);
+}
+
+.portal-create-component .nav,
+.account-component .nav {
+  overflow: hidden;
+  -webkit-transition: overflow 500ms;
+  -moz-transition: overflow 500ms;
+  -ms-transition: overflow 500ms;
+  -o-transition: overflow 500ms;
+  transition: overflow 500ms;
+}
+
+.portal-create-component .nav:hover,
+.account-component .nav:hover {
+  overflow: auto;
+  overflow-x: hidden;
+  -webkit-transition: overflow 500ms;
+  -moz-transition: overflow 500ms;
+  -ms-transition: overflow 500ms;
+  -o-transition: overflow 500ms;
+  transition: overflow 500ms;
+}
+
+.portal-create-component .nav-pills > li+li,
+.account-component .nav-pills > li+li {
+  margin-left: 0px;
+}
+
+.portal-create-component .nav-pills > li > a,
+.account-component .nav-pills > li > a {
+  border-radius: 0px;
+}
+
+.portal-create-component .nav > li,
+.account-component .nav > li {
+  width: 100%;
+}
+
+.portal-create-component .nav > li:first-child > a.active,
+.account-component .nav > li:first-child > a.active {
+  border-top: none;
+}
+.portal-create-component .nav > li > a.active,
+.account-component .nav > li > a.active {
+  font-weight: bold;
+  background-color: #F1F6FA;
+  /*border-left: 4px solid #00BC65;*/
+  border-top: 1px solid #CDD9DD;
+  border-bottom: 1px solid #CDD9DD;
+  margin-right: -2px;
+  border-right: 1px solid #f1f6fa;
+}
+
+.portal-create-component .nav-item a,
+.account-component .nav-item a {
+  color: rgba(45, 63, 70, 0.7);
+  text-align: left;
+  padding: 0px;
+  font-size: 13.5px;
+}
+
+.account-component .nav-item a {
+  padding: 16px 5px 16px 6px;
+}
+
+.portal-create-component .nav-item a div{
+  padding: 16px 5px 16px 6px;
+}
+
+.portal-create-component .nav-item a:hover,
+.account-component .nav-item a:hover {
+  color: #2D3F46;
+}
+
+.portal-create-component .nav-item a.hover i,
+.account-component .nav-item a.hover i {
+  color: #00BC65;
+}
+
+.portal-create-component .nav-item a.active,
+.account-component .nav-item a.active {
+  color: #2D3F46;
+}
+
+.portal-create-component .nav-item a.active i,
+.account-component .nav-item a.active i {
+  color: #00BC65;
+}
+
+.portal-create-component .nav-item a i,
+.account-component .nav-item a i {
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+
+/*  /////////////////  GENERICAS  ////////////////////*/
+.portal-create-component,
+.account-component {
+  padding-top: 50px;
+}
+
+.content-data .container-fluid .panel.panel-custom {
+  padding-top: 0px;
+  margin-bottom: 0px;
+}
+
+.portal-create-component .content-data div.container-fluid,
+.account-component .content-data div.container-fluid {
+  margin-bottom: 40px;
+}
+
+.portal-create-component .nav-pills,
+.account-component .nav-pills,
+.portal-create-component div.tab-content .content-data,
+.account-component div.tab-content .content-data {
+  height: calc(100% - (50px + 110px + 40px));
+  top: inherit;
+  right: inherit;
+}
+
+.portal-create-component .nav-pills,
+.account-component .nav-pills {
+  float: left;
+  background-color: #fff;
+  border-right: 1px solid #CDD9DD;
+  z-index: 0;
+}
+
+.portal-create-component div.tab-content .content-data,
+.account-component div.tab-content .content-data {
+  background-color: #f1f6fa;
+  overflow-y: auto;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  position: absolute;
+}
+
+/*.account-component div.tab-content {*/
+/*width:83.33333333%;*/
+/*float: right;*/
+/*}*/
+
+.portal-header .data-account,
+.portal-header .data-client {
+  position: absolute;
+}
+
+@media (min-width: 992px) {
+  .portal-create-component .nav-pills,
+  .account-component .nav-pills {
+    width: 25%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .portal-header .source-client,
+  .portal-header .data-account,
+  .portal-header .data-client {
+    height: 110px;
+  }
+
+  .portal-header .source-client,
+  .portal-create-component .nav-pills,
+  .account-component .nav-pills {
+    width: 18.66666667%;
+  }
+  .portal-header .data-account,
+  .portal-header .data-client,
+  .portal-create-component .content-data,
+  .account-component .content-data {
+    width: 81.333333%;
+    margin-left: 18.66666667%;
+  }
+  .panel-footer.col-lg-10 {
+    width: 81.333333%;
+  }
+}

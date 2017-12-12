@@ -1,0 +1,13 @@
+<div [formGroup]="formGroup">
+  <select id="noCustomerEmployeesSelected" [formControlName]="controlName" [(ngModel)]="noCustomerEmployees" (ngModelChange)="onChangeObj($event)" class="form-control"  *ngIf="!autocomplete">
+    <option *ngFor="let p of noCustomerEmployeess" [ngValue]="p">{{ p.nombre }}</option>
+  </select>
+
+  <ng-template #rt let-r="result" let-t="term" style="width: 96%">
+    {{ r.nombre }}
+  </ng-template>
+
+  <input (focus)="openAll($event)" [(ngModel)]="noCustomerEmployees" [formControlName]="controlName" [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="formatter"
+         class="form-control" style="text-transform: uppercase"  *ngIf="autocomplete"
+         (selectItem)="onChangeObj($event)" />
+</div>

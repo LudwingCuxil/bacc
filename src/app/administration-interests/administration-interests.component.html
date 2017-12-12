@@ -1,0 +1,75 @@
+<div [ngBusy]="busy"></div>
+<form [formGroup]="formGroup" id="formGroup" autocomplete="off" (ngSubmit)="validateForm()">
+  <section class="container-fluid animated fadeIn">
+    <div class="panel panel-custom">
+      <div class="panel-heading">
+        <h2>{{'create-account.administration-interests.title' | translate}}</h2>
+      </div>
+      <div class="panel-body">
+        <section class="table row">
+          <article class="table-cell col-lg-6">
+            <div class="form-group">
+              <label class="control-label">{{'create-account.administration-interests.subtitles.method-payment' | translate}}</label>
+              <div [ngClass]="{ 'has-error': methodPayment.touched && methodPayment.invalid}">
+                <pl-method-payment [autocomplete]="false" [formGroup]="formGroup" [methodPayment]="account.datoInteres.formaPago" [methodPaymentSelected]="productSelection" [controlName]="'methodPayment'"
+                                   [radioMode]="true" [disable]="disabledField" (methodUpdated)="onMethodChange($event)"></pl-method-payment>
+                <pl-errors-message [control]="methodPayment"></pl-errors-message>
+              </div>
+            </div>
+          </article>
+          <article class="table-cell col-lg-6">
+            <section class="row">
+              <div *ngIf="account?.tipoProducto?.codigo === param_plfijo" class="col-lg-12">
+                <label class="control-label">{{'create-account.administration-interests.subtitles.frequency' | translate}}</label>
+                <div class="form-group required" [ngClass]="{ 'has-error': frequency.touched && frequency.invalid}">
+                  <pl-frequency-select [autocomplete]="true" [formGroup]="formGroup" [controlName]="'frequency'" [frequency]="account.datoInteres.frecuencia" [disabled]="false" (frequencyUpdated)="onFrequencyChange($event)"></pl-frequency-select>
+                  <pl-errors-message [control]="frequency"></pl-errors-message>
+                </div>
+              </div>
+              <div *ngIf="account?.datoInteres?.formaPago?.codigo === param_notcre" class="col-lg-12">
+                <label class="control-label">{{'create-account.administration-interests.subtitles.account-payment' | translate}}</label>
+                <div class="form-group required" [ngClass]="{ 'has-error': accountPayment.touched && accountPayment.invalid}">
+                  <pl-account-select [autocomplete]="false" [formGroup]="formGroup" [controlName]="'accountPayment'" [account]="account.datoInteres.cuentaPago" [accountSelected]="productSelection"
+                                     [disabled]="false" (accountUpdated)="onAccountChange($event)"></pl-account-select>
+                  <pl-errors-message [control]="accountPayment"></pl-errors-message>
+                </div>
+              </div>
+            </section>
+          </article>
+        </section>
+      </div>
+      <div class="panel-footer text-right col-lg-12">
+        <div class="row">
+          <button type="button" class="btn btn-warning btn-raised btn-fab" *ngIf="!cancelAccount && editMode && disabledField" (click)="change()">
+            <i class="material-icons md-18">create</i> {{'buttons.update' | translate}}
+          </button>
+          <button type="button" class="btn btn-danger btn-radio animated bounceIn" *ngIf="!disabledField" (click)="cancel()" data-toggle="tooltip" data-placement="top" translate
+                  translate-attr-data-original-tittle="tooltip.buscar">
+            <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+          </button>
+          <button type="submit" class="btn btn-success btn-radio animated bounceIn" [disabled]="formGroup.invalid" *ngIf="!disabledField"
+                  data-toggle="tooltip" data-placement="top" attr.data-original-title="{{'buttons.autorization' | translate}}">
+            {{'buttons.continue' | translate}} <i class="material-icons md-18">chevron_right</i>
+            <div class="ripple-container"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</form>
+<div class="modal fade" id="authorizationModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">{{'authorization.title'|translate}}<i class="material-icons md-18">check_circle</i></h4>
+      </div>
+      <div class="modal-body">
+        <pl-authorization [authorization]="authorization"
+                          (changeAuthorization)="changeAuthorization($event)"></pl-authorization>
+      </div>
+    </div>
+  </div>
+</div>
+<cancel-confirmation></cancel-confirmation>

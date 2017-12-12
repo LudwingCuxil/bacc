@@ -1,0 +1,13 @@
+<div [formGroup]="formGroup">
+  <select id="originFundSelected" [formControlName]="controlName" [(ngModel)]="originFund" (ngModelChange)="onChangeObj($event)" class="form-control" required *ngIf="!autocomplete">
+    <option *ngFor="let p of originFunds" [ngValue]="p">{{p.descripcion}}</option>
+  </select>
+
+  <ng-template #rt let-r="result" let-t="term" style="width: 96%">
+    {{ r.descripcion }}
+  </ng-template>
+
+  <input (focus)="openAll($event)" [(ngModel)]="originFund" [formControlName]="controlName" [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="formatter"
+         class="form-control" style="text-transform: uppercase" required *ngIf="autocomplete"
+         (selectItem)="onChangeObj($event)" />
+</div>

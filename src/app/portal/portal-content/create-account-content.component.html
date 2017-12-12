@@ -1,0 +1,217 @@
+<pl-create-account-header></pl-create-account-header>
+<ngb-tabset type="pills">
+
+  <!-- On Create Account - Product Selection  -->
+  <ngb-tab [id]="section.productSelection" [disabled]="_navigationService.account.accountCreated">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.productSelection)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.productSelection).status ? 'completed bounceIn' : 'pending fadeIn'">assignment</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.productSelection).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        <span>{{'portal.side-bar.product-selection' | translate}}</span>
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-product-selection (changeView)="notifyHeader()"></pl-product-selection>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <!-- On Create Account - Data Customer -->
+  <ngb-tab [id]="section.dataCustomer" [disabled]="_navigationService.account.accountCreated">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.dataCustomer)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.dataCustomer).status ? 'completed bounceIn' : 'pending fadeIn'">content_paste</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.dataCustomer).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        <span>{{'portal.side-bar.general-data' | translate}}</span>
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-data-customer [openingDate]="openingDate"></pl-data-customer>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab [id]="section.jointAccount" [disabled]="_navigationService.account.accountCreated">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.jointAccount)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.jointAccount).status ? 'completed bounceIn' : 'pending fadeIn'">content_paste</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.jointAccount).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        <span>{{'portal.side-bar.joint-account' | translate}}</span>
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-joint-account></pl-joint-account>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <!-- On Create Account - Administration Interest -->
+  <ngb-tab [id]="section.administrationInterests" [disabled]="_navigationService.account.accountCreated">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.administrationInterests)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.administrationInterests).status ? 'completed bounceIn' : 'pending fadeIn'">trending_up</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.administrationInterests).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        <span>{{'portal.side-bar.administration-interests' | translate}}</span>
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-administration-interests></pl-administration-interests>
+      </div>
+    </ng-template>
+  </ngb-tab>
+  
+  <!-- On Create Account - Administration Interest -->
+  <ngb-tab [id]="section.transferAccount" [disabled]="_navigationService.account.accountCreated">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.transferAccount)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.transferAccount).status ? 'completed bounceIn' : 'pending fadeIn'">swap_horiz</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.transferAccount).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        <span>{{'portal.side-bar.transfer-account' | translate}}</span>
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-transfer-account></pl-transfer-account>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <!-- On Create Account - Administration Interest -->
+  <ngb-tab [id]="section.administrationCheckbooks" [disabled]="_navigationService.account.accountCreated">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.administrationCheckbooks)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.administrationCheckbooks).status ? 'completed bounceIn' : 'pending fadeIn'">book</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.administrationCheckbooks).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        <span>{{'portal.side-bar.administration-checkbook' | translate}}</span>
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-administration-checkbooks></pl-administration-checkbooks>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab [id]="section.fixedTerm" [disabled]="_navigationService.account.accountCreated">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.fixedTerm)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.fixedTerm).status ? 'completed bounceIn' : 'pending fadeIn'">assignment</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.fixedTerm).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        {{'portal.side-bar.fixed-term' | translate}}
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-fixed-term></pl-fixed-term>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <!-- On Create Account - Administration Interest -->
+  <ngb-tab [id]="section.beneficiaries" [disabled]="_navigationService.account.accountCreated">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.beneficiaries)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.beneficiaries).status ? 'completed bounceIn' : 'pending fadeIn'">gesture</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.beneficiaries).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        <span>{{'portal.side-bar.beneficiaries' | translate}}</span>
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-beneficiary></pl-beneficiary>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <!-- On Create Account - Administration Interest -->
+  <ngb-tab [id]="section.signature" [disabled]="_navigationService.account.accountCreated">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.signature)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.signature).status ? 'completed bounceIn' : 'pending fadeIn'">gesture</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.signature).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        <span>{{'portal.side-bar.signature' | translate}}</span>
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-signature></pl-signature>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <!-- On Create Account - Administration Interest -->
+  <ngb-tab [id]="section.electronicService" [disabled]="_navigationService.account.accountCreated">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.electronicService)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.electronicService).status ? 'completed bounceIn' : 'pending fadeIn'">touch_app</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.electronicService).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        <span>{{'portal.side-bar.electronic-services' | translate}}</span>
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-electronic-service></pl-electronic-service>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <!-- On Create Account - Administration Interest -->
+  <ngb-tab [id]="section.beneficiariesFinal" [disabled]="_navigationService.account.accountCreated">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.beneficiariesFinal)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.beneficiariesFinal).status ? 'completed bounceIn' : 'pending fadeIn'">touch_app</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.beneficiariesFinal).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        <span>{{'portal.side-bar.beneficiaries-final' | translate}}</span>
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-beneficiary-final></pl-beneficiary-final>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab [id]="section.accountCreated">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.accountCreated)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.accountCreated).status ? 'completed bounceIn' : 'pending fadeIn'">assignment</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.accountCreated).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        {{'portal.side-bar.account-created' | translate}}
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-account-created></pl-account-created>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+</ngb-tabset>

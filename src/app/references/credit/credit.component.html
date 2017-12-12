@@ -1,0 +1,184 @@
+<div [ngBusy]="busy">
+  <form [formGroup]="formGroup" id="formGroup" name="formGroup" autocomplete="off">
+    <div class="row">
+      <div class="col-lg-5">
+        <div class="panel panel-primary-custom">
+          <div class="panel-heading">
+            <label class="control-label">{{'referencias-credito.institucion' | translate}}</label>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-lg-12">
+                <label class="control-label">{{'referencias-credito.tipo' | translate}}</label>
+                <div class="form-group required" [ngClass]="{ 'has-error': typeSelect.touched && typeSelect.invalid}">
+                  <pl-type-institution-select
+                    [typeInstitution]="type" [formGroup]="formGroup"
+                    [autocomplete]="false" [controlName]="'typeSelect'"
+                    (changeTypeInstitution)="selectSector($event)"></pl-type-institution-select>
+                  <pl-errors-message [control]="typeSelect"></pl-errors-message>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <label class="control-label">{{'referencias-credito.codigo' | translate}}</label>
+                <div class="form-group required"
+                     [ngClass]="{ 'has-error': subTypeSelect.touched && subTypeSelect.invalid}">
+                  <pl-institution-select
+                    [institution]="subType" [formGroup]="formGroup"
+                    [institutionType]="type"
+                    [autocomplete]="true" [controlName]="'subTypeSelect'"
+                    (changeInstitution)="selectSubSector($event)">
+                  </pl-institution-select>
+                  <pl-errors-message [control]="subTypeSelect"></pl-errors-message>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div class="row">
+          <div class="col-lg-12">
+            <label class="control-label">{{'referencias-credito.tipo-referencia' | translate}}</label>
+            <div class="form-group required" [ngClass]="{ 'has-error': referenceType.touched && referenceType.invalid}">
+              <pl-reference-type-select [type]="reference" [formGroup]="formGroup"
+                                        [autocomplete]="true" [controlName]="'referenceType'"
+                                        (changeType)="selectReferenceType($event)"></pl-reference-type-select>
+              <pl-errors-message [control]="referenceType"></pl-errors-message>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <label class="control-label">{{'referencias-credito.numero' | translate}}</label>
+            <div class="form-group required" [ngClass]="{ 'has-error': number.touched && number.invalid}">
+              <input type="text" name="number" formControlName="number" onkeydown="numbersOnly(event)"
+                     class="form-control" [(ngModel)]="credit.numero" [maxLength]="20"/>
+              <pl-errors-message [control]="number"></pl-errors-message>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <label class="control-label">{{'referencias-credito.limite' | translate}}</label>
+            <div class="form-group required" [ngClass]="{ 'has-error': limit.touched && limit.invalid}">
+              <input type="text" name="limit" min="0" class="form-control" formControlName="limit"
+                     [(ngModel)]="credit.limite" [maxLength]="7" onkeydown="numbersOnlyWithDecimal(this, event);"
+                     onblur="applyMoneyPattern(this, '');" onfocus="removeMoneyMask(this);"/>
+              <pl-errors-message>
+                <div *ngIf="limit.hasError('minlength')"><span>{{'messages.minlength' | translate}}</span> 8</div>
+                <div *ngIf="limit.hasError('maxlength')"><span>{{'messages.maxlength' | translate}}</span> 8</div>
+              </pl-errors-message>
+            </div>
+          </div>
+          <div class="col-lg-10 required" [ngClass]="{ 'has-error': concessionDate.touched && concessionDate.invalid}">
+            <label class="control-label">{{'referencias-credito.fecha-concesion' | translate}}</label>
+            <div class="form-group form-inline">
+              <div class="input-group">
+                <sa-datepicker [(ngModel)]="concession" (ngModelChange)="changeDateConcession($event)"
+                               name="concessionDate"
+                               formControlName="concessionDate" [maxDate]="maxDate"
+                               [minDate]="minDate"></sa-datepicker>
+              </div>
+              <pl-errors-message [control]="concessionDate"></pl-errors-message>
+            </div>
+          </div>
+          <div class="col-lg-10 required">
+            <label class="control-label">{{'referencias-credito.fecha-vencimiento' | translate}}</label>
+            <div class="form-group form-inline">
+              <div class="input-group " [ngClass]="{ 'has-error': expireDate.touched && expireDate.invalid}">
+                <sa-datepicker [(ngModel)]="expire" (ngModelChange)="changeDateExpire($event)" name="expireDate"
+                               formControlName="expireDate" [maxDate]="maxDateExpire"
+                               [minDate]="concession"></sa-datepicker>
+              </div>
+              <pl-errors-message [control]="expireDate"></pl-errors-message>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row panel-buttons">
+      <div class="col-lg-12 text-right">
+        <button type="button" [disabled]="edit && formGroup.valid? isInvalidChange() : !formGroup.valid"
+                [ngClass]="edit ? 'btn btn-primary btn-radio' : 'btn btn-success btn-radio'"
+                (click)="addReference()" data-toggle="tooltip" data-placement="left"
+                attr.data-original-title="{{'tooltip.agregar-datos' | translate}}">
+          <i class="material-icons md-18">{{edit? 'done' : 'add'}}</i>{{edit? ('buttons.accept' | translate) : ('buttons.add' | translate)}}
+          <div class="ripple-container"></div>
+        </button>
+        <button type="button" [disabled]="!formGroup.valid" class="btn btn-danger btn-radio"
+                (click)="removeReference()"
+                *ngIf="edit" data-toggle="tooltip" data-placement="left"
+                attr.data-original-title="{{'tooltip.eliminar-datos' | translate}}">
+          <i class="material-icons md-18">delete</i> {{'buttons.delete' | translate}}
+          <div class="ripple-container"></div>
+        </button>
+        <button type="button" class="btn btn-danger btn-radio" *ngIf="edit" (click)="clean()"
+                data-toggle="tooltip"
+                data-placement="left"
+                attr.data-original-title="{{'tooltip.cancelar' | translate}}">
+          <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+          <div class="ripple-container"></div>
+        </button>
+      </div>
+    </div>
+    <div class="row panel-buttons">
+      <div class="col-lg-12">
+        <ng-template #actionsTemplate let-item="item">
+          <div class="btn-group-md">
+            <a id="delete-button-value" [ngClass]="item.modalidad == mode.I? 'btn btn-fab btn-fab-mini btn-primary btn-raised' :
+                                                item.modalidad == mode.U? 'btn btn-fab btn-fab-mini btn-warning btn-raised' :
+                                                item.modalidad == mode.D? 'btn btn-fab btn-fab-mini btn-danger btn-raised' :
+                                                'btn btn-fab btn-fab-mini btn-info btn-raised'"
+               [popover]="optionPopover" *ngIf="item.modalidad != null">
+              <i class="material-icons md-18">
+                {{item.modalidad == mode.I? 'add' : item.modalidad == mode.U? 'mode_edit' : item.modalidad ==
+                mode.D?
+                'delete' : 'add'}}
+              </i>
+              {{'table.restore-title' | translate}}
+              <div class="ripple-container"></div>
+            </a>
+          </div>
+          <popover-content #optionPopover
+                           title="{{'table.restore-title' | translate}}"
+                           placement="right"
+                           [animation]="true"
+                           [closeOnClickOutside]="true">
+            <button type="button" class="btn btn-primary btn-raised" [disabled]="item.modalidad == mode.I"
+                    (click)="restoreReference(item)">
+              <i class="material-icons md-18">delete</i> {{'buttons.accept' | translate}}
+              <div class="ripple-container"></div>
+            </button>
+          </popover-content>
+        </ng-template>
+        <sa-data-table [pager]="undefined" [actionTemplate]="editMode ? actionsTemplate : undefined"
+                       [data]="client.referencias.referenciasCredito" [useTableTemplate]="true"
+                       [heading]="editMode? headingEdit: heading" [values]="values" [useServicePager]="false"
+                       (rowSelected)="selectRecord($event)">
+        </sa-data-table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="panel-footer text-right col-lg-12">
+        <button type="button" [disabled]="false" class="btn btn-success btn-radio" *ngIf="!editMode" (click)="validateForm()"
+                data-toggle="tooltip" data-placement="left">
+          <i class="material-icons md-18">check</i> {{'buttons.accept' | translate}}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal fade" id="authorizationModalCredit" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><i class="material-icons md-18">check_circle</i>
+          {{'authorization.title' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <pl-authorization [authorization]="authorization"
+                          (changeAuthorization)="changeAuthorization($event)"></pl-authorization>
+      </div>
+    </div>
+  </div>
+</div>
+
+<simple-notifications [options]="options"></simple-notifications>

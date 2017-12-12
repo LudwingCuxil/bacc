@@ -1,0 +1,211 @@
+<div [ngBusy]="busy"></div>
+<form name="fixed-term-presented-form" autocomplete="off" role="form" (ngSubmit)="validateForm()"
+      [formGroup]="formGroup">
+  <div class="container-fluid animated fadeIn">
+    <div class="panel panel panel-custom">
+      <div class="panel-heading">
+        <h2 [translate]="'plazofijo.title'">{{'plazofijo.title' | translate}}</h2>
+      </div>
+      <div class="panel-body">
+        <div class="col-lg-6">
+          <div class="" *ngIf="validLoad">
+            <label class="control-label" [translate]="'plazofijo.plazodias'">{{'plazofijo.plazodias' |
+              translate}}</label>
+            <div class="form-group required" [ngClass]="{'has-error': deadline.touched && deadline.invalid}">
+              <pl-deadline-selected id="deadlineSelected" [formGroup]="formGroup"
+                                    [deadline]="account.plazoFijo?.plazoDias"
+                                    [subProduct]="account.subProducto?.plazoDias"
+                                    [term]="account.plazoFijo?.plazoDias"
+                                    (changeDeadline)="selectDeadline($event)"
+                                    [autocomplete]="true"></pl-deadline-selected>
+              <pl-errors-message [control]="deadline"></pl-errors-message>
+            </div>
+          </div>
+          <div class="">
+            <label class="control-label" [translate]="'plazofijo.vence'">{{'plazofijo.vence' | translate}}</label>
+            <div class="form-group form-inline" id="dateRangePicker2"
+                 [ngClass]="{'has-error': expired.touched && expired.invalid}">
+              <div class="input-group">
+                <sa-datepicker [(ngModel)]="bornDate" (ngModelChange)="changeExpired($event)" name="expired"
+                               formControlName="expired"
+                               [maxDate]="maxDate" [minDate]="minDate"></sa-datepicker>
+                <pl-errors-message [control]="expired"></pl-errors-message>
+              </div>
+            </div>
+          </div>
+          <div class="">
+            <label class="control-label" [translate]="'plazofijo.tasa'">{{'plazofijo.tasa' | translate}}</label>
+            <div class="form-group required" [ngClass]="{'has-error': rate.touched && rate.invalid}">
+              <input formControlName="rate" id="rate" type="text" class="form-control"
+                     [(ngModel)]="account.plazoFijo.tasa"
+                     [maxLength]="11" onkeydown="numbersOnlyWithDecimal(this, event);"
+                     onblur="applyPercentPattern(this, '');" onfocus="removeMoneyMask(this);"/>
+              <pl-errors-message [control]="rate"></pl-errors-message>
+            </div>
+          </div>
+          <div class="">
+            <div class="form-group">
+              <label class="control control--checkbox">
+                <input formControlName="debit" type="checkbox" id="debit" name="debit"
+                       [(ngModel)]="account.plazoFijo.debita" (ngModelChange)="debitValue()"/>
+                <label [translate]="'plazofijo.debitacuenta'" for="debit">{{'plazofijo.debitacuenta' |
+                  translate}}</label>
+                <div class="control__indicator"></div>
+              </label>
+            </div>
+          </div>
+          <div class="" *ngIf="account.plazoFijo.debita">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <label class="control-label" [translate]="'plazofijo.debitarcuenta'">{{'plazofijo.debitarcuenta' |
+                      translate}}</label>
+                    <div class="form-group required" *ngIf="account.moneda?.codigo"
+                         [ngClass]="{'has-error': accountDebit.touched && accountDebit.invalid}">
+                      <pl-account-selected id="accountSummarySelected" [formGroup]="formGroup"
+                                           [accountSummary]="account.plazoFijo.debitarCuenta"
+                                           [controlName]="'accountDebit'"
+                                           (changeAccountSummary)="selectAccountDebit($event)" [autocomplete]="true"
+                                           [documentType]="account.cliente?.id?.tipoIdentificacion"
+                                           [document]="account.cliente?.id?.identificacion"
+                                           [currency]="account.moneda?.codigo"></pl-account-selected>
+                      <pl-errors-message [control]="accountDebit"></pl-errors-message>
+                    </div>
+                  </div>
+                  <div class="col-lg-6" *ngIf="!editMode">
+                    <label class="control-label" [translate]="'plazofijo.monto'">{{'plazofijo.monto' |
+                      translate}}</label>
+                    <div class="form-group required" [ngClass]="{'has-error': amount.touched && amount.invalid}">
+                      <input formControlName="amount" id="amount" type="text" class="form-control"
+                             [(ngModel)]="account.plazoFijo.monto"
+                             [maxLength]="16" onkeydown="numbersOnlyWithDecimal(this, event);"
+                             onblur="applyMoneyPattern(this, '');" onfocus="removeMoneyMask(this);"/>
+                      <pl-errors-message [control]="amount"></pl-errors-message>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="">
+            <div class="panel panel-primary-custom">
+              <header class="panel-heading text-center">
+                <h3 [translate]="'plazofijo.instruccionescancelacion'">{{'plazofijo.instruccionescancelacion' |
+                  translate}}</h3>
+              </header>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="form-group">
+                      <label class="control control--checkbox">
+                        <input formControlName="automaticRenov" type="checkbox" id="automaticRenov"
+                               name="automaticRenov"
+                               [(ngModel)]="account.plazoFijo.renovacionAutomatica"
+                               (ngModelChange)="automaticRenovation()"/>
+                        <label [translate]="'plazofijo.renovacion'" for="automaticRenov">{{'plazofijo.renovacion' |
+                          translate}}</label>
+                        <div class="control__indicator"></div>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-lg-12">
+                    <label class="control-label" [translate]="'plazofijo.tasapenalizacion'">{{'plazofijo.tasapenalizacion'
+                      | translate}}</label>
+                    <div class="form-group" [ngClass]="{'has-error': penalty.touched && penalty.invalid}">
+                      <input formControlName="penalty" id="penalty" type="text" class="form-control"
+                             [(ngModel)]="account.plazoFijo.tasaPenalizacion"
+                             [maxLength]="10" onkeydown="numbersOnlyWithDecimal(this, event);"
+                             onblur="applyPercentPattern(this, '');" onfocus="removeMoneyMask(this);"/>
+                      <pl-errors-message [control]="penalty"></pl-errors-message>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="" *ngIf="!account.plazoFijo.renovacionAutomatica">
+            <div class="panel panel-primary-custom">
+              <header class="panel-heading text-center">
+                <h3 [translate]="'plazofijo.formapagocapital'">{{'plazofijo.formapagocapital' | translate}}</h3>
+              </header>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="panel panel-custom panel--radio-check">
+                      <div class="panel-body">
+                        <div *ngFor="let payForm of paymentFormList" class="col-lg-12">
+                          <label class="control control--radio">
+                            <input type="radio" id="{{payForm.id.tipo.codigo}}"
+                                   name="paymentForm" formControlName="paymentForm"
+                                   [checked]="payForm.id.tipo.selected" [value]="payForm.id.tipo.selected"
+                                   (click)="changePaymentForm(payForm)" [disabled]="editMode">
+                            {{payForm?.id?.tipo?.descripcion}}
+                            <div class="control__indicator"></div>
+                          </label>
+                        </div>
+                      </div>
+                      <pl-errors-message [control]="paymentForm"></pl-errors-message>
+                    </div>
+                  </div>
+                  <div class="col-lg-6" *ngIf="account.plazoFijo.formaPagoCapital.id.tipo.codigo === param_notcre">
+                    <label class="control-label" [translate]="'plazofijo.cuentapagocapital'">{{'plazofijo.cuentapagocapital'
+                      | translate}}</label>
+                    <div class="form-group" *ngIf="account.moneda?.codigo"
+                         [ngClass]="{'has-error': accountCapital.touched && accountCapital.invalid}">
+                      <pl-account-selected id="accountCapitalSelected" [formGroup]="formGroup"
+                                           [accountSummary]="account.plazoFijo.cuentaPagoCapital"
+                                           [controlName]="'accountCapital'"
+                                           (changeAccountSummary)="selectAccountCapital($event)" [autocomplete]="true"
+                                           [documentType]="account.cliente?.id?.tipoIdentificacion"
+                                           [document]="account.cliente?.id?.identificacion"
+                                           [currency]="account.moneda?.codigo"></pl-account-selected>
+                      <pl-errors-message [control]="accountCapital"></pl-errors-message>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer text-right col-lg-10" *ngIf="deadline.enabled">
+        <div class="row">
+          <button type=button (click)="editMode? cancelDocuments() : cancel()"
+                  class="btn btn-danger btn-radio animated bounceIn"
+                  data-toggle="tooltip" data-placement="top" translate
+                  translate-attr-data-original-title="buttons.cancel">
+            <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+            <div class="ripple-container"></div>
+          </button>
+          <button type="submit" [disabled]="!formGroup.valid"
+                  class="btn btn-success btn-radio animated bounceIn"
+                  data-toggle="tooltip" data-placement="top" translate
+                  translate-attr-data-original-title="buttons.continue">
+            {{'buttons.continue' | translate}} <i class="material-icons md-18">chevron_right</i>
+            <div class="ripple-container"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<cancel-confirmation [account]="true"></cancel-confirmation>
+<div class="modal fade" id="authorizationModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><i class="material-icons md-18">check_circle</i>
+          {{'authorization.title' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <pl-authorization [authorization]="authorization"
+                          (changeAuthorization)="changeAuthorization($event)"></pl-authorization>
+      </div>
+    </div>
+  </div>
+</div>

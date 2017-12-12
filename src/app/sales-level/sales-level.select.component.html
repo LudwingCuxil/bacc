@@ -1,0 +1,19 @@
+<div [formGroup]="formGroup">
+  <select id="salesLevelSelected" [formControlName]="controlName" [(ngModel)]="salesLevel"  (ngModelChange)="onChangeObj($event)" class="form-control" required *ngIf="!autocomplete">
+    <option *ngFor="let p of salesLevels" [ngValue]="p">{{showNationality ? p.descripcion : p.descripcion}}</option>
+  </select>
+
+  <ng-template #rt let-r="result" let-t="term" style="width: 96%">
+    {{ r.descripcion }}
+  </ng-template>
+
+  <input 
+      [(ngModel)]="salesLevel" 
+      [formControlName]="controlName"
+      [ngbTypeahead]="search" 
+      [resultTemplate]="rt" 
+      [inputFormatter]="formatter"
+      (focus)="openAll($event)"
+         class="form-control" style="text-transform: uppercase" required *ngIf="autocomplete"
+         (selectItem)="onChangeObj($event)" />
+</div>

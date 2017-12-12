@@ -1,0 +1,13 @@
+<div [formGroup]="formGroup">
+  <select id="economicGroupSelected" [formControlName]="controlName" [(ngModel)]="economicGroup" (ngModelChange)="onChangeObj($event)" class="form-control" *ngIf="!autocomplete">
+    <option *ngFor="let p of economicGroups" [ngValue]="p">{{p.descripcion}}</option>
+  </select>
+
+  <ng-template #rt let-r="result" let-t="term" style="width: 96%">
+    {{ r.descripcion }}
+  </ng-template>
+
+  <input (focus)="openAll($event)" [(ngModel)]="economicGroup" [formControlName]="controlName" [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="formatter"
+         class="form-control" style="text-transform: uppercase" *ngIf="autocomplete"
+         (selectItem)="onChangeObj($event)" />
+</div>

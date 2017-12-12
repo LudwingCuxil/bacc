@@ -1,0 +1,143 @@
+server:
+  port: 8080
+  context-path: /services
+spring:
+  profiles:
+    active: default
+    
+---
+
+spring:
+  application:
+    name: services
+  datasource:
+    url: jdbc:as400://172.16.10.240/;libraries=CLBT54DAT;prompt=false
+    username: PLATAFORMA
+    password: PLATAFORMA
+    driver-class-name: com.ibm.as400.access.AS400JDBCDriver
+  jpa:
+    database-platform: org.hibernate.dialect.DB2AS400Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate.dialect: org.hibernate.dialect.DB2AS400Dialect
+  jmx:
+    enabled: false
+  aop:
+    proxy-target-class: true 
+security:
+  basic:
+    realm: api-security
+  oauth2:
+    resource:
+      filter-order: 3
+web-app:
+  auth:
+    prefer-encoder: false
+    access-token-validity-seconds: 43200  
+    refresh-token-validity-seconds: 2592000
+  jndi:
+    as400-auth: 172.16.10.240
+    as400-host: 172.16.10.240
+    as400-user: PLATAFORMA
+    as400-pass: PLATAFORMA
+  queue:
+    lib: DPBT54DTQ
+    lib-huella-foto: DPBT54DTQ
+    time-out: 30
+    input-forma-en-blanco: PLTFORI
+    input-huella: FYHDQO
+    input-debito-por-apertura: PLATADMI
+    input-autorizacion-remota: PLAUTRI
+    input-genera-indice: PLGIDXI
+    output-forma-en-blanco: PLTFORO
+    output-huella: FYHDQI
+    output-debito-por-apertura: PLATADMO
+    output-autorizacion-remota: PLAUTRO
+  keystore:
+    name: plataforma.jks
+    password: PLATAFORMA
+    alias-name: plataforma-alias
+    alias-password: PLATAFORMA-ALIAS
+   
+---
+
+spring:
+  profiles: test-swagger
+security:
+  oauth2:
+    resource:
+      filter-order: 2147483639
+web-app:
+  auth:
+    prefer-encoder: true
+    
+---
+
+spring:
+  profiles: default-bantrab
+  datasource:
+    url: jdbc:as400://206.60.106.125/;libraries=YCLIDAT;prompt=false
+    username: GMURALLES
+    password: bytesa17
+web-app:
+  auth:
+    support-multiple-sessions: false
+    access-token-validity-seconds: 43200  
+    refresh-token-validity-seconds: 2592000
+  jndi:
+    as400-auth: 206.60.106.125
+    as400-host: 206.60.106.125
+    as400-user: GMURALLES
+    as400-pass: bytesa17
+  queue:
+    lib: YDP054DQ
+    lib-huella-foto: YDP054DQ
+    
+---
+
+spring:
+  profiles: bantrab-test-swagger
+  datasource:
+    url: jdbc:as400://206.60.106.125/;libraries=YCLIDAT;prompt=false
+    username: GMURALLES
+    password: bytesa17
+security:
+  oauth2:
+    resource:
+      filter-order: 2147483639
+web-app:
+  auth:
+    prefer-encoder: true
+    support-multiple-sessions: false
+  jndi:
+    as400-auth: 206.60.106.125
+    as400-host: 206.60.106.125
+    as400-user: GMURALLES
+    as400-pass: bytesa17
+  queue:
+    lib: YDP054DQ
+    lib-huella-foto: YDP054DQ
+    
+---
+
+spring:
+  profiles: prod-bantrab
+  datasource:
+    url: jdbc:as400://206.60.106.2/;libraries=CLIDAT;prompt=false
+    username: PLTGRAFICA
+    password: PLGR2017
+web-app:
+  auth:
+    support-multiple-sessions: false
+    access-token-validity-seconds: 43200  
+    refresh-token-validity-seconds: 2592000
+  jndi:
+    as400-auth: 206.60.106.2
+    as400-host: 206.60.106.2
+    as400-user: PLTGRAFICA
+    as400-pass: PLGR2017
+  queue:
+    lib: DP054DTQ
+    lib-huella-foto: CLIPGM

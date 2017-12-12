@@ -1,0 +1,11 @@
+/*/////////////////////////// FOOTER BTN ///////////////////////////////*/
+
+.btn-footer {
+  position: fixed;
+  bottom: 15px;
+  background-color: #F1F6FA;
+  right: 0px;
+  bottom: 0px;
+  padding: 10px 30px;
+  text-align: right;
+}

@@ -1,0 +1,6 @@
+<select id="typedocSelect"   [(ngModel)]="typedoc.codigo" class="form-control" [disabled]="modeView || modeDelete || disabled" required *ngIf="!autocomplete">
+  <option *ngFor="let p of typedocs" [ngValue]="p.codigo">{{p.descripcion}}</option>
+</select>
+
+
+<input auto-complete [(ngModel)]="typedoc.descripcion" select-value-of="descripcion" max-num-List="20" [source]="typedocs" class="form-control" [disabled]="disabled" required *ngIf="autocomplete" list-formatter="descripcion" (valueChanged)="onChangeObj($event)"/>

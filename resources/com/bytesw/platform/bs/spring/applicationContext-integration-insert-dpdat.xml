@@ -1,0 +1,948 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:int="http://www.springframework.org/schema/integration" 
+	xmlns:int-jdbc="http://www.springframework.org/schema/integration/jdbc"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" 
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/integration/jdbc http://www.springframework.org/schema/integration/jdbc/spring-integration-jdbc.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+		
+	<!-- SCHEMA -->
+	
+	<util:constant id="CLPAR" static-field="com.bytesw.platform.utilities.Schema.CLPAR" />
+	<util:constant id="DPPAR" static-field="com.bytesw.platform.utilities.Schema.DPPAR" />
+	
+	<util:constant id="CLDAT" static-field="com.bytesw.platform.utilities.Schema.CLDAT" />
+	<util:constant id="DPDAT" static-field="com.bytesw.platform.utilities.Schema.DPDAT" />
+	
+	<util:constant id="BTRAB" static-field="com.bytesw.platform.utilities.Schema.BTRAB" />
+
+	<!-- GRABAR CUENTA -->
+	
+    <int:gateway id="cuentaIntegrationDao" service-interface="com.bytesw.platform.bs.dao.depositos.CuentaDao">
+    	<int:method name="getCajeroInformacion" request-channel="getCajeroInformacionRequestChannel" request-timeout="5000" reply-channel="getCajeroInformacionReplyChannel" reply-timeout="5000" />
+    	<int:method name="getCorrelativo" request-channel="getCorrelativoRequestChannel" request-timeout="5000" reply-channel="getCorrelativoReplyChannel" reply-timeout="5000" payload-expression="#args" />
+    	<int:method name="saveCorrelativo" request-channel="saveCorrelativoRequestChannel" request-timeout="5000" reply-channel="saveCorrelativoReplyChannel" reply-timeout="5000" payload-expression="#args" />
+    	<int:method name="updateCorrelativo" request-channel="updateCorrelativoRequestChannel" request-timeout="5000" payload-expression="#args" />
+    	<int:method name="existeCorrelativo" request-channel="existeCorrelativoRequestChannel" request-timeout="5000" reply-channel="existeCorrelativoReplyChannel" reply-timeout="5000" payload-expression="#args" />
+    	<int:method name="getListaCorrelativo" request-channel="getListaCorrelativoRequestChannel" request-timeout="5000" reply-channel="getListaCorrelativoReplyChannel" reply-timeout="5000" payload-expression="#args" />
+    	<int:method name="getSiguienteCorrelativoBeneficiario" request-channel="getSiguienteCorrelativoBeneficiarioRequestChannel" request-timeout="5000" reply-channel="getSiguienteCorrelativoBeneficiarioReplyChannel" reply-timeout="5000" />
+    	<int:method name="getSiguienteCorrelativoBeneficiarioFinal" request-channel="getSiguienteCorrelativoBeneficiarioFinalRequestChannel" request-timeout="5000" reply-channel="getSiguienteCorrelativoBeneficiarioFinalReplyChannel" reply-timeout="5000" />
+    	<int:method name="getSiguienteCorrelativoFirma" request-channel="getSiguienteCorrelativoFirmaRequestChannel" request-timeout="5000" reply-channel="getSiguienteCorrelativoFirmaReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveCuenta" request-channel="saveCuentaRequestChannel" request-timeout="5000" reply-channel="saveCuentaReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveCuentaInfoAdicional" request-channel="saveCuentaInfoAdicionalRequestChannel" request-timeout="5000" />
+    	<int:method name="saveCuentaInfoChequera" request-channel="saveCuentaInfoChequeraRequestChannel" request-timeout="5000" />
+    	<int:method name="saveCuentaPersonaChequera" request-channel="saveCuentaPersonaChequeraRequestChannel" request-timeout="5000" />
+    	<int:method name="saveBeneficiario" request-channel="saveBeneficiarioRequestChannel" request-timeout="5000" reply-channel="saveBeneficiarioReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveCuentaMancomunada" request-channel="saveCuentaMancomunadaRequestChannel" request-timeout="5000" reply-channel="saveCuentaMancomunadaReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveFirma" request-channel="saveFirmaRequestChannel" request-timeout="5000" reply-channel="saveFirmaReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveCuentaPlazoFijo" request-channel="saveCuentaPlazoFijoRequestChannel" request-timeout="5000" />
+    	<int:method name="saveCuentaTasaInteresCertificado" request-channel="saveCuentaTasaInteresCertificadoRequestChannel" request-timeout="5000" />
+    	<int:method name="savePlanFuturoCreceEncabezado" request-channel="savePlanFuturoCreceEncabezadoRequestChannel" request-timeout="5000" reply-channel="savePlanFuturoCreceEncabezadoReplyChannel" reply-timeout="5000" />
+    	<int:method name="savePlanFuturoCreceDetalle" request-channel="savePlanFuturoCreceDetalleRequestChannel" request-timeout="5000" payload-expression="#args" />
+    	<int:method name="saveCuentaSolicitudChequera" request-channel="saveCuentaSolicitudChequeraRequestChannel" request-timeout="5000" />
+    	<int:method name="saveBeneficiarioFinal" request-channel="saveBeneficiarioFinalRequestChannel" request-timeout="5000" reply-channel="saveBeneficiarioFinalReplyChannel" reply-timeout="5000" />
+    	<int:method name="saveServicioElectronico" request-channel="saveServicioElectronicoRequestChannel" request-timeout="5000" />
+		<int:method name="saveCuentaTraslado" request-channel="saveCuentaTrasladoRequestChannel" request-timeout="5000" />
+    	<int:method name="updateNombre" request-channel="updateNombreCuentaRequestChannel" request-timeout="5000" />
+    	<int:method name="updateDatoGeneral" request-channel="updateDatoGeneralRequestChannel" request-timeout="5000" />
+    	<int:method name="updateDatoGeneralAdicional" request-channel="updateDatoGeneralAdicionalRequestChannel" request-timeout="5000" />
+    	<int:method name="updateCuentaInfoChequera" request-channel="updateCuentaInfoChequeraRequestChannel" request-timeout="5000" />
+    	<int:method name="updateCuentaPersonaChequera" request-channel="updateCuentaPersonaChequeraRequestChannel" request-timeout="5000" />
+    	<int:method name="updateDatoInteres" request-channel="updateDatoInteresRequestChannel" request-timeout="5000" />
+    	<int:method name="updateBeneficiario" request-channel="updateBeneficiarioRequestChannel" request-timeout="5000" />
+    	<int:method name="updateBeneficiarioFinal" request-channel="updateBeneficiarioFinalRequestChannel" request-timeout="5000" />
+    	<int:method name="updateFirmaEncabezado" request-channel="updateFirmaEncabezadoRequestChannel" request-timeout="5000" />
+    	<int:method name="updateFirma" request-channel="updateFirmaRequestChannel" request-timeout="5000" />
+    	<int:method name="updateCuentaInfoAdicional" request-channel="updateCuentaInfoAdicionalRequestChannel" request-timeout="5000" />
+    	<int:method name="updateCuentaMancomunada" request-channel="updateCuentaMancomunadaRequestChannel" request-timeout="5000" />
+    	<int:method name="deleteCuentaPersonaChequera" request-channel="deleteCuentaPersonaChequeraRequestChannel" request-timeout="5000" />
+    	<int:method name="deleteBeneficiario" request-channel="deleteBeneficiarioRequestChannel" request-timeout="5000" />
+    	<int:method name="deleteBeneficiarioFinal" request-channel="deleteBeneficiarioFinalRequestChannel" request-timeout="5000" />
+    	<int:method name="deleteFirma" request-channel="deleteFirmaRequestChannel" request-timeout="5000" />
+    	<int:method name="deleteServicioElectronico" request-channel="deleteServicioElectronicoRequestChannel" request-timeout="5000" />
+    	<int:method name="deleteCuentaMancomunada" request-channel="deleteCuentaMancomunadaRequestChannel" request-timeout="5000" />
+		<int:method name="deleteCuentasTraslados" request-channel="deleteCuentasTrasladosRequestChannel" request-timeout="5000" />
+    	<int:method name="saveLogReimpresion" request-channel="saveLogReimpresionRequestChannel" request-timeout="5000" />
+    </int:gateway>
+	
+	<!-- CAJERO INFORMACION  -->
+	
+	<int:channel id="getCajeroInformacionRequestChannel" />
+	<int:channel id="getCajeroInformacionReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="cajeroInformacionGateway" data-source="dataSource" 
+		request-channel="getCajeroInformacionRequestChannel" reply-channel="getCajeroInformacionReplyChannel" requires-reply="false"
+		query="#{sqlSelectCajeroInformacion}"		
+		row-mapper="cajeroMapper">
+	</int-jdbc:outbound-gateway>
+	<bean id="sqlSelectCajeroInformacion" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				SELECT caj.CAJCOD codigo, TRIM(caj.CAJNOM) nombre, caj.DPAGEN agencia, age.CLAGNO nombreAgencia, caj.CAJJOR jornada, caj.DPTCOD tipoCajero, caj.CACLAV claveCajero, caj.CAJEMP numeroEmpleado, caj.CAJSTA estado, caj.DEPCOD departamento, caj.CORCOD corporacion, caj.EPRCOD empresa, TRIM(caj.CAJUSR) usuario, fun.EMPCOD empresaFuncionario, fun.CLSUCO codigoFuncionario, TRIM(fun.CLSUNO) nombreFuncionario, fun.CLNSCO nivelFuncionario 
+				FROM #{DPPAR}.DPCAJE caj 
+				LEFT JOIN #{CLPAR}.CLFUNC fun ON fun.MNCUPR = caj.CAJUSR AND fun.CLSUES = 'A'
+				LEFT JOIN #{CLPAR}.CLAGEN age ON age.CLAGCD = caj.DPAGEN
+				WHERE lower(caj.CAJUSR) = lower(:payload)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+
+	<!-- RECUPERA CORRELATIVO  -->
+	
+	<int:channel id="getCorrelativoRequestChannel" />
+	<int:channel id="getCorrelativoReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="correlativoGateway" data-source="dataSource" 
+		request-channel="getCorrelativoRequestChannel" reply-channel="getCorrelativoReplyChannel" requires-reply="false"
+		query="#{sqlSelectCorrelativo}"		
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean id="sqlSelectCorrelativo" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				SELECT DPCORR 
+				FROM #{DPDAT}.DPCCAP 
+				WHERE PRTIPO = :payload[0] 
+				AND DPAGEN = :payload[1] 
+				WITH RS USE AND KEEP EXCLUSIVE LOCKS
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- GRABA Y RECUPERA CORRELATIVO  -->
+	
+	<int:channel id="saveCorrelativoRequestChannel" />
+	<int:channel id="saveCorrelativoReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveCorrelativoGateway" data-source="dataSource" 
+		request-channel="saveCorrelativoRequestChannel" reply-channel="saveCorrelativoReplyChannel" requires-reply="false"
+		update="#{sqlInsertCorrelativo}" 
+		query="SELECT DPCORR FROM #{DPDAT}.DPCCAP WHERE PRTIPO = :payload[0] AND DPAGEN = :payload[1] WITH RS USE AND KEEP EXCLUSIVE LOCKS"
+		row-mapper="integerMapper" keys-generated="true">
+	</int-jdbc:outbound-gateway>
+	<bean id="sqlInsertCorrelativo" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{DPDAT}.DPCCAP (
+					PRTIPO, DPAGEN, DPCORR)
+				VALUES (
+					:payload[0], :payload[1], 0)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- ACTUALIZA CORRELATIVO  -->
+	
+	<int:channel id="updateCorrelativoRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateCorrelativoAdapter" data-source="dataSource"
+		channel="updateCorrelativoRequestChannel" query="#{sqlUpdateCorrelativo}">
+	</int-jdbc:outbound-channel-adapter>
+	<bean id="sqlUpdateCorrelativo" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{DPDAT}.DPCCAP
+				SET DPCORR = :payload[2]
+				WHERE PRTIPO = :payload[0] AND DPAGEN = :payload[1]
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- VERIFICA SI EXISTE CORRELATIVO  -->
+	
+	<int:channel id="existeCorrelativoRequestChannel" />
+	<int:channel id="existeCorrelativoReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="existeCorrelativoGateway" data-source="dataSource" 
+		request-channel="existeCorrelativoRequestChannel" reply-channel="existeCorrelativoReplyChannel" requires-reply="false"
+		query="SELECT COUNT(*) FROM #{DPDAT}.DPCTAS WHERE PRTIPO = :payload[0] AND DPAGEN = :payload[1] AND DPCORR = :payload[2]"		
+		row-mapper="booleanMapper">
+	</int-jdbc:outbound-gateway>
+	
+	<!-- RECUPERA LISTA DE CORRELATIVOS  -->
+	
+	<int:channel id="getListaCorrelativoRequestChannel" />
+	<int:channel id="getListaCorrelativoReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="getListaCorrelativoGateway" data-source="dataSource" 
+		request-channel="getListaCorrelativoRequestChannel" reply-channel="getListaCorrelativoReplyChannel" requires-reply="false"
+		query="SELECT DPCORR FROM #{DPDAT}.DPCTAS WHERE PRTIPO = :payload[0] AND DPAGEN = :payload[1] AND DPCORR > :payload[2] FETCH FIRST 1000 ROWS ONLY"	
+	 	row-mapper="integerMapper" max-rows-per-poll="1000">
+	</int-jdbc:outbound-gateway>
+	
+	<!-- CUENTA -->
+	
+	<int:channel id="saveCuentaRequestChannel" />
+	<int:channel id="saveCuentaReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveCuentaGateway" data-source="dataSource" 
+		request-channel="saveCuentaRequestChannel" reply-channel="saveCuentaReplyChannel" update="#{sqlInsertCuenta}" 
+		query="SELECT COUNT(*) 
+		       FROM #{DPDAT}.DPCTAS cuenta 
+		       WHERE cuenta.PRTIPO = :payload.digitoIdentificador 
+		       AND cuenta.DPAGEN = :payload.agencia 
+		       AND cuenta.DPCORR = :payload.correlativo 
+		       AND cuenta.DPDIVE = :payload.digitoVerificador"
+		row-mapper="integerMapper" keys-generated="true">
+	</int-jdbc:outbound-gateway>
+	<bean id="sqlInsertCuenta" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{DPDAT}.DPCTAS (
+					PRTIPO, DPAGEN, DPCORR,
+					DPDIVE, CTEDIT, PRCODP, 
+					TIPPRO, PRSUBP, CTFLAG, 
+					CTNOM,  CTLIBE, CTSTA,
+					CANCOD, CTMANE, CTTIPO, 
+					CTUSER, CLRESP, CLRESA,
+					CLTDOC, CLDOC,  CTFIRM,
+					CTCFRE, CTMICR, CTCHRE,
+					CTLOEX, CTPOSP, CTCORP,
+					CTEMPR, CTNEMP, TASSBG,
+					CTGRUP, CTAUEM, CTMUEM,
+					CTDUEM, CTASEM, CTMSEM,
+					CTDSEM, CTCSBM, CTCSBA,
+					CTVMTR, CTSDIN, CTINAC,
+					CTINPE, TRTIPO, TRCTA,
+					CTMAS,  CTSOBR, CTAAPE,
+					CTMAPE, CTDAPE, CTARAC,
+					CTMRAC, CTDRAC, CTACAN,
+					CTMCAN, CTDCAN, CTAINA,
+					CTMINA, CTDINA, CTAEMB,
+					CTMEMB, CTDEMB, CTAUMO,
+					CTMUMO, CTDUMO, CTAUPI,
+					CTMUPI, CTDUPI, CTT001,
+					CTT002, CTT003, CTT004,
+					CTT005, CTT006, CTT007,
+					CTT008, CTT009, CTT010,
+					CTT011, CTT012, CTT013,
+					CTT014, CTT015, CTT016,
+					CTT017, CTT018, CTT019,
+					CTT020, CTT021, CTT022,
+					CTT023, CTT024, CTT025,
+					CTT026, CTT027, CTT028,
+					CTT029, CTT030, CTT031,
+					CTT032, CTT033, CTT034,
+					CTT035, CTT036, CTT037,
+					CTT038, CTT039, CTT040,
+					CTT041, CTT042, CTT043,
+					CTT044, CTT045, CTT046,
+					CTT047, CTT048, CTT049,
+					CTT050, CTT051, CTT052,
+					CTT053, CTT054, CTT055,
+					CTT056, CTT057, CTT058,
+					CTT059, CTT060, CTT061,
+					CTT062, CTT063, CTT064,
+					CTT065, CTT066, CTT067,
+					CTT068, CTT069, CTT070,
+					CTT071, CTT072, CTT073,
+					CTT074, CTT075, CTT076,
+					CTT077, CTT078, CTT079,
+					CTT080, CTRES1, CTRES2,
+					CTRES3, CTRES4, CTRES5,
+					PRTIAI, DPAGAI, DPCOAI,
+					DPDIAI, CTIMCH, DPCPRO,
+					DPVAPE, DPFOAT, DPCARE,
+					DPULTT, DPFOCS, DPCODC,
+					DPAISR, DPCAPM, DPSECO,
+					DPACTE, AGENCI, CTCTGR,
+					CTGRCO, CTSTPA, CTAGRE,
+					CTINCO, CTEMIN, CTNULI,
+					MONCOD, CTCTRX, CTCPOS,
+					CTINRE, CTININ, CTTIRS,
+					CTTDPE, CTDOPE, CTPARE,
+					CTTAAS, TFCODI, CTGRDB)
+				VALUES (
+					:payload.digitoIdentificador, :payload.agencia, :payload.correlativo, 
+					:payload.digitoVerificador, :payload.numeroCuenta, :payload.valorProducto, 
+					:payload.valorTipoProducto, :payload.valorSubProducto, :payload.productoEspecial, 
+					:payload.datoGeneral.nombreRecortado, :payload.extravios, :payload.estado,
+					:payload.causaCancelacion, :payload.datoGeneral.manejoCorrespondiente, :payload.datoGeneral.valorTipoCuenta, 
+					:payload.usuarioAperturo, :payload.datoGeneral.oficialCuentas.id.codigo, :payload.datoGeneral.funcionarioResponsable.id.codigo, 
+					:payload.cliente.id.tipoIdentificacion, :payload.cliente.id.identificacion, :payload.firma.firmasRegistradas, 
+					:payload.firma.firmasParaGirar, :payload.referencia, :payload.numeroChequesRechazados,
+					:payload.bloqueada, :payload.numeroPosteosPendientes, :payload.corporacion,
+					:payload.empresa, :payload.numeroEmpleado, :payload.tasaSobreGiro,
+					:payload.grupoEmision, :payload.anioUltimaEmision, :payload.mesUltimaEmision,
+	 				:payload.diaUltimaEmision, :payload.anioSiguienteEmision, :payload.mesSiguienteEmision,
+		 			:payload.diaSiguienteEmision, :payload.cargoPorSobreGiroPeriodo, :payload.cargoPorSobreGiroAcumulado,
+		 			:payload.valorMinimoTraslado, :payload.saldoUltimaEmision, :payload.interesAcumulado,
+		 			:payload.interesPeriodo, 0, 0,
+					'', '', :payload.anioApertura,
+					:payload.mesApertura, :payload.diaApertura, 0,
+					0, 0, 0,
+					0, 0, 0,
+					0, 0, 0,
+					0, 0, :payload.anioUltimoMovimiento,
+					:payload.mesUltimoMovimiento, :payload.diaUltimoMovimiento, 0,
+					0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 
+					0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 
+					0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 
+					0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 
+					0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 
+					0, :payload.reserva1, :payload.reserva2,
+					:payload.reserva3, :payload.reserva4, :payload.valorLibretaAutomatica,
+					:payload.datoInteres.aiDigitoIdentificador, :payload.datoInteres.aiAgencia, :payload.datoInteres.aiCorrelativo,
+					:payload.datoInteres.aiDigitoVerificador, :payload.usoChequera, 0,
+					:payload.datoGeneral.valorApertura, 1, :payload.cancelacionPorRechazo,
+					0, 2, :payload.datoGeneral.direccion.codigo,
+					:payload.datoGeneral.stringAfectaIsr, :payload.datoGeneral.stringCargoPorManejoCuenta, :payload.datoGeneral.sectorEconomico.codigo,
+					:payload.datoGeneral.actividadEconomica.codigo, :payload.agenciaApertura, :payload.datoGeneral.grupoEconomico.id.tipoGrupo,
+					:payload.datoGeneral.grupoEconomico.id.grupo, '', :payload.datoGeneral.agenciaRetencion,
+					:payload.instContab, :payload.cliente.tipoPersonaString, :payload.numeroLibreta,
+					:payload.valorMoneda, 0, 0,
+					:payload.interesesReinv, :payload.interesesInt, :payload.tasaSpread,
+					'', '', '',
+					:payload.tasaAsignada, :payload.datoInteres.valorFormaPago, 0)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- DATOS ADICIONALES -->
+	
+	<int:channel id="saveCuentaInfoAdicionalRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="saveCuentaInfoAdicionalAdapter" data-source="dataSource" channel="saveCuentaInfoAdicionalRequestChannel"
+		query="#{sqlInsertCuentaInfoAdicional}">
+	</int-jdbc:outbound-channel-adapter>
+	<bean id="sqlInsertCuentaInfoAdicional" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{DPDAT}.DPCTAAD (
+					PRTIPO, DPAGEN, DPCORR,
+					DPDIVE, CDFOAP, PRFOAP,
+					CDFOUT, PRFOUT, MOESDE,
+					OSBER1, OSBER2, OSBER3,
+					OSBER4, OSBER5, OSBER6,
+					CONIG1, CONIG2, CONIG3,
+					CONIG4)
+				VALUES (
+		   			:payload.digitoIdentificador, :payload.agencia, :payload.correlativo, 
+				    :payload.digitoVerificador, :payload.datoGeneral.abrirLaCuenta.codigo, :payload.datoGeneral.abrirLaCuenta.descripcion, 
+				    :payload.datoGeneral.utilizarEnCuenta.codigo, :payload.datoGeneral.utilizarEnCuenta.descripcion, :payload.datoGeneral.montoDepositos,
+				    :payload.firma.condiciones1, :payload.firma.condiciones2, :payload.firma.condiciones3,
+				    :payload.firma.condiciones4, :payload.firma.condiciones5, :payload.firma.condiciones6, 
+				    0, 0, 0, 
+				    0)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- DATOS CHEQUERA -->
+	
+	<int:channel id="saveCuentaInfoChequeraRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="saveCuentaInfoChequeraAdapter" data-source="dataSource" channel="saveCuentaInfoChequeraRequestChannel"
+		query="#{sqlInsertCuentaInfoChequera}">
+	</int-jdbc:outbound-channel-adapter>
+	<bean id="sqlInsertCuentaInfoChequera" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{DPDAT}.DPINFCHE (
+					PRTIPO, DPAGEN, DPCORR,
+					DPDIVE, DPNOCH, DPDICH,
+					DPTECH)
+				VALUES (
+		   			:payload.digitoIdentificador, :payload.agencia, :payload.correlativo, 
+		   			:payload.digitoVerificador, :payload.datoChequera.nombre, :payload.datoChequera.direccion, 
+		   			:payload.datoChequera.telefono)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- PERSONAS A RECOGER CHEQUERA -->
+	
+	<int:channel id="saveCuentaPersonaChequeraRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="saveCuentaPersonaChequeraAdapter" data-source="dataSource" channel="saveCuentaPersonaChequeraRequestChannel"
+		query="#{sqlInsertCuentaPersonaChequera}">
+	</int-jdbc:outbound-channel-adapter>
+	<bean id="sqlInsertCuentaPersonaChequera" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{DPDAT}.DPFRCH (
+					PRTIPO, DPAGEN, DPCORR,
+					DPDIVE, FCHTDO, FCHDOC,
+					FCHNOM)
+				VALUES (
+		   			:payload.digitoIdentificador, :payload.agencia, :payload.correlativo, 
+		   			:payload.digitoVerificador, :payload.tipoDocumento.codigo, :payload.numeroDocumento, 
+		   			:payload.nombreRecortado)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- BENEFICIARIOS -->
+	
+	<int:channel id="saveBeneficiarioRequestChannel" />
+	<int:channel id="saveBeneficiarioReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveBeneficiarioGateway" data-source="dataSource" 
+		request-channel="saveBeneficiarioRequestChannel" reply-channel="saveBeneficiarioReplyChannel" requires-reply="false" update="#{sqlInsertBeneficiario}"
+		query="SELECT '' AS tipoIdentificacion, '' AS identificacion, bnac.BETDOC AS tipoDeIdentificacion, bnac.BENUID AS numeroIdentificacion, bnac.BENOMB AS nombre, 'BENEFICIARIO' AS relacion 
+		       FROM #{DPDAT}.DPBNAC bnac
+		       WHERE bnac.PRTIPO = :payload.digitoIdentificador 
+		       AND bnac.DPAGEN = :payload.agencia 
+		       AND bnac.DPCORR = :payload.correlativo 
+		       AND bnac.DPDIVE = :payload.digitoVerificador
+		       AND bnac.BECORR = :payload.correlativoBeneficiario"
+		row-mapper="clienteResumenMapper" keys-generated="true">
+	</int-jdbc:outbound-gateway>
+	<bean id="sqlInsertBeneficiario" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{DPDAT}.DPBNAC (
+					PRTIPO, DPAGEN, DPCORR,
+					DPDIVE, BECORR, BEIAP1,
+					BEIAP2, BEIAP3, BEINO1,
+					BEINO2, BENOMB, BEDIRE,
+					BETELE, BENUID, BEPARE,
+					BEPORC, BETDOC, BEDOCT)
+				VALUES (
+		   			:payload.digitoIdentificador, :payload.agencia, :payload.correlativo, 
+		   			:payload.digitoVerificador, :payload.correlativoBeneficiario, :payload.primerApellido, 
+		   			:payload.segundoApellido, :payload.apellidoCasada, :payload.primerNombre,
+		   			:payload.segundoNombre, :payload.nombreCompleto, :payload.direccion,
+					:payload.telefono, :payload.numeroDocumento, :payload.parentesco.codigo,
+		   			:payload.porcentaje, :payload.tipoDocumento.codigo, :payload.numeroDocumento)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<int:channel id="getSiguienteCorrelativoBeneficiarioRequestChannel" />
+	<int:channel id="getSiguienteCorrelativoBeneficiarioReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="siguienteCorrelativoBeneficiarioGateway" data-source="dataSource" 
+		request-channel="getSiguienteCorrelativoBeneficiarioRequestChannel" reply-channel="getSiguienteCorrelativoBeneficiarioReplyChannel" requires-reply="false"
+		query="#{sqlSelectSiguienteCorrelativoBeneficiario}"		
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean id="sqlSelectSiguienteCorrelativoBeneficiario" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				SELECT (COALESCE(MAX(B.BECORR), 0) + 1) 
+				FROM #{DPDAT}.DPBNAC B
+				WHERE B.PRTIPO = :payload.digitoIdentificador AND B.DPAGEN = :payload.agencia AND B.DPCORR = :payload.correlativo AND B.DPDIVE = :payload.digitoVerificador
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- MANCOMUNADA -->
+	
+	<int:channel id="saveCuentaMancomunadaRequestChannel" />
+	<int:channel id="saveCuentaMancomunadaReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveCuentaMancomunadaAdapter" data-source="dataSource" 
+		request-channel="saveCuentaMancomunadaRequestChannel" reply-channel="saveCuentaMancomunadaReplyChannel" requires-reply="false" update="#{sqlInsertCuentaMancomunada}"
+		query="SELECT ctam.CLTDO1 AS tipoIdentificacion, ctam.CLDO1 AS identificacion, mcte.CLTID@ AS tipoDeIdentificacion, mcte.CLNUID AS numeroIdentificacion, mcte.CLNOMB AS nombre, 'MANCOMUNADO' AS relacion
+			   FROM #{DPDAT}.DPCTAM ctam 
+			   LEFT JOIN #{CLDAT}.CLMCTE mcte ON ctam.CLTDO1 = mcte.CLTDOC AND ctam.CLDO1 = mcte.CLDOC
+			   WHERE ctam.PRTIPO = :payload.digitoIdentificador 
+			   AND ctam.DPAGEN = :payload.agencia
+			   AND ctam.DPCORR = :payload.correlativo
+			   AND ctam.DPDIVE = :payload.digitoVerificador
+			   AND ctam.CLTDO1 = :payload.cliente.id.tipoIdentificacion
+			   AND ctam.CLDO1  = :payload.cliente.id.identificacion"
+		row-mapper="clienteResumenMapper" keys-generated="true">
+	</int-jdbc:outbound-gateway>
+	<bean id="sqlInsertCuentaMancomunada" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{DPDAT}.DPCTAM (
+					PRTIPO, DPAGEN, DPCORR,
+					DPDIVE, CLTDO1, CLDO1,
+					CTMREL)
+				VALUES (
+		   			:payload.digitoIdentificador, :payload.agencia, :payload.correlativo, 
+		   			:payload.digitoVerificador, :payload.cliente.id.tipoIdentificacion, :payload.cliente.id.identificacion, 
+		   			:payload.valorRelacionIncluyente)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- FIRMAS -->
+	
+	<int:channel id="saveFirmaRequestChannel" />
+	<int:channel id="saveFirmaReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveFirmaAdapter" data-source="dataSource" 
+		request-channel="saveFirmaRequestChannel" reply-channel="saveFirmaReplyChannel" requires-reply="false" update="#{sqlInsertFirma}"
+		query="SELECT mcte.CLTDOC AS tipoIdentificacion, mcte.CLDOC AS identificacion, mcte.CLTID@ AS tipoDeIdentificacion, mcte.CLNUID AS numeroIdentificacion, mcte.CLNOMB AS nombre, 'FIRMANTE' AS relacion
+		       FROM #{DPDAT}.DPFIRMA firma 
+		       LEFT JOIN #{CLDAT}.CLMCTE mcte ON firma.FIRTDO = mcte.CLTID@ AND firma.FIRNID = mcte.CLNUID
+		       WHERE firma.PRTIPO = :payload.digitoIdentificador
+			   AND firma.DPAGEN = :payload.agencia 
+			   AND firma.DPCORR = :payload.correlativo 
+			   AND firma.DPDIVE = :payload.digitoVerificador
+			   AND firma.FIRCOR = :payload.correlativoFirma"
+		row-mapper="clienteResumenMapper" keys-generated="true">
+	</int-jdbc:outbound-gateway>
+	<bean id="sqlInsertFirma" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{DPDAT}.DPFIRMA (
+					PRTIPO, DPAGEN, DPCORR,
+					DPDIVE, FIRCOR, FIRTDO,
+					FIRNID, DPIAP1, DPIAP2,
+					DPIAP3, DPINO1, DPINO2,
+					FIROBS)
+				VALUES (
+		   			:payload.digitoIdentificador, :payload.agencia, :payload.correlativo, 
+		   			:payload.digitoVerificador, :payload.correlativoFirma, :payload.cliente.tipoDeIdentificacion, 
+		   			:payload.cliente.numeroIdentificacion, :payload.individual.primerApellido, :payload.individual.segundoApellido, 
+		   			:payload.individual.apellidoCasada, :payload.individual.primerNombre, :payload.individual.segundoNombre,
+		   			:payload.observacion)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<int:channel id="getSiguienteCorrelativoFirmaRequestChannel" />
+	<int:channel id="getSiguienteCorrelativoFirmaReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="siguienteCorrelativoFirmaGateway" data-source="dataSource" 
+		request-channel="getSiguienteCorrelativoFirmaRequestChannel" reply-channel="getSiguienteCorrelativoFirmaReplyChannel" requires-reply="false"
+		query="#{sqlSelectSiguienteCorrelativoFirma}"		
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean id="sqlSelectSiguienteCorrelativoFirma" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				SELECT (COALESCE(MAX(F.FIRCOR), 0) + 1) 
+				FROM #{DPDAT}.DPFIRMA F
+				WHERE F.PRTIPO = :payload.digitoIdentificador AND F.DPAGEN = :payload.agencia AND F.DPCORR = :payload.correlativo AND F.DPDIVE = :payload.digitoVerificador
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- PLAZO FIJO -->
+	
+	<int:channel id="saveCuentaPlazoFijoRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="saveCuentaPlazoFijoAdapter" data-source="dataSource" channel="saveCuentaPlazoFijoRequestChannel"
+		query="#{sqlInsertCuentaPlazoFijo}">
+	</int-jdbc:outbound-channel-adapter>
+	<bean id="sqlInsertCuentaPlazoFijo" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{DPDAT}.DPPLAF (
+					PRTIPO, DPAGEN, DPCORR,
+					DPDIVE, DPVACE, DPVCOA,
+					DPVCOM, DPVCOD, DPPLDI,
+					PRTIPD, DPAGED, DPCORD,
+					DPDIVD, PRTIPA, DPAGEA,
+					DPCORA, DPDIVA, PLFPIN,
+					DPREAU, PRTIPI, DPAGEI,
+					DPCORI, DPDIVI, PLFPCA,
+					DPSTAT, CANCOD, DPPENA,
+					DPVENA, DPVENM, DPVEND,
+					DPRENA, DPRENM, DPREND,
+					DPRENO, DPFRE1, DPDEP1,
+					DPDEP2, DPTASF, DPTAPE,
+					DPINPE, DPINUR)
+				VALUES (
+		   			:payload.digitoIdentificador, :payload.agencia, :payload.correlativo, 
+		   			:payload.digitoVerificador, :payload.datoGeneral.valorApertura, :payload.anioApertura,
+		   			:payload.mesApertura, :payload.diaApertura, :payload.plazoFijo.plazoDias,
+		   			:payload.plazoFijo.debitarCuenta.id.digitoIdentificador, :payload.plazoFijo.debitarCuenta.id.agencia, :payload.plazoFijo.debitarCuenta.id.correlativo,
+		   			:payload.plazoFijo.debitarCuenta.id.digitoVerificador, :payload.plazoFijo.cuentaPagoCapital.id.digitoIdentificador, :payload.plazoFijo.cuentaPagoCapital.id.agencia,
+		   			:payload.plazoFijo.cuentaPagoCapital.id.correlativo, :payload.plazoFijo.cuentaPagoCapital.id.digitoVerificador, :payload.datoInteres.valorFormaPago,
+		   			:payload.plazoFijo.valorRenovacionAutomatica, :payload.datoInteres.aiDigitoIdentificador, :payload.datoInteres.aiAgencia,
+		   			:payload.datoInteres.aiCorrelativo, :payload.datoInteres.aiDigitoVerificador, :payload.plazoFijo.valorFormaPagoCapital,
+		   			:payload.estado, 0, :payload.plazoFijo.tasaPenalizacion,
+		   			:payload.plazoFijo.fechaVencimiento[2], :payload.plazoFijo.fechaVencimiento[1], :payload.plazoFijo.fechaVencimiento[0], 
+		   			0, 0, 0,
+		   			'', :payload.datoInteres.frecuencia.codigo, '', 
+		   			'', :payload.plazoFijo.tasa, :payload.plazoFijo.tasaPenalizacion, 
+		   			0, 0)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- TASA DE INTERES CERTIFICADO -->
+	
+	<int:channel id="saveCuentaTasaInteresCertificadoRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="saveCuentaTasaInteresCertificadoAdapter" data-source="dataSource" channel="saveCuentaTasaInteresCertificadoRequestChannel"
+		query="#{sqlInsertCuentaTasaInteresCertificado}">
+	</int-jdbc:outbound-channel-adapter>
+	<bean id="sqlInsertCuentaTasaInteresCertificado" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{DPDAT}.DPTASP (
+					PRTIPO, DPAGEN, DPCORR,
+					DPDIVE, TASCOD, TASL01,
+					TASL02, TASL03, TASL04,
+					TASL05, TASL06, TASL07,
+					TASL08, TASL09, TASL10,
+					TASL11, TASL12, TASL13,
+					TASL14, TASL15, TASL16,
+					TASL17, TASL18, TASL19,
+					TASL20, TASV01, TASV02,
+					TASV03, TASV04, TASV05,
+					TASV06, TASV07, TASV08,
+					TASV09, TASV10, TASV11,
+					TASV12, TASV13, TASV14,
+					TASV15, TASV16, TASV17,
+					TASV18, TASV19, TASV20)
+				VALUES (
+		   			:payload.digitoIdentificador, :payload.agencia, :payload.correlativo,
+		   			:payload.digitoVerificador, :payload.plazoFijo.tasaInteres, :payload.datoGeneral.valorApertura, 
+		   			:payload.datoGeneral.valorApertura, :payload.datoGeneral.valorApertura, :payload.datoGeneral.valorApertura,
+		   			:payload.datoGeneral.valorApertura, :payload.datoGeneral.valorApertura, :payload.datoGeneral.valorApertura,
+		   			:payload.datoGeneral.valorApertura, :payload.datoGeneral.valorApertura, :payload.datoGeneral.valorApertura,
+		   			:payload.datoGeneral.valorApertura, :payload.datoGeneral.valorApertura, :payload.datoGeneral.valorApertura,
+		   			:payload.datoGeneral.valorApertura, :payload.datoGeneral.valorApertura, :payload.datoGeneral.valorApertura,
+		   			:payload.datoGeneral.valorApertura, :payload.datoGeneral.valorApertura, :payload.datoGeneral.valorApertura, 
+		   			:payload.datoGeneral.valorApertura, :payload.plazoFijo.tasa, :payload.plazoFijo.tasa, 
+		   			:payload.plazoFijo.tasa, :payload.plazoFijo.tasa, :payload.plazoFijo.tasa, 
+		   			:payload.plazoFijo.tasa, :payload.plazoFijo.tasa, :payload.plazoFijo.tasa,
+		   			:payload.plazoFijo.tasa, :payload.plazoFijo.tasa, :payload.plazoFijo.tasa,
+		   			:payload.plazoFijo.tasa, :payload.plazoFijo.tasa, :payload.plazoFijo.tasa,
+		   			:payload.plazoFijo.tasa, :payload.plazoFijo.tasa, :payload.plazoFijo.tasa, 
+		   			:payload.plazoFijo.tasa, :payload.plazoFijo.tasa, :payload.plazoFijo.tasa)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- PLAN FUTURO CRECE ENCABEZADO -->
+	
+	<int:channel id="savePlanFuturoCreceEncabezadoRequestChannel" />
+	<int:channel id="savePlanFuturoCreceEncabezadoReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="savePlanFuturoCreceEncabezadoGateway" data-source="dataSource" 
+		request-channel="savePlanFuturoCreceEncabezadoRequestChannel" reply-channel="savePlanFuturoCreceEncabezadoReplyChannel" update="#{sqlInsertPlanFuturoCreceEncabezado}" 
+		query="SELECT count(*) 
+		       FROM #{DPDAT}.DPDEPRFC futuro 
+		       WHERE futuro.PRTIPO = :payload.digitoIdentificador 
+		       AND futuro.DPAGEN = :payload.agencia 
+		       AND futuro.DPCORR = :payload.correlativo 
+		       AND futuro.DPDIVE = :payload.digitoVerificador"
+		row-mapper="integerMapper" keys-generated="true">
+	</int-jdbc:outbound-gateway>
+	<bean id="sqlInsertPlanFuturoCreceEncabezado" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{DPDAT}.DPDEPRFC (
+					PRTIPO, DPAGEN, DPCORR,
+					DPDIVE, PLCODI, MPLAZO,
+					AINICI, MINICI, DINICI,
+					AVNCIM, MVNCIM, DVNCIM,
+					MTOPRG, INTPRG, INTDIA,
+					INTRAT, AGCUOT, STAT@@,
+					POLZSG, INTPEN)
+				VALUES (
+		   			:payload.digitoIdentificador, :payload.agencia, :payload.correlativo, 
+		   			:payload.digitoVerificador, :payload.datoGeneral.planFuturoCrece.codigo, :payload.datoGeneral.planFuturoCrece.plazoMeses,
+		   			:payload.anioApertura, :payload.mesApertura, :payload.diaApertura,
+		   			:payload.datoGeneral.planFuturoCrece.anioVencimientoCuota, :payload.datoGeneral.planFuturoCrece.mesVencimientoCuota, :payload.datoGeneral.planFuturoCrece.diaVencimientoCuota,
+		   			:payload.datoGeneral.planFuturoCrece.montoProgramado, :payload.datoGeneral.planFuturoCrece.interesProgramado, :payload.datoGeneral.planFuturoCrece.interesDiario,
+		   			:payload.datoGeneral.planFuturoCrece.tasa, :payload.agencia, '', 
+		   			:payload.datoGeneral.numeroPoliza, 0)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- PLAN FUTURO CRECE DETALLE -->
+	
+	<int:channel id="savePlanFuturoCreceDetalleRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="savePlanFuturoCreceDetalleAdapter" data-source="dataSource" channel="savePlanFuturoCreceDetalleRequestChannel"
+		query="#{sqlInsertPlanFuturoCreceDetalle}">
+	</int-jdbc:outbound-channel-adapter>
+	<bean id="sqlInsertPlanFuturoCreceDetalle" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{DPDAT}.DPPLDPFC (
+					PRTIPO, DPAGEN, DPCORR,
+					DPDIVE, PLCODI, NUCUOT,
+					AVCUOT, MVCUOT, DVCUOT,
+					VACUOT, VAINTE, APCUOT,
+					MPCUOT, DPCUOT, AGCUOT,
+					STCUOT)
+				VALUES (
+		   			:payload[0].digitoIdentificador, :payload[0].agencia, :payload[0].correlativo, 
+		   			:payload[0].digitoVerificador, :payload[1].codigo, :payload[2],
+		   			:payload[1].anioVencimientoCuota, :payload[1].mesVencimientoCuota, :payload[1].diaVencimientoCuota, 
+		   			:payload[1].valorApertura, :payload[1].valorInteres, 0,
+		   			0, 0, 0,
+		   			'')
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- SOLICITUD CHEQUERA -->
+	
+	<int:channel id="saveCuentaSolicitudChequeraRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="saveCuentaSolicitudChequeraAdapter" data-source="dataSource" channel="saveCuentaSolicitudChequeraRequestChannel"
+		query="#{sqlInsertCuentaSolicitudChequera}">
+	</int-jdbc:outbound-channel-adapter>
+	<bean id="sqlInsertCuentaSolicitudChequera" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{DPDAT}.DPSOLC (
+					SCNSOL, PRTIPO, DPAGEN,
+					DPCORR, DPDIVE, SCNUMS,
+					SCNUMA, SCNUMC, SCTIPC,
+					SCANSC, SCMESC, SCDISC,
+					SCAGES, SCAGED, SCANCG,
+					SCMECG, SCDICG, SCANEN,
+					SCMEEN, SCDIEN, SCUSER,
+					SCTERM, SCHORA, SCSTAT,
+					SCUSE1, MONCOD, TIPSOL)
+				VALUES (
+		   			(SELECT (COALESCE(MAX(CORR.SCNSOL), 0) + 1) FROM #{DPDAT}.DPSOLC CORR),	:payload.digitoIdentificador, :payload.agencia, 
+		   			:payload.correlativo, :payload.digitoVerificador, :payload.datoChequera.valorCantidadChequera, 
+		   			0, :payload.datoChequera.cantidad, :payload.datoChequera.tipoChequera.id.codigo,
+		   			:payload.anioApertura, :payload.mesApertura, :payload.diaApertura,
+		   			:payload.agencia, :payload.datoChequera.agenciaEntrega.id.codigo, 0,
+		   			0, 0, 0,
+		   			0, 0, '',
+		   			'', :payload.datoChequera.hora, '',
+		   			:payload.usuarioAperturo, :payload.moneda.codigo, :payload.datoChequera.tipoSolicitud)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- BENEFICIARIO FINAL  -->
+	
+	<int:channel id="saveBeneficiarioFinalRequestChannel" />
+	<int:channel id="saveBeneficiarioFinalReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="saveBeneficiarioFinalGateway" data-source="dataSource" 
+		request-channel="saveBeneficiarioFinalRequestChannel" reply-channel="saveBeneficiarioFinalReplyChannel" requires-reply="false" update="#{sqlInsertBeneficiarioFinal}"
+		query="SELECT '' AS tipoIdentificacion, '' AS identificacion, bfin.BFTIDE AS tipoDeIdentificacion, bfin.BFNOID AS numeroIdentificacion, bfin.BFNOMB AS nombre, 'BENEFICIARIO FINAL' AS relacion 
+		       FROM #{DPDAT}.DPBFIN bfin
+		       WHERE bfin.PRTIPO = :payload.digitoIdentificador 
+		       AND bfin.DPAGEN = :payload.agencia 
+		       AND bfin.DPCORR = :payload.correlativo 
+		       AND bfin.DPDIVE = :payload.digitoVerificador
+		       AND bfin.BFCORR = :payload.correlativoBeneficiarioFinal"
+		row-mapper="clienteResumenMapper" keys-generated="true">
+	</int-jdbc:outbound-gateway>
+	<bean id="sqlInsertBeneficiarioFinal" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{DPDAT}.DPBFIN (
+					PRTIPO, DPAGEN, DPCORR,
+					DPDIVE, BFCORR, BFTIDE,
+					BFNOID, BFIDTR, BFIAP1,
+					BFIAP2, BFIAP3, BFINO1,
+					BFINO2, BFNOMB, BFFNAC,
+					BFDIRE, BFEMAI, BFDPTO,
+					BFDMUN, BFTEL1, BFTEL2,
+					BFTEL3, BFPORC)
+				VALUES (
+		   			:payload.digitoIdentificador, :payload.agencia, :payload.correlativo, 
+		   			:payload.digitoVerificador, :payload.correlativoBeneficiarioFinal, :payload.tipoDocumento.codigo,
+		   			:payload.numeroDocumento, :payload.rtn, :payload.primerApellido,
+		   			:payload.segundoApellido, :payload.apellidoCasada, :payload.primerNombre,
+		   			:payload.segundoNombre, :payload.nombreCompleto, :payload.nacionalidad.codigo,
+		   			:payload.direccion, :payload.correo, :payload.departamento,
+		   			:payload.municipio, :payload.telefono, :payload.celular,
+		   			:payload.celular2, :payload.porcentaje)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<int:channel id="getSiguienteCorrelativoBeneficiarioFinalRequestChannel" />
+	<int:channel id="getSiguienteCorrelativoBeneficiarioFinalReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="siguienteCorrelativoBeneficiarioFinalGateway" data-source="dataSource" 
+		request-channel="getSiguienteCorrelativoBeneficiarioFinalRequestChannel" reply-channel="getSiguienteCorrelativoBeneficiarioFinalReplyChannel" requires-reply="false"
+		query="#{sqlSelectSiguienteCorrelativoBeneficiarioFinal}"		
+		row-mapper="integerMapper">
+	</int-jdbc:outbound-gateway>
+	<bean id="sqlSelectSiguienteCorrelativoBeneficiarioFinal" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				SELECT (COALESCE(MAX(B.BFCORR), 0) + 1) 
+				FROM #{DPDAT}.DPBFIN B
+				WHERE B.PRTIPO = :payload.digitoIdentificador AND B.DPAGEN = :payload.agencia AND B.DPCORR = :payload.correlativo AND B.DPDIVE = :payload.digitoVerificador
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- SERVICIO ELECTRONICO -->
+	
+	<int:channel id="saveServicioElectronicoRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="saveServicioElectronicoAdapter" data-source="dataSource" channel="saveServicioElectronicoRequestChannel"
+		query="#{sqlInsertServicioElectronico}">
+	</int-jdbc:outbound-channel-adapter>
+	<bean id="sqlInsertServicioElectronico" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{DPDAT}.PLSRVE (
+					PRTIPO, DPAGEN, DPCORR,
+					DPDIVE, IDSRVE)
+				VALUES (
+		   			:payload.digitoIdentificador, :payload.agencia, :payload.correlativo,
+		   			:payload.digitoVerificador, :payload.id)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+
+	<!-- CUENTA DE TRASLADO -->
+
+	<int:channel id="saveCuentaTrasladoRequestChannel" />
+
+	<int-jdbc:outbound-channel-adapter id="saveCuentaTrasladoAdapter" data-source="dataSource" channel="saveCuentaTrasladoRequestChannel"
+		query="#{sqlInsertCuentaTraslado}">
+	</int-jdbc:outbound-channel-adapter>
+	<bean id="sqlInsertCuentaTraslado" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{DPDAT}.DPCTAT (
+					PRTIPO, DPAGEN, DPCORR,
+					DPDIVE, PRTIP2, DPAGE2,
+					DPCOR2, DPDIV2, TRCOR)
+				VALUES (
+		   			:payload.digitoIdentificador, :payload.agencia, :payload.correlativo,
+		   			:payload.digitoVerificador, :payload.id.digitoIdentificador, :payload.id.agencia,
+		   			:payload.id.correlativo, :payload.id.digitoVerificador, :payload.prioridad)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- LOG RE-IMPRESION -->
+	
+	<int:channel id="saveLogReimpresionRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="saveLogReimpresionAdapter" data-source="dataSource" channel="saveLogReimpresionRequestChannel"
+		query="#{sqlInsertLogReimpresion}">
+	</int-jdbc:outbound-channel-adapter>
+	<bean id="sqlInsertLogReimpresion" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				INSERT INTO #{DPDAT}.DPLRFO (
+					PRTIPO, DPAGEN, DPCORR,
+					DPDIVE, LRFAGE, LRFUSE,
+					LRFTER, LRFFUN, LRFANO,
+					LRFMES, LRFDIA, LRFHOR,
+					CTSTA,  LRFERR) 
+				VALUES (
+			   		:payload.digitoIdentificador, :payload.agencia, :payload.correlativo, 
+			   		:payload.digitoVerificador, :payload.agenciaUsuario, :payload.usuario, 
+			   		:payload.terminal, :payload.supervisor, :payload.year,
+			   		:payload.month, :payload.dayOfMonth, :payload.hour,
+			   		:payload.estado, 0)
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- TRANSACTION -->
+	
+	<int:gateway id="integrationDao" service-interface="com.bytesw.platform.bs.dao.depositos.TransaccionDao">
+		<int:method name="getCorrelativoTransaccion" request-channel="getCorrelativoTransaccionRequestChannel" request-timeout="5000" reply-channel="getCorrelativoTransaccionReplyChannel" reply-timeout="5000" />
+		<int:method name="updateCorrelativoTransaccion" request-channel="updateCorrelativoTransaccionRequestChannel" request-timeout="5000" payload-expression="#args" />
+	</int:gateway>
+	
+	<int:channel id="getCorrelativoTransaccionRequestChannel" />
+	<int:channel id="getCorrelativoTransaccionReplyChannel" />
+	
+	<int-jdbc:outbound-gateway id="correlativoTransaccionGateway" data-source="dataSource" 
+		request-channel="getCorrelativoTransaccionRequestChannel" reply-channel="getCorrelativoTransaccionReplyChannel" requires-reply="false"
+		query="#{sqlSelectCorrelativoTransaccion}"
+		row-mapper="longMapper">
+	</int-jdbc:outbound-gateway>
+	<bean id="sqlSelectCorrelativoTransaccion" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				SELECT CORCOR
+				FROM #{DPDAT}.DPTRXCOR
+				WHERE CORDC = :payload
+				WITH RS USE AND KEEP EXCLUSIVE LOCKS
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<int:channel id="updateCorrelativoTransaccionRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateCorrelativoTransaccionAdapter" data-source="dataSource"
+		channel="updateCorrelativoTransaccionRequestChannel" query="#{sqlUpdateCorrelativoTransaccion}">
+	</int-jdbc:outbound-channel-adapter>
+	<bean id="sqlUpdateCorrelativoTransaccion" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{DPDAT}.DPTRXCOR
+				SET CORCOR = :payload[1]
+				WHERE CORDC = :payload[0]
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- MAPPER -->	
+	
+	<bean id="booleanMapper" class="com.bytesw.platform.eis.mapper.BooleanMapper" />		
+	<bean id="integerMapper" class="com.bytesw.platform.eis.mapper.IntegerMapper" />
+	<bean id="longMapper" class="com.bytesw.platform.eis.mapper.LongMapper" />
+	
+	<bean id="clienteResumenMapper" class="com.bytesw.platform.eis.mapper.ClienteResumenMapper" />
+	<bean id="cajeroMapper" class="com.bytesw.platform.eis.mapper.CajeroMapper" />
+	
+</beans>

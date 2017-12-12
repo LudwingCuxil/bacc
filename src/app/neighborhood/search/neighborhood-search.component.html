@@ -1,0 +1,32 @@
+<div class="animated fadeIn" [ngBusy]="busy">
+  <form name="neighborhood-search-form" [formGroup]="neighborhoodForm" autocomplete="off" role="form" (ngSubmit)="findNeighborhood()">
+
+        <div class="row form-inline search">
+          <div class="form-group col-lg-12" [ngClass]="{ 'has-error': neighborhoodSearch.invalid && neighborhoodSearch.touched }">
+            <label class="control-label col-lg-3">{{'busqueda-barrio.title' | translate}}</label>
+
+            <div class="input-group col-lg-9">
+
+              <input type="text" [(ngModel)]="neighborhoodName" [(uppercase)]="neighborhoodName" [maxLength]="18"
+              class="form-control" name="neighborhoodSearch" formControlName="neighborhoodSearch"/>
+              <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="left" [disabled]="neighborhoodForm.invalid">
+                  <i class="material-icons">search</i>
+                </button>
+              </span>
+
+            </div>
+
+            <pl-errors-message [control]="neighborhoodSearch"></pl-errors-message>
+          </div>
+        </div>
+
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="table-responsive">
+          <sa-data-table [data]="neighborhoods" [heading]="heading" [values]="values" [useTableTemplate]="true" [useServicePager]="false" (rowSelected)="selectNeighborhood($event)"></sa-data-table>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

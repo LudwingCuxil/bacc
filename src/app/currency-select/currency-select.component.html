@@ -1,0 +1,8 @@
+<div [formGroup]="formGroup">
+  <select id="currencySelect" [formControlName]="controlName" [(ngModel)]="currency" (ngModelChange)="onChangeObj($event)" class="form-control" *ngIf="!autocomplete">
+    <option *ngFor="let c of currencies" [ngValue]="c">{{c.descripcion}}</option>
+  </select>
+
+  <input auto-complete [(ngModel)]="currency" select-value-of="id" max-num-List="20" [formControlName]="controlName" [source]="currencies" class="form-control"
+         required *ngIf="autocomplete" list-formatter="nombre" (valueChanged)="onChangeObj($event)"/>
+</div>

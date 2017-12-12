@@ -1,0 +1,235 @@
+<div [ngBusy]="busy"></div>
+<div class="container-fluid">
+  <form [formGroup]="formGroup" name="checkbook-form" role="form" autocomplete="off" (ngSubmit)="partialSave()">
+    <div class="panel panel-custom animated fadeIn">
+      <div class="panel-heading">
+        <h2 [translate]="'admincheqcta.title'">{{'admincheqcta.title' | translate}}</h2>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-12" *ngIf="!editMode">
+            <div class="form-group">
+             <label class="control control--checkbox">
+               <input formControlName="personalized" type="checkbox" id="personalized" name="personalized"
+                [(ngModel)]="account.datoChequera.chequeraPersonalizada" (ngModelChange)="changeCheckbook()"/>
+               <label [translate]="'admincheqcta.personalizada'" for="personalized">{{'admincheqcta.personalizada' | translate}}</label>
+               <div class="control__indicator"></div>
+             </label>
+            </div>
+          </div>
+          <div class="col-lg-12" *ngIf="!account.datoChequera.chequeraPersonalizada">
+            <label class="control-label" [translate]="'admincheqcta.nombre'">{{'admincheqcta.nombre' | translate}}</label>
+            <div class="form-group required" [ngClass]="{'has-error': name.touched && name.invalid}">
+              <input formControlName="name" type="text" class="form-control" name="name" [(ngModel)]="account.datoChequera.nombre" [maxLength]="60"
+                [(uppercase)]='account.datoChequera.nombre'/>
+              <pl-errors-message [control]="name"></pl-errors-message>
+            </div>
+          </div>
+          <div class="col-lg-8" *ngIf="!account.datoChequera.chequeraPersonalizada">
+            <label class="control-label" [translate]="'admincheqcta.direccion'">{{'admincheqcta.direccion' | translate}}</label>
+            <div class="form-group" [ngClass]="{'has-error': address.touched && address.invalid}">
+              <input formControlName="address" type="text" class="form-control" name="address" [(ngModel)]="account.datoChequera.direccion" [maxLength]="70"
+                [(uppercase)]='account.datoChequera.direccion'/>
+              <pl-errors-message [control]="address"></pl-errors-message>
+            </div>
+          </div>
+          <div class="col-lg-4" *ngIf="!account.datoChequera.chequeraPersonalizada">
+            <label class="control-label" [translate]="'admincheqcta.telefono'">{{'admincheqcta.telefono' | translate}}</label>
+            <div class="form-group" [ngClass]="{'has-error': phone.touched && phone.invalid}">
+              <input formControlName="phone" type="text" class="form-control" name="phone" [(ngModel)]="account.datoChequera.telefono" [maxLength]="12"
+                [(uppercase)]='account.datoChequera.telefono'/>
+              <pl-errors-message [control]="phone"></pl-errors-message>
+            </div>
+          </div>
+          <div class="col-lg-4" *ngIf="!account.datoChequera.chequeraPersonalizada && !editMode">
+            <label class="control-label" [translate]="'admincheqcta.tipochequera'">{{'admincheqcta.tipochequera' | translate}}</label>
+            <div *ngIf="account.moneda?.codigo" class="form-group required" [ngClass]="{'has-error': checkbookType.touched && checkbookType.invalid}">
+              <pl-checkbook-type-select id="checkbookType" [autocomplete]="true" [currency]="account.moneda?.codigo"
+                [formGroup]="formGroup" [controlName]="'checkbookType'" [checkbookType]="account.datoChequera.tipoChequera"
+                (changeCheckbookType)="selectCheckbookType($event)"></pl-checkbook-type-select>
+              <pl-errors-message [control]="checkbookType"></pl-errors-message>
+            </div>
+          </div>
+          <div class="col-lg-4" *ngIf="!account.datoChequera.chequeraPersonalizada && !editMode">
+            <label class="control-label" [translate]="'admincheqcta.cantidadchequeras'">{{'admincheqcta.cantidadchequeras' | translate}}</label>
+            <div class="form-group required" [ngClass]="{'has-error': count.touched && count.invalid}">
+              <input formControlName="count" type="number" class="form-control" name="count" [(ngModel)]="account.datoChequera.cantidad" [maxLength]="4"
+                min="1" max="{{account.datoChequera.tipoChequera.cantidadCheques}}"/>
+              <pl-errors-message [control]="count">
+                <div *ngIf="count?.hasError('max')"><span>{{'messages.max' | translate}}</span> {{account.datoChequera.tipoChequera.cantidadCheques}}</div>
+                <div *ngIf="count?.hasError('min')"><span>{{'messages.min' | translate}}</span> 0</div>
+              </pl-errors-message>
+            </div>
+          </div>
+          <div class="col-lg-4" *ngIf="!account.datoChequera.chequeraPersonalizada && !editMode">
+            <label class="control-label" [translate]="'admincheqcta.agenciaentrega'">{{'admincheqcta.agenciaentrega' | translate}}</label>
+            <div *ngIf="account.business?.valor" class="form-group required" [ngClass]="{'has-error': agencies.touched && agencies.invalid}">
+              <pl-agencies-select id="agencies" [formGroup]="formGroup"
+                [agency]="account.datoChequera.agenciaEntrega"
+                (changeAgency)="selectAgency($event)" [autocomplete]="true" [checkbook]="true"
+	               [controlName]="'agencies'" [business]="account.business?.valor"></pl-agencies-select>
+              <pl-errors-message [control]="agencies"></pl-errors-message>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-primary-custom" [ngClass]="account.datoChequera.chequeraPersonalizada ? 'component' : ''">
+	        <header class="panel-heading text-center" *ngIf="!account.datoChequera.chequeraPersonalizada">
+            <h3 [translate]="'admincheqcta.personasautorizadasrecogerchequeras'">{{'admincheqcta.personasautorizadasrecogerchequeras' | translate}}</h3>
+	        </header>
+	        <div class="panel-body" formGroupName="checkPerson">
+            <div class="row">
+              <div class="col-lg-3" [ngClass]="account.datoChequera.chequeraPersonalizada ? 'component' : ''">
+                <label class="control-label" [translate]="'admincheqcta.tipodoc'">{{'admincheqcta.tipodoc' | translate}}</label>
+	              <div class="form-group required" [ngClass]="{ 'has-error': identificationType.touched && identificationType.invalid}">
+                  <pl-type-document-select id="documentType" #docType [controlName]="'identificationType'"
+                    [formGroup]="formGroup.controls?.checkPerson"
+                    [documentIdentificationSelected]="documentSelected"
+                    (changeTypeDocument)="selectTypedoc($event)"
+                    [autocomplete]="false" [modeView]="editMode"></pl-type-document-select>
+	                <pl-errors-message [control]="identificationType"></pl-errors-message>
+	              </div>
+	            </div>
+	            <div class="col-lg-4" *ngIf="!account.datoChequera.chequeraPersonalizada">
+                <label class="control-label" [translate]="'admincheqcta.noDocumento'">{{'admincheqcta.noDocumento' | translate}}</label>
+                <div class="form-group required" [ngClass]="{'has-error': identificacion.touched && identificacion.invalid}">
+                  <input style="text-transform: uppercase;"
+                    [textMask]="{mask: typeDoc.mascara , guide: true, modelClean: true,placeholderChar : typeDoc.maskCharacter}"
+                    id="identificacion" class="form-control"
+                    name="identificacion" formControlName="identificacion"
+                    (ngModelChange)="checkbookPerson.numeroDocumento = $event?.toString().toUpperCase()"
+                    [(ngModel)]="checkbookPerson.numeroDocumento"
+                    placeholder="{{typeDoc.placeHolder}}"/>
+                  <pl-errors-message [control]="identificacion" [customPatter]="true">
+                    <div *ngIf="identificacion?.hasError('pattern')">
+                      <span>{{'messages.error-mask' | translate}}</span>
+                    </div>
+                  </pl-errors-message>
+                </div>
+	            </div>
+	            <div class="col-lg-5" *ngIf="!account.datoChequera.chequeraPersonalizada">
+                <label class="control-label" [translate]="'admincheqcta.nombre'">{{'admincheqcta.nombre' | translate}}</label>
+                <div class="form-group required" [ngClass]="{'has-error': personName.touched && personName.invalid}">
+                  <input formControlName="personName" type="text" class="form-control" name="personName" [(ngModel)]="checkbookPerson.nombre" [maxLength]="50"
+                    [(uppercase)]='checkbookPerson.nombre'/>
+                  <pl-errors-message [control]="personName"></pl-errors-message>
+                </div>
+	            </div>
+            </div>
+            <div class="row" *ngIf="!account.datoChequera.chequeraPersonalizada">
+              <div class="col-lg-12">
+		            <div class="row panel-buttons">
+				          <div class="col-lg-12 text-right">
+				            <button type="button" [disabled]="name.disabled ? true : (disableCheckPerson ? false : !formGroup.controls?.checkPerson?.valid)" [ngClass]="deleteCheckPerson ? 'btn btn-primary btn-radio' : 'btn btn-success btn-radio'"
+				                (click)="addCheckbook(checkbookPerson)" data-toggle="tooltip" data-placement="left" attr.data-original-title="{{'tooltip.agregar-datos' | translate}}">
+				                <i class="material-icons md-18">{{deleteCheckPerson? 'done' : 'add'}}</i>{{deleteCheckPerson? ('buttons.accept' | translate) : ('buttons.add' | translate)}}
+				                <div class="ripple-container"></div>
+				            </button>
+				            <button type="button" class="btn btn-danger btn-radio" (click)="removeCheckbook(checkbookPerson)"
+				                *ngIf="deleteCheckPerson" data-toggle="tooltip" data-placement="left" attr.data-original-title="{{'tooltip.eliminar-datos' | translate}}">
+				                <i class="material-icons md-18">delete</i> {{'buttons.delete' | translate}}
+				                <div class="ripple-container"></div>
+				            </button>
+				            <button type="button" class="btn btn-danger btn-radio" *ngIf="!disableCheckPerson" (click)="clean()" data-toggle="tooltip" data-placement="left"
+				                attr.data-original-title="{{'tooltip.cancelar' | translate}}">
+				                <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+				                <div class="ripple-container"></div>
+				            </button>
+				          </div>
+				        </div>
+		          </div>
+            </div>
+            <div class="row" *ngIf="!account.datoChequera.chequeraPersonalizada">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="table-responsive">
+                  <ng-template #actionsTemplate let-item="item">
+                    <div class="btn-group-md">
+                      <a id="delete-button-value" [ngClass]="item.modalidad == mode.I? 'btn btn-fab btn-fab-mini btn-primary btn-raised' :
+                                                        item.modalidad == mode.U? 'btn btn-fab btn-fab-mini btn-warning btn-raised' :
+                                                        item.modalidad == mode.D? 'btn btn-fab btn-fab-mini btn-danger btn-raised' :
+                                                        'btn btn-fab btn-fab-mini btn-info btn-raised'" [popover]="optionPopover" *ngIf="item.modalidad != null">
+                        <i class="material-icons md-18">
+                          {{item.modalidad == mode.I? 'add' : item.modalidad == mode.U? 'mode_edit' : item.modalidad == mode.D? 'delete' : 'add'}}
+                        </i>
+                        {{'table.restore-title' | translate}}
+                        <div class="ripple-container"></div>
+                      </a>
+                    </div>
+                    <popover-content #optionPopover
+                      title="{{'table.restore-title' | translate}}"
+                      placement="right"
+                      [animation]="true"
+                      [closeOnClickOutside]="true" >
+                      <button type="button" class="btn btn-primary btn-raised" [disabled]="item.modalidad == mode.I" (click)="restoreCheckbook(item)">
+                        <i class="material-icons md-18">delete</i> {{'buttons.accept' | translate}}
+                        <div class="ripple-container"></div>
+                      </button>
+                    </popover-content>
+                  </ng-template>
+                  <sa-data-table [data]="account.datoChequera?.personasAutorizadas" [heading]="editMode? headingUpdate : heading" [values]="values"
+                    [pager]="undefined" [actionTemplate]="editMode ? actionsTemplate : undefined" [useTableTemplate]="true" [useServicePager]="false" (rowSelected)="modify($event)"></sa-data-table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+          <div class="panel-footer text-right col-lg-10">
+              <div class="row">
+                  <span data-toggle="tooltip" data-placement="left" title=""
+                      attr.data-original-title="{{'buttons.cancel' | translate}}" *ngIf="!cancelAccount && name.disabled">
+                      <a class="btn btn-warning btn-raised btn-fab" (click)="changeControl()">
+                          <i class="material-icons md-18">create</i> {{'buttons.update' | translate}}
+                          <div class="ripple-container"></div>
+                      </a>
+                  </span>
+                  <button type="button" class="btn btn-danger btn-radio animated bounceIn" (click)="editMode ? restoreData() : cancel()"
+                    *ngIf="name.enabled">
+                      <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+                      <div class="ripple-container"></div>
+                  </button>
+                  <button type="submit" class="btn btn-success" [disabled]="!formGroup.valid"
+                      data-toggle="tooltip" data-placement="left" *ngIf="name.enabled"
+                      attr.data-original-title="{{'buttons.continue' | translate}}">
+                      {{'buttons.continue' | translate}} <i class="material-icons md-18">chevron_right</i>
+                      <div class="ripple-container"></div>
+                  </button>
+              </div>
+          </div>
+        </div>
+    </form>
+</div>
+<cancel-confirmation [account]="true"></cancel-confirmation>
+<div class="modal fade" id="authorizationModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><i class="material-icons md-18">check_circle</i>
+          {{'authorization.title' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <pl-authorization [authorization]="authorization"
+                          (changeAuthorization)="changeAuthorization($event)"></pl-authorization>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="findClient" tabindex="-1" role="dialog" aria-labelledby="myModalCreateLabel">
+  <div class="modal-lg modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{'menu.client' | translate}}</h4>
+      </div>
+      <form>
+        <div class="modal-custom">
+          <ba-core-client-search #buscador (clientSelection)="clientSelection($event)"></ba-core-client-search>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal" (click)="reset()" [translate]="'buttons.close'">{{'buttons.close' | translate}}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

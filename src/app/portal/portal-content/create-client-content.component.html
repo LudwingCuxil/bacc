@@ -1,0 +1,234 @@
+<pl-create-client-header></pl-create-client-header>
+<ngb-tabset type="pills">
+  <ngb-tab [disabled]="client?.clienteResumen?.id" [id]="section.personType">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.personType)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.personType).status ? 'completed bounceIn' : 'pending fadeIn'">person</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.personType).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        <span>{{'portal.side-bar.type-person' | translate}}</span>
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-person-type (changeView)="notifyHeader()"></pl-person-type>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+
+  <ngb-tab [disabled]="client?.clienteResumen?.id" [id]="section.naturalGeneralData">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.naturalGeneralData)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.naturalGeneralData).status ? 'completed bounceIn' : 'pending fadeIn'">content_paste</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.naturalGeneralData).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        {{'portal.side-bar.natural-general-data' | translate}}
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-natural-general-data></pl-natural-general-data>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab [disabled]="client?.clienteResumen?.id" [id]="section.dependentReference">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.dependentReference)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.dependentReference).status ? 'completed bounceIn' : 'pending fadeIn'">content_paste</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.dependentReference).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        {{'portal.side-bar.dependent-references' | translate}}
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-dependent></pl-dependent>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab [disabled]="client?.clienteResumen?.id" [id]="section.legalGeneralData">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.legalGeneralData)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.legalGeneralData).status ? 'completed bounceIn' : 'pending fadeIn'">content_paste</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.legalGeneralData).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        {{'portal.side-bar.legal-general-data' | translate}}
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-legal-general-data></pl-legal-general-data>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab [disabled]="client?.clienteResumen?.id" [id]="section.economicProfile">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.economicProfile)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.economicProfile).status ? 'completed bounceIn' : 'pending fadeIn'">attach_money</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.economicProfile).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        {{'portal.side-bar.economic-profile' | translate}}
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-economic-profile></pl-economic-profile>
+      </div>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab [disabled]="client?.clienteResumen?.id" [id]="section.laboralReference">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.laboralReference)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.laboralReference).status ? 'completed bounceIn' : 'pending fadeIn'">attach_money</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.laboralReference).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        {{'portal.side-bar.laboral-references' | translate}}
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-laboral-reference></pl-laboral-reference>
+      </div>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab [disabled]="client?.clienteResumen?.id" [id]="section.businessDataLegal">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.businessDataLegal)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.businessDataLegal).status ? 'completed bounceIn' : 'pending fadeIn'">store</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.businessDataLegal).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        {{'portal.side-bar.business-data-legal' | translate}}
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-business-data-legal></pl-business-data-legal>
+      </div>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab [disabled]="client?.clienteResumen?.id" [id]="section.providerReference">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.providerReference)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.providerReference).status ? 'completed bounceIn' : 'pending fadeIn'">assignment_ind</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.providerReference).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        {{'portal.side-bar.providers-references' | translate}}
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-supplier-reference></pl-supplier-reference>
+      </div>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab [disabled]="client?.clienteResumen?.id" [id]="section.legalRepresentative">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.legalRepresentative)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.legalRepresentative).status ? 'completed bounceIn' : 'pending fadeIn'">group</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.legalRepresentative).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        {{'portal.side-bar.representative' | translate}}
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-legal-representative></pl-legal-representative>
+      </div>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab [disabled]="client?.clienteResumen?.id" [id]="section.additionalData">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.additionalData)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.additionalData).status ? 'completed bounceIn' : 'pending fadeIn'">chrome_reader_mode</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.additionalData).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        {{'portal.side-bar.additional-data' | translate}}
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-additional-data></pl-additional-data>
+      </div>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab [disabled]="client?.clienteResumen?.id" [id]="section.documents">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.documents)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.documents).status ? 'completed bounceIn' : 'pending fadeIn'">description</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.documents).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        {{'portal.side-bar.documents-presented' | translate}}
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-presented-documents></pl-presented-documents>
+      </div>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab [disabled]="client?.clienteResumen?.id" [id]="section.addressInformation">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.addressInformation)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.addressInformation).status ? 'completed bounceIn' : 'pending fadeIn'">assignment</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.addressInformation).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        {{'portal.side-bar.neighborhood' | translate}}
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-general-information></pl-general-information>
+      </div>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab [id]="section.customerCreated">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.customerCreated)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.customerCreated).status ? 'completed bounceIn' : 'pending fadeIn'">assignment</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.customerCreated).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        {{'portal.side-bar.customer-created' | translate}}
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-customer-created></pl-customer-created>
+      </div>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab [id]="section.reference">
+    <ng-template ngbTabTitle>
+      <div *ngIf="isActiveSection(section.reference)">
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.reference).status ? 'completed bounceIn' : 'pending fadeIn'">assignment</i>
+        <i class="material-icons md-18 animated"
+           [ngClass]="isActiveSection(section.reference).status ? 'bounceIn' : 'fadeIn'">check_circle</i>
+        {{'portal.side-bar.references' | translate}}
+      </div>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div class="col-lg-offset-2 col-md-offset-3 col-lg-10 col-md-9 content-data">
+        <pl-references></pl-references>
+      </div>
+    </ng-template>
+  </ngb-tab>
+</ngb-tabset>
+<simple-notifications [options]="options"></simple-notifications>

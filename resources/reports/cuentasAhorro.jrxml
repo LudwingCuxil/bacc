@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2016-07-20T10:21:32 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cuentasAhorro" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="957612dc-951d-4810-9c3e-e3f7b334e369">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="90" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="270" height="90" uuid="b619b633-bbc5-4be7-8abb-5bd96bb42467"/>
+				<imageExpression><![CDATA["/btf/developer/Desktop/logo1.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="270" y="0" width="300" height="80" uuid="83ee8275-b39e-4b36-ae85-6dcec5e84018"/>
+				<textElement textAlignment="Center">
+					<font size="25" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Registro de Firmas en cuenta de Ahorros]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="251" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="30" width="280" height="30" uuid="ace37f10-4f86-42c0-8896-527da9844c30"/>
+				<text><![CDATA[Perfil]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="30" width="290" height="30" uuid="e837952f-1e29-45bf-9f87-e5617bc72efc"/>
+				<text><![CDATA[Número de Cuenta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="280" height="30" uuid="710876dd-49e9-4d93-85dd-05db71c84192"/>
+				<text><![CDATA[Static Text]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

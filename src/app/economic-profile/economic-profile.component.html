@@ -1,0 +1,350 @@
+<div [ngBusy]="busy"></div>
+<form name="webformPerfilEconomico" autocomplete="off" novalidate="" [formGroup]="formGroup"
+      (ngSubmit)="validateForm()" show-validation>
+  <div class="container-fluid animated fadeIn">
+    <div class="panel panel-custom">
+      <div class="panel-heading">
+        <h2>{{'economic-profile.title'| translate}}</h2>
+      </div>
+      <div class="panel-body">
+        <div class="row divider-bottom">
+          <label class="control control--checkbox"> {{'economic-profile.isr'| translate}}
+            <input type="checkbox" (click)="changeIsr(!client.perfilEconomico.afectoISR)" name="isActive"
+                   name="afectoISR" formControlName="afectoISR"
+                   [(ngModel)]="client.perfilEconomico.afectoISR">
+            <div class="control__indicator"></div>
+          </label>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <label class="control-label" [translate]="'economic-profile.rtn'">t</label>
+            <div class="form-group" [ngClass]="{'has-error': rtn.touched && rtn.invalid}">
+              <input type="text" id="rtn" capitalize="" [(ngModel)]="client.perfilEconomico.rtn"
+                     [(uppercase)]='client.perfilEconomico.rtn' formControlName="rtn"
+                     name="rtn" class="form-control" [max]="14" (change)="changeRtn($event)"
+                     aria-describedby="rtn-validator-help" min="0" maxlength="14" [autofocus]/>
+                          <pl-errors-message [control]="rtn" [maxLength]="14" [minLength]="14"></pl-errors-message>
+            </div>
+          </div>
+          <div class="col-lg-6" *ngIf="client.paisOrigen?.codigo == nationalityTin || client.datosGeneralesPersonaNatural?.paisResidencia?.codigo == nationalityTin
+                     || client.datosGeneralesPersonaNatural?.nacionalidad?.codigo == nationalityTin">
+            <label class="control-label" [translate]="'economic-profile.tin'">t</label>
+            <div class="form-group"
+                 [ngClass]="{'has-error': tin.touched && tin.invalid,'required': !client?.datosGeneralesPersonaJuridica?.enFormacion}">
+              <input type="text" capitalize="" [(ngModel)]="client.perfilEconomico.tin" formControlName="tin"
+                     name="tin" class="form-control" [max]="15" maxlength="15"
+                                    (change)="changeTin($event)"
+                     aria-describedby="rtn-validator-help" min="0"/>
+              <pl-errors-message [control]="tin"></pl-errors-message>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <label class="control-label" [translate]="'economic-profile.economic-activities'">Actividad
+              Ecònomica</label>
+            <div class="form-group required"
+                 [ngClass]="{'has-error': actividadEconomica.touched && actividadEconomica.invalid}">
+              <pl-economic-activities-select id="economicActivity" [formGroup]="formGroup"
+                                             [economicActivity]="client.perfilEconomico.actividadEconomica"
+                                             (changeEconomicActivity)="selectEconomicActivities($event)"
+                                             [controlName]="'actividadEconomica'"
+                                             [autocomplete]="true"></pl-economic-activities-select>
+              <pl-errors-message [control]="actividadEconomica"></pl-errors-message>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <label class="control-label" [translate]="'economic-profile.economic-sector'">Sector Ecònomico</label>
+            <div class="form-group required"
+                 [ngClass]="{'has-error': sectorEconomico.touched && sectorEconomico.invalid}">
+              <pl-economic-sector-select
+                [economicSector]="client.perfilEconomico.sectorEconomico" [formGroup]="formGroup"
+                [autocomplete]="true" [controlName]="'sectorEconomico'"
+                (changeEconomicSector)="selectEconomicSector($event)"></pl-economic-sector-select>
+              <pl-errors-message [control]="sectorEconomico"></pl-errors-message>
+            </div>
+          </div>
+        </div>
+        <div class="row divider-top divider-bottom">
+          <label class="control control--checkbox"> {{'economic-profile.currency-generator'| translate}}
+            <input type="checkbox" (change)="cambioEco()" name="currencygenarator" formControlName="generadorDivisas"
+                   name="generadorDivisas"
+                   [(ngModel)]="client.perfilEconomico.generadorDivisas">
+            <div class="control__indicator"></div>
+          </label>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <div ng-messages="webformPerfilEconomico.divisas.$error" id="divisas-validator-help"
+                 class="help-block animated fadeInLeft" role="alert" ng-if="webformPerfilEconomico.divisas.$touched">
+              <div ng-message="required"><span [translate]="'messages.requiered'"></span></div>
+            </div>
+          </div>
+          <div class=col-lg-6 *ngIf="client.tipoPersona == 'N'">
+            <label class="control-label">{{'economic-profile.job'| translate}}</label>
+            <div class="form-group required" [ngClass]="{ 'has-error': relacionEconomica.touched && relacionEconomica.invalid}">
+              <pl-economic-relation-select id="economicRelationSelected" [formGroup]="formGroup"
+                                [economicRelation]="tempEconomicRelation"
+                                (changeEconomicRelation)="selectEconomicRelation($event)" [autocomplete]="true"></pl-economic-relation-select>
+              <pl-errors-message [control]="relacionEconomica"></pl-errors-message>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="panel panel-custom">
+              <label class="control-label">{{'economic-profile.class-customer'| translate}}</label>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <label class="control-label" [translate]="'economic-profile.class-customer'">Clase Cliente</label>
+                    <div class="form-group required"
+                         [ngClass]="{'has-error': claseCliente.touched && claseCliente.invalid}">
+                      <pl-class-customer-select [typePerson]="client.tipoPersona" [classClient]="classClient"
+                                                [classCustomer]="client.perfilEconomico.claseCliente"
+                                                [formGroup]="formGroup"
+                                                [autocomplete]="true" [controlName]="'claseCliente'"
+                                                (changeClassCustomer)="selectClassCustomer($event)"></pl-class-customer-select>
+                      <pl-errors-message [control]="claseCliente"></pl-errors-message>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <label class="control-label" [translate]="'economic-profile.type-customer'">Tipo Cliente</label>
+                    <div class="form-group required" [ngClass]="client.tipoPersona == 'J' ? 'required' : ''"
+                         [ngClass]="{'has-error': tipoCliente.touched && tipoCliente.invalid}">
+                      <pl-type-customer-select
+                        [typeCustomer]="client.perfilEconomico.tipoCliente" [formGroup]="formGroup"
+                        [autocomplete]="true" [controlName]="'tipoCliente'"
+                        (changeTypeCustomer)="selectTypeCustomer($event)"></pl-type-customer-select>
+                      <pl-errors-message [control]="tipoCliente"></pl-errors-message>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="row">
+                  <div class="col-lg-6" *ngIf="client.perfilEconomico.claseCliente.codigo==classClient">
+                    <label class="control-label" [translate]="'economic-profile.codigo-empleado'">Codigo
+                      Empleado</label>
+                    <div class="form-group required"
+                         [ngClass]="{'has-error': codigoEmpleado.touched && codigoEmpleado.invalid}">
+                      <pl-no-customer-employees-select [endpoint]="'empleados'"
+                                                       [noCustomerEmployees]="this.empleadoReferencia"
+                                                       [formGroup]="formGroup"
+                                                       [autocomplete]="true" [controlName]="'codigoEmpleado'"
+                                                       (changeEmpleadosNoClientes)="selectNoCustomersEmployee($event)"></pl-no-customer-employees-select>
+                      <pl-errors-message [control]="codigoEmpleado"></pl-errors-message>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="panel panel-custom">
+              <label class="control-label">{{'economic-profile.type-sector'| translate}}</label>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <label class="control-label" [translate]="'economic-profile.sector'">Institucion</label>
+                    <div class="form-group required"
+                         [ngClass]="{'has-error': tipoInstitucion.touched && tipoInstitucion.invalid}">
+                      <pl-type-institution-select
+                        [typeInstitutionSelected]="client.perfilEconomico.tipoInstitucion" [formGroup]="formGroup"
+                        [autocomplete]="true" [controlName]="'tipoInstitucion'"
+                        (changeTypeInstitution)="selectTypeInstitution($event)"></pl-type-institution-select>
+                      <pl-errors-message [control]="tipoInstitucion"></pl-errors-message>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <label class="control-label" [translate]="'economic-profile.sub-sector'">Tipo Institucion</label>
+                    <div class="form-group required"
+                         [ngClass]="{'has-error': institucion.touched && institucion.invalid}">
+                      <pl-institution-select #intitutionSelect
+                                             [institutionSelected]="client.perfilEconomico.institucion"
+                                             [formGroup]="formGroup"
+                                             [autocomplete]="true" [controlName]="'institucion'"
+                                             (changeInstitution)="selectInstitution($event)">
+                      </pl-institution-select>
+                      <pl-errors-message [control]="institucion"></pl-errors-message>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="client.tipoPersona == 'N'">
+          <div class="col-lg-4">
+            <div class="form-group"
+                 ng-class="{ 'has-error': webformPerfilEconomico.parentescoEmpleadoBanco.$touched && webformPerfilEconomico.parentescoEmpleadoBanco.$invalid}">
+              <div class="checkbox">
+                <label class="control control--checkbox">
+                  <input type="checkbox" class="checkbox" formControlName="parentescoEmpleadoBanco"
+                         [checked]="client.perfilEconomico.parentescoEmpleadoBanco" (change)="changeBonding()"
+                         id="parentescoEmpleadoBanco" name="parentescoEmpleadoBanco"/>
+                  <label [translate]="'economic-profile.reference'" for="parentescoEmpleadoBanco">Relación con empleados
+                    del Banco</label>
+                  <div class="control__indicator"></div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-custom" *ngIf="client.perfilEconomico.parentescoEmpleadoBanco">
+          <div class="panel-heading">
+            <h4 [translate]="'economic-profile.reference-rel'">Referencias de Relación con Empleados</h4>
+          </div>
+          <div class="panel-body" [formGroup]="formGroupRelationShip">
+            <div class="row">
+              <div class="col-lg-6">
+                <label class="control-label" [translate]="'economic-profile.code-employee'">Codigo Empleado</label>
+                <div class="form-group required">
+                  <pl-no-customer-employees-select
+                    [noCustomerEmployees]="referenciaParentescoEmpleado.empleado" [formGroup]="formGroupRelationShip"
+                    [autocomplete]="true" [controlName]="'relEmpleado'"
+                    (changeEmpleadosNoClientes)="selectEmployeeRelationship($event)"></pl-no-customer-employees-select>
+                  <pl-errors-message [control]="relEmpleado"></pl-errors-message>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label class="control-label" [translate]="'economic-profile.relationship'">Parentesco</label>
+                <div class="form-group required">
+                  <pl-relationship-select
+                    [relationship]="referenciaParentescoEmpleado.parentesco" [formGroup]="formGroupRelationShip"
+                    [autocomplete]="true" [controlName]="'parentesco'"
+                    (changeRelationship)="selectBonding($event)"></pl-relationship-select>
+                  <pl-errors-message [control]="parentesco"></pl-errors-message>
+                </div>
+              </div>
+            </div>
+
+            <div class="row panel-buttons">
+              <div class="col-lg-12 text-right">
+                <button type="button" [disabled]="!disabledField || invalidReference"
+                        [ngClass]="edit ? 'btn btn-primary btn-radio' : 'btn btn-success btn-radio'"
+                        (click)="addReferencia(referenciaParentescoEmpleado)" data-toggle="tooltip"
+                        data-placement="left" attr.data-original-title="{{'tooltip.agregar-datos'| translate}}">
+                  <i class="material-icons md-18">{{edit? 'done' : 'add'}}</i>{{'buttons.accept'| translate}}
+                  <div class="ripple-container"></div>
+                </button>
+                <button type="button" [disabled]="!disabledField" class="btn btn-danger btn-radio"
+                        (click)="removeReferencia(referenciaParentescoEmpleado)"
+                        *ngIf="modifying" data-toggle="tooltip" data-placement="left"
+                        attr.data-original-title="{{'tooltip.eliminar-datos'| translate}}">
+                  <i class="material-icons md-18">delete</i> {{'buttons.delete'| translate}}
+                  <div class="ripple-container"></div>
+                </button>
+                <button type="button" class="btn btn-danger btn-radio" *ngIf="modifying" (click)="clean()"
+                        data-toggle="tooltip" data-placement="left"
+                        attr.data-original-title="{{'tooltip.cancelar'| translate}}">
+                  <i class="material-icons md-18">clear</i> {{'buttons.cancel'| translate}}
+                  <div class="ripple-container"></div>
+                </button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="table-responsive">
+                  <ng-template #actionsTemplate let-item="item">
+                    <div class="btn-group-md" *ngIf="item.modalidad != null">
+                      <a id="delete-button-value" [ngClass]="item.modalidad == mode.I? 'btn btn-fab btn-fab-mini btn-primary btn-raised' :
+                                               item.modalidad == mode.U? 'btn btn-fab btn-fab-mini btn-warning btn-raised' :
+                                               item.modalidad == mode.D? 'btn btn-fab btn-fab-mini btn-danger btn-raised' :
+                                               'btn btn-fab btn-fab-mini btn-info btn-raised'" [popover]="optionPopover"
+                         *ngIf="item.modalidad != null">
+                        <i class="material-icons md-18">
+                          {{item.modalidad == mode.I? 'add' : item.modalidad == mode.U? 'mode_edit' : item.modalidad ==
+                          mode.D? 'delete' : 'add'}}
+                        </i>
+                        {{'table.restore-title' | translate}}
+                        <div class="ripple-container"></div>
+                      </a>
+                    </div>
+                    <popover-content #optionPopover
+                                     title="{{'perfil-economico.title-restore'| translate}}"
+                                     placement="right"
+                                     [animation]="true"
+                                     [closeOnClickOutside]="true">
+                      <button type="button" class="btn btn-primary btn-raised" [disabled]="item.modalidad == mode.I"
+                              (click)="restoreReference(item)">
+                        <i class="material-icons md-18">delete</i> {{'buttons.accept'| translate}}
+                        <div class="ripple-container"></div>
+                      </button>
+                    </popover-content>
+                  </ng-template>
+                  <sa-data-table [data]="client?.referencias?.referenciasParentestoEmpleados"
+                                 [heading]="editMode? headingUpdate: heading" [values]="values"
+                                 [pager]="undefined" [actionTemplate]="actionsTemplate" [useTableTemplate]="true"
+                                 [useServicePager]="false" (rowSelected)="modify($event)"></sa-data-table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row divider-top divider-bottom">
+          <label class="control control--checkbox"> {{'perfil-economico.pertenece-grupo-economico' | translate}}
+            <input type="checkbox" class="checkbox" formControlName="perteneceGrupoEconomico"
+                   [checked]="client.perfilEconomico.perteneceGrupoEconomico" id="perteneceGrupoEconomico"
+                   name="perteneceGrupoEconomico" (change)="enableBelongsGroups()"/>
+            <div class="control__indicator"></div>
+          </label>
+        </div>
+        <div class="panel panel-custom" *ngIf="client.perfilEconomico.perteneceGrupoEconomico">
+          <div class="panel-heading">
+            <h4>{{'perfil-economico.pertenece-grupo-economico'| translate}}</h4>
+          </div>
+          <div class="panel-body">
+            <pl-economic-group [changeMode]="!disabledField" [editMode]="editMode"
+                               [client]="client"></pl-economic-group>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer text-right col-lg-10">
+        <div class="row">
+
+          <button type="button" class="btn btn-warning btn-raised btn-fab" *ngIf="editMode && !this.disabledField"
+                  (click)="change()">
+            <i class="material-icons md-18">create</i> {{'buttons.update'| translate}}
+          </button>
+          <button type="button" class="btn btn-danger btn-radio animated bounceIn" *ngIf="this.disabledField"
+                  (click)="cancel()"
+                  data-toggle="tooltip" data-placement="top" translate
+                  translate-attr-data-original-title="tooltip.buscar">
+            <i class="material-icons md-18">clear</i> {{'buttons.cancel'| translate}}
+          </button>
+          <button type="submit" [disabled]="formGroup.invalid" *ngIf="this.disabledField"
+                  class="btn btn-success btn-radio animated bounceIn"
+                  data-toggle="tooltip" data-placement="top" translate
+                  translate-attr-data-original-title="tooltip.continue">
+            {{editMode ? 'buttons.accept' : 'buttons.continue'| translate}} <i class="material-icons md-18">chevron_right</i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <cancel-confirmation></cancel-confirmation>
+</form>
+<div class="modal fade" id="authorizationModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel" [translate]="'authorization.title'"><i
+          class="material-icons md-18">check_circle</i>
+          {{'authorization.title'| translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <pl-authorization [authorization]="authorization"
+                          (changeAuthorization)="changeAuthorization($event)"></pl-authorization>
+      </div>
+    </div>
+  </div>
+</div>
+<simple-notifications [options]="options"></simple-notifications>
+
+

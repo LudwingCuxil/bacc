@@ -1,0 +1,154 @@
+<div [ngBusy]="busy"></div>
+<div class="container-fluid" *ngIf="client">
+    <form [formGroup]="formGroup" id="dependent" name="dependent" class="" autocomplete="off"
+        (ngSubmit)="partialSave()">
+        <div class="panel panel-custom animated fadeIn">
+            <div class="panel-heading">
+                <h2 [translate]="'references.dependent.title'">{{'references.dependent.title' | translate}}</h2>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label class="control-label" [translate]="'references.dependent.name'">{{'references.dependent.name' | translate}}</label>
+                        <div class="form-group required" [ngClass]="{'has-error': name?.touched && name?.invalid}">
+                           <input formControlName="name" type="text" class="form-control" name="name" [(uppercase)]='dependentReference.nombre'
+                              [ngModel]="dependentReference.nombre" [maxLength]="40" />
+                            <pl-errors-message [control]="name"></pl-errors-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label class="control-label" [translate]="'references.dependent.address'">{{'references.dependent.address' | translate}}</label>
+                        <div class="form-group required" [ngClass]="{'has-error': address.touched && address.invalid}">
+                            <input formControlName="address" type="text" class="form-control" name="address" [ngModel]="dependentReference.direccion" [maxLength]="40" [(uppercase)]='dependentReference.direccion' />
+                            <pl-errors-message [control]="address"></pl-errors-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-7">
+                        <label class="control-label" [translate]="'references.dependent.relationship'">{{'references.dependent.relationship' | translate}}</label>
+                        <label class="control-label" *ngIf="descRelationship">{{dependentReference?.parentesco?.descripcion}}</label>
+                        <div class="form-group required" [ngClass]="{'has-error': relationship.touched && relationship.invalid}">
+                          <pl-relationship-select id="relationshipSelected" [formGroup]="formGroup"
+                            [relationship]="dependentReference.parentesco"
+                            (changeRelationship)="selectRelationship($event)" [autocomplete]="true"></pl-relationship-select>
+                          <pl-errors-message [control]="relationship"></pl-errors-message>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <label class="control-label" [translate]="'references.dependent.phone'">{{'references.dependent.phone' | translate}}</label>
+                        <div class="form-group required" [ngClass]="{'has-error': phone.touched && phone.invalid}">
+                            <input formControlName="phone" type="text" class="form-control" name="phone"
+                                [ngModel]="dependentReference.telefono1" [maxLength]="15" [(uppercase)]='dependentReference.telefono1' numberOnly/>
+                            <pl-errors-message [control]="phone"></pl-errors-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label class="control-label" [translate]="'references.dependent.phone2'">{{'references.dependent.phone2' | translate}}</label>
+                        <div class="form-group" [ngClass]="{'has-error': phone2.touched && phone2.invalid}">
+                            <input formControlName="phone2" type="text" class="form-control" [(uppercase)]='dependentReference.telefono2' name="phone2"
+                                [ngModel]="dependentReference.telefono2" [maxLength]="15" numberOnly/>
+                            <pl-errors-message [control]="phone2"></pl-errors-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="row panel-buttons">
+                    <div class="col-lg-12 text-right">
+                        <button type="button" [disabled]="edit && formGroup.valid? isValidChange() : !formGroup.valid" [ngClass]="edit ? 'btn btn-primary btn-radio' : 'btn btn-success btn-radio'"
+                            (click)="addReferencia(dependentReference)" data-toggle="tooltip" data-placement="left" attr.data-original-title="{{'tooltip.agregar-datos' | translate}}">
+                            <i class="material-icons md-18">{{edit? 'done' : 'add'}}</i>{{edit? ('buttons.accept' | translate) : ('buttons.add' | translate)}}
+                            <div class="ripple-container"></div>
+                        </button>
+                        <button type="button" [disabled]="!formGroup.valid"  class="btn btn-danger btn-radio" (click)="removeReferencia(dependentReference)"
+                            *ngIf="modifying" data-toggle="tooltip" data-placement="left" attr.data-original-title="{{'tooltip.eliminar-datos' | translate}}">
+                            <i class="material-icons md-18">delete</i> {{'buttons.delete' | translate}}
+                            <div class="ripple-container"></div>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-radio" *ngIf="modifying" (click)="clean()" data-toggle="tooltip" data-placement="left"
+                            attr.data-original-title="{{'tooltip.cancelar' | translate}}">
+                            <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+                            <div class="ripple-container"></div>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="table-responsive">
+                          <ng-template #actionsTemplate let-item="item">
+					                  <div class="btn-group-md">
+					                    <a id="delete-button-value" [ngClass]="item.modalidad == mode.I? 'btn btn-fab btn-fab-mini btn-primary btn-raised' :
+					                                                      item.modalidad == mode.U? 'btn btn-fab btn-fab-mini btn-warning btn-raised' :
+					                                                      item.modalidad == mode.D? 'btn btn-fab btn-fab-mini btn-danger btn-raised' :
+					                                                      'btn btn-fab btn-fab-mini btn-info btn-raised'" [popover]="optionPopover" *ngIf="item.modalidad != null">
+					                      <i class="material-icons md-18">
+					                        {{item.modalidad == mode.I? 'add' : item.modalidad == mode.U? 'mode_edit' : item.modalidad == mode.D? 'delete' : 'add'}}
+					                      </i>
+                                {{'table.restore-title' | translate}}
+					                      <div class="ripple-container"></div>
+					                    </a>
+					                  </div>
+					                  <popover-content #optionPopover
+					                    title="{{'references.dependent.restore-title' | translate}}"
+					                    placement="right"
+					                    [animation]="true"
+					                    [closeOnClickOutside]="true" >
+					                    <button type="button" class="btn btn-primary btn-raised" [disabled]="item.modalidad == mode.I" (click)="restoreDependent(item)">
+					                      <i class="material-icons md-18">delete</i> {{'buttons.accept' | translate}}
+					                      <div class="ripple-container"></div>
+					                    </button>
+					                  </popover-content>
+					                </ng-template>
+                          <sa-data-table [data]="client.referencias?.referenciasDependientes" [heading]="editMode? headingUpdate: heading" [values]="values"
+                            [pager]="undefined" [actionTemplate]="editMode ? actionsTemplate : undefined" [useTableTemplate]="true" [useServicePager]="false" (rowSelected)="modify($event)"></sa-data-table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer text-right col-lg-10">
+                <div class="row">
+                    <span data-toggle="tooltip" data-placement="left" title=""
+                        attr.data-original-title="{{'buttons.cancel' | translate}}" *ngIf="name.disabled">
+                        <a class="btn btn-warning btn-raised btn-fab" (click)="changeControl()">
+                            <i class="material-icons md-18">create</i> {{'buttons.update' | translate}}
+                            <div class="ripple-container"></div>
+                        </a>
+                    </span>
+                    <button type="button" class="btn btn-danger btn-radio animated bounceIn" 
+                        (click)="identification? cancelDependents() : cancel()"
+                        *ngIf="name.enabled" data-toggle="tooltip" data-placement="left" attr.data-original-title="{{'buttons.cancel' | translate}}">
+                        <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+                        <div class="ripple-container"></div>
+                    </button>
+                    <button type="submit" class="btn btn-success" [disabled]="client.referencias?.referenciasDependientes.length > 0 ? isValidCancel() : editMode ? true : false"
+                        data-toggle="tooltip" data-placement="left" *ngIf="name.enabled"
+                        attr.data-original-title="{{'buttons.continue' | translate}}">
+                        {{'buttons.continue' | translate}} <i class="material-icons md-18">chevron_right</i>
+                        <div class="ripple-container"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal fade" id="authorizationModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><i class="material-icons md-18">check_circle</i>
+          {{'authorization.title' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <pl-authorization [authorization]="authorization"
+                          (changeAuthorization)="changeAuthorization($event)"></pl-authorization>
+      </div>
+    </div>
+  </div>
+</div>
+<cancel-confirmation></cancel-confirmation>
+<simple-notifications [options]="options"></simple-notifications>

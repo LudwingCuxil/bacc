@@ -1,0 +1,138 @@
+<p>
+  business-data works!
+</p>
+<div class="container">
+  <div class="row text-center">
+    <h3>Datos del Negocio</h3>
+  </div>
+  <div class="row">
+    <div class="form-class">
+      <div class="col-md-10">
+        <div calss="row">
+         <!-- {{Cliente.datosAdicionales | json}}-->
+          <table class="table table-responsive borderless">
+            <tr>
+              <td><label class="control-label">N.I.T del Negocio</label></td>
+              <td><label class="control-label">Nombre del Negocio</label></td>
+              <td><label class="control-label">Sector Econ&#243;mico</label></td>
+              <td><label class="control-label">Actividad Econ&#243;mica</label></td>
+            </tr>
+            <tr>
+              <td><input type="text" capitalize = "" required class="form-control" ng-model="Cliente.datosNegocio.nitNegocio" byte-max-length="" ng-maxlength="8" ng-minlength="7" /></td>
+              <td><input type="text" capitalize = "" required class="form-control" ng-model="Cliente.datosNegocio.nombreNegocio" byte-max-length="" ng-maxlength="20" ng-minlength="1" D/></td>
+              <td>
+                <select ng-model="Cliente.datosNegocio.sectorEconomico" required class="form-control" ng-options="sector.name for sector in sectoresEconomicos track by sector.code" ng-change="fillActividadesEconomicas(Cliente.datosNegocio.sectorEconomico)"></select>
+              </td>
+              <td>
+                <select ng-model="Cliente.datosNegocio.actividadEconomica" required class="form-control" ng-options="actividad.name for actividad in actividadesEconomicas track by actividad.code" ></select>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="row">
+          <table class="table table-responsive borderless">
+            <tr>
+              <td><label class="control-label">Direccion</label></td>
+              <td><label class="control-label">Colonia</label></td>
+              <td><label class="control-label">Lote</label></td>
+              <td><label class="control-label">Manzana</label></td>
+              <td><label class="control-label">Sector</label></td>
+            </tr>
+            <tr>
+              <td><input type="text" capitalize = "" class="form-control" name="direccion" id="field_direccion" ng-model="Cliente.datosNegocio.direccion" required byte-max-length="" ng-maxlength="20" ng-minlength="1"/></td>
+              <td><input type="text" capitalize = "" class="form-control" name="colonia" id="field_colonia" ng-model="Cliente.datosNegocio.colonia" byte-max-length="" ng-maxlength="20" ng-minlength="1"/></td>
+              <td><input type="text" capitalize = "" class="form-control" name="lote" id="field_lote" ng-model="Cliente.datosNegocio.lote" byte-max-length="" ng-maxlength="5" ng-minlength="1"/></td>
+              <td><input type="text" capitalize = "" class="form-control" name="manzana" id="field_manzana" ng-model="Cliente.datosNegocio.manzana" byte-max-length="" ng-maxlength="5" ng-minlength="1" /></td>
+              <td><input type="text" capitalize = "" class="form-control" name="sector" id="field_sector" ng-model="Cliente.datosNegocio.sector"  byte-max-length="" ng-maxlength="5" ng-minlength="1"/></td>
+            </tr>
+          </table>
+        </div>
+        <div calss="row">
+          {{departamentos}}
+          <table class="table table-responsive borderless">
+            <tr>
+              <td><label class="control-label">Departamento</label></td>
+              <td><label class="control-label">Municipio</label></td>
+              <td><label class="control-label">Aldea</label></td>
+              <td><label class="control-label">Cant&#243;n</label></td>
+              <td><label class="control-label">Caserio</label></td>
+            </tr>
+            <tr>
+              <td><select ng-model="Cliente.datosNegocio.departamento" required class="form-control" ng-options="departamento.name for departamento in departamentos track by departamento.code" ng-change="fillMunicipiosList(Cliente.datosNegocio.departamento)"></select></td>
+              <td><select ng-model="Cliente.datosNegocio.municipio" data-ng-disabled="Cliente.datosNegocio.departamento == null" required class="form-control" ng-options="municipio.name for municipio in municipios track by municipios.code"></select></td>
+              <td><select ng-model="Cliente.datosNegocio.aldea" required class="form-control" ng-options="aldea.nombre for aldea in aldeas track by municipios.id"></select></td>
+              <td><input type="text" capitalize = "" class="form-control" name="canton" id="field_canton" ng-model="Cliente.datosNegocio.canton" byte-max-length="" ng-maxlength="15" /></td>
+              <td><input type="text" capitalize = "" class="form-control" name="caserio" id="field_caserio" ng-model="Cliente.datosNegocio.caserio" byte-max-length="" ng-maxlength="15" /></td>
+            </tr>
+          </table>
+        </div>
+        <div calss="row">
+          <table class="table table-responsive borderless">
+            <tr>
+              <td><label class="control-label">Finca</label></td>
+              <td><label class="control-label">Zona</label></td>
+              <td><label class="control-label">Negocio dentro de Vivienda?</label></td>
+              <td><label class="control-label">A&#241;os en el Negocio</label></td>
+              <td><label class="control-label">A&#241;os en el Local</label></td>
+              <td><label class="control-label">Tenencia de Local</label></td>
+              <td><label class="control-label">N&#250;mero de Empleados</label></td>
+            </tr>
+            <tr>
+              <td><input type="text" capitalize = "" class="form-control" name="finca" id="field_finca" ng-model="Cliente.datosNegocio.canton" byte-max-length="" ng-maxlength="15" /></td>
+              <td><input type="text" capitalize = "" class="form-control" name="zona" id="field_zona" ng-model="Cliente.datosNegocio.canton" byte-max-length="" ng-maxlength="2" /></td>
+              <td><input type="checkbox" class="form-control" name="negocioVivienda" id="field_negocioVivienda" ng-model="Cliente.datosNegocio.negocioVivienda" /></td>
+              <td><input type="number" class="form-control" name="aniosNegocio" id="field_aniosNegocio" ng-model="Cliente.datosNegocio.aniosNegocio" byte-max-length="" ng-maxlength="2" required /></td>
+              <td><input type="number" class="form-control" name="aniosLocal" id="field_aniosLocal" ng-model="Cliente.datosNegocio.aniosLocal" byte-max-length="" ng-maxlength="2"  required /></td>
+              <td>
+                <select ng-model="Cliente.datosNegocio.tenenciaLocal" required class="form-control">
+                  <option value="1">ARRENDADA</option>
+                  <option value="2">PROPIA CON HIPOTECA</option>
+                  <option value="3">PROPIA SIN HIPOTECA</option>
+                </select>
+              </td>
+              <td><input type="number" class="form-control" name="empleados" id="field_empleados" ng-model="Cliente.datosNegocio.numeroEmpleados" byte-max-length="" ng-maxlength="4"  required/></td>
+            </tr>
+          </table>
+        </div>
+
+        <div calss="row">
+          <table class="table table-responsive borderless">
+            <tr>
+              <td colspan="3"><label class="control-label">Patente de Comercio</label></td>
+              <td><label class="control-label">Registros Contables</label></td>
+              <td><label class="control-label">Fecha de apertura Negocio</label></td>
+              <td colspan="2"><label class="control-label">Telefonos del Negocio</label></td>
+            </tr>
+            <tr>
+              <td>Numbero:<input type="text" capitalize = "" class="form-control" name="numeroPatente" id="field_numeroPatente" ng-model="Cliente.datosNegocio.numeroPatente" byte-max-length="" ng-maxlength="15" /></td>
+              <td>Libro:<input type="text" capitalize = "" class="form-control" name="libroPatente" id="field_libroPatente" ng-model="Cliente.datosNegocio.libroPatente" byte-max-length="" ng-maxlength="15" /></td>
+              <td>Folio:<input type="text" capitalize = "" class="form-control" name="folioPatente" id="field_folioPatente" ng-model="Cliente.datosNegocio.folioPatente" byte-max-length="" ng-maxlength="15" /></td>
+              <td><input type="checkbox" class="form-control" name="registrosContables" id="field_registrosContables" ng-model="Cliente.datosNegocio.registrosContables" /></td>
+              <td>
+                <table>
+                  <tr>
+                    <td>
+                   <!--   <input id="field_fechaAperturaNegocio" type="text" class="form-control" uib-datepicker-popup="{{dateformat}}" ng-model="Cliente.datosNegocio.fechaAperturaNegocio" is-open="datePickerForFechaAperturaNegocio.status.opened" required/> -->
+                      <ng2-datepicker [options]="options" [(ngModel)]="date"></ng2-datepicker>
+                    </td>
+                    <td>
+											<span class="input-group-btn" data-toggle="tooltip" data-placement="top" translate translate-attr-data-original-title="tooltip.seleccionar-fecha">
+								                <button type="button" class="btn btn-default" ng-click="datePickerForFechaAperturaNegocioOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+								            </span>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+              <td><input type="number" class="form-control" name="telfono1" id="field_telefono1" ng-model="Cliente.datosNegocio.telefonosNegocio1" byte-max-length="" ng-maxlength="8" ng-required="!Cliente.datosNegocio.telefonosNegocio2" ng-minlength="8" /></td>
+              <td><input type="number" class="form-control" name="telefono2" id="field_telefono2" ng-model="Cliente.datosNegocio.telefonosNegocio2" byte-max-length="" ng-maxlength="8"  ng-required="!Cliente.datosNegocio.telefonosNegocio1" ng-minlength="8" /></td>
+            </tr>
+          </table>
+
+          <button type="submit" ng-disabled="webform.$invalid" class="btn btn-primary" data-toggle="tooltip" data-placement="left" translate translate-attr-data-original-title="tooltip.revisar">
+            <span class="glyphicon glyphicon-check"></span>&nbsp;<span translate="entity.action.save">Validar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

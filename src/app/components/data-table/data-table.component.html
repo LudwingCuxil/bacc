@@ -1,0 +1,54 @@
+<table class="table table-bordered table-hover table-striped" *ngIf="useTableTemplate">
+  <thead>
+  <tr>
+    <th *ngFor="let head of heading">{{head | translate}}</th>
+  </tr>
+  <ng-template [ngTemplateOutlet]="headerTemplate"></ng-template>
+  </thead>
+  <tbody>
+  <ng-container *ngIf="!useServicePager">
+    <tr *ngFor="let row of items">
+      <td *ngIf="firstTemplate">
+        <ng-template [ngTemplateOutlet]="firstTemplate" [ngOutletContext]="{item: row}"></ng-template>
+      </td>
+      <td (click)="selectRow(row)" *ngFor="let val of values">{{valueFormatter(row, val)}}</td>
+      <td *ngIf="mediumTemplate">
+        <ng-template [ngTemplateOutlet]="mediumTemplate" [ngOutletContext]="{item: row}"></ng-template>
+      </td>
+      <td *ngIf="actionTemplate">
+        <ng-template [ngTemplateOutlet]="actionTemplate" [ngOutletContext]="{item: row}"></ng-template>
+      </td>
+    </tr>
+  </ng-container>
+  <ng-container *ngIf="useServicePager">
+    <tr *ngFor="let row of data">
+      <td *ngIf="firstTemplate">
+        <ng-template [ngTemplateOutlet]="firstTemplate" [ngOutletContext]="{item: row}"></ng-template>
+      </td>
+      <td (click)="selectRow(row)" *ngFor="let val of values">{{row[val]}}</td>
+      <td *ngIf="mediumTemplate">
+        <ng-template [ngTemplateOutlet]="mediumTemplate" [ngOutletContext]="{item: row}"></ng-template>
+      </td>
+      <td *ngIf="actionTemplate">
+        <ng-template [ngTemplateOutlet]="actionTemplate" [ngOutletContext]="{item: row}"></ng-template>
+      </td>
+    </tr>
+  </ng-container>
+  <ng-template [ngTemplateOutlet]="bodyTemplate"></ng-template>
+  </tbody>
+</table>
+<div class="col-md-12 text-center">
+  <div class="col-xs-8" *ngIf="pager">
+    <ngb-pagination [pageSize]="pager.size" [collectionSize]="pager.totalElements" [(page)]="pager.number" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="pageChange($event)"></ngb-pagination>
+  </div>
+  <div class="col-xs-4" *ngIf="pager">
+    <select id="tagType" [(ngModel)]="pager.size" class="form-control" required (ngModelChange)="updatePage($event)">
+      <option [ngValue]="5">5</option>
+      <option [ngValue]="10">10</option>
+      <option [ngValue]="15">15</option>
+      <option [ngValue]="20">20</option>
+      <option [ngValue]="50">50</option>
+      <option [ngValue]="100">100</option>
+    </select>
+  </div>
+</div>

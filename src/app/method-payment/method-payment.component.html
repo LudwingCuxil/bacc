@@ -1,0 +1,17 @@
+<section [formGroup]="formGroup">
+  <select id="productTypeSelected" [(ngModel)]="methodPayment"  (ngModelChange)="onChangeObj($event)" class="form-control" [disabled]="modeView || modeDelete || disable" required *ngIf="!autocomplete && selectMode">
+    <option *ngFor="let m of methodsPayment" [ngValue]="m">{{m.descripcion}}</option>
+  </select>
+
+  <input auto-complete [(ngModel)]="methodPayment" select-value-of="id" max-num-List="20" [source]="methodsPayment" class="form-control" required *ngIf="autocomplete && selectMode" list-formatter="descripcion" (valueChanged)="onChangeObj($event)" [disabled]="modeView || modeDelete || disable"/>
+
+  <section *ngIf="radioMode" class="radio">
+    <div *ngFor="let m of methodsPayment">
+      <label class="control control--radio">
+        <input type="radio" id="radio-{{m.descripcion}}"  name="{{controlName}}" [disabled]="disable" [checked]="m.selected" [value]="m.codigo" [formControlName]="controlName" (change)="onChangeObj(m)" class="radio">
+        <label for="radio-{{m.descripcion}}">{{m.descripcion}}</label>
+        <div class="control__indicator"></div>
+      </label>
+    </div>
+  </section>
+</section>

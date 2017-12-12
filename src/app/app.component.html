@@ -1,0 +1,8 @@
+<div *ngIf="validateLogin()">
+  <pl-menu [menus]="menus"></pl-menu>
+<!--<sa-menu ></sa-menu>-->
+</div>
+<router-outlet></router-outlet>
+<sa-footer [versionApp]="appVersion" [compactFooter]="footerCompact" [viewFooter]="footerView"></sa-footer>
+<!-- Routed views go here -->
+

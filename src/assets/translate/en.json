@@ -1,0 +1,281 @@
+{
+  "HOME": {
+    "HELLO": "hello {{value}}"
+  },
+  "datosgeneralesjuridico": {
+    "title": "titulo"
+  },
+  "tipo-persona": {
+    "tipo-persona": "Person Type",
+    "person": "Person",
+    "identification": "Identification",
+    "tipo-persona-juridico": "Legal Person"
+  },
+  "type-person": {
+    "type-person": "Person Type",
+    "identification": "Identification",
+    "document-type": "Document Type",
+    "document": "Document",
+    "natural": "Natural",
+    "legal": "Legal"
+  },
+  "generaldatalegal": {
+    "socialrazon": "Social Reason",
+    "comercial-name": "Comercial Name",
+    "acronym": "Acronym",
+    "coutry-origin": "Country Origin",
+    "account-officer": "Acount Officer",
+    "data-company-constitution": "Data Company Constitution",
+    "type-society": "Type Society",
+    "sales-level": "Sales Level",
+    "formation": "Formation",
+    "registration-date": "Registration Date",
+    "start-date-operations": "Start Date Operations",
+    "trade-register": "Trade Register",
+    "page-register": "Page",
+    "patent": "Patent",
+    "point-act": "Point of Act",
+    "writing-number": "Number Writing",
+    "trade-page": "Page",
+    "trade-tome": "Tome",
+    "trade-number": "Number"
+  },
+  "economic-profile": {
+    "isr": "ISR",
+    "economic-activities": "Economic Activities",
+    "economic-sector": "Economic Sector",
+    "employment-situtation":"Situaci\u00f3n Laboral",
+    "class-customer": "Class Customer",
+    "type-customer": "Type Customer",
+    "sector": "Sector",
+    "sub-sector": "Subo Sector"
+  },
+  "supplier-reference": {
+    "title": "Supplier References",
+    "name": "Name",
+    "address": "Address",
+    "giro": "Giro",
+    "phone": "Phone",
+    "phone-2": "Phone 2",
+    "code": "Code",
+    "description": "Description"
+  },
+  "legal-representative": {
+    "title": "Legal Representative",
+    "name": "Name",
+    "address": "Address",
+    "giro": "Giro",
+    "phone": "Phone",
+    "phone-2": "Phone 2",
+    "code": "Code",
+    "description": "Description"
+  },
+  "menu": {
+    "role": "Roles",
+    "profile": "Profiles",
+    "user": "Users",
+    "notification": "Notifications",
+    "access-record": "Access Record",
+    "change-password": "Change Password",
+    "logout": "Logout",
+    "language": "Languages",
+    "actions": "Actions",
+    "moneda": "Coin",
+    "resource-category": "Resource Category",
+    "resource": "Resource",
+    "entity-category": "Entity Category",
+    "entity": "Entity",
+    "translate": "Translates",
+    "country": "Countries",
+    "tag": "Tags",
+    "channel": "Channels",
+    "institution": "Institutions",
+    "product-type": "Product Type",
+    "product-group": "Product Group",
+    "product-class": "Product Class",
+    "product": "Product",
+    "frequency": "Frequency",
+    "transaction-type": "Transaction Type",
+    "general-parameter": "Generals Parameters",
+    "limit-amount": "Limit Amount",
+    "field-type": "Field Type",
+    "transaction": "Transaction",
+    "transaction-service": "Transaction Service",
+    "origin-system": "Origin System",
+    "admin-users": "Users Management",
+    "recurrent": "Recurrent Charges",
+    "admin-clients": "Clients Management",
+    "client": "Clients",
+    "general": "General",
+    "security": "Security",
+    "settings": "Settings",
+    "operations": "Operations",
+    "portal-clients": "Portal Clients",
+    "reprint-form": "RePrint Form",
+    "reference-type-person": "Reference Type person",
+    "form-product": "Form Product",
+    "account": "Accounts"
+  },
+  "account" : {
+    "title" : "Accounts",
+    "name" : "Account Name",
+    "number" : "Account Number",
+    "product-type" : "Product Type",
+    "currency" : "Currency",
+    "status" : "Status",
+    "relation": "Relation"
+  },
+  "validations": {
+    "error-mask-email": "The mail is not valid",
+    "required": "The field is required"
+  },
+  "buttons": {
+    "exit": "Salir",
+    "create": "Create",
+    "check": "Check",
+    "accept": "Accept",
+    "cancel": "Cancel",
+    "add": "Add",
+    "delete": "Delete",
+    "update": "Update",
+    "continue": "Continue",
+    "report": "Report"
+  },
+  "portal" : {
+    "header" : {
+      "name": "Name",
+      "currency": "Currency",
+      "product": "Product",
+      "sub-product": "Sub Product",
+      "identification" : "Identification",
+      "code-client" : "Cod. Client",
+      "class" : "Class",
+      "person-type": "Tipo persona",
+      "document-type": "Tipo documento",
+      "document": "Documento",
+      "legal": "LEGAL",
+      "natural": "NATURAL"
+    },
+    "side-bar": {
+      "create-account": "Create Account",
+      "account": "Accounts",
+      "type-person": "Type person",
+      "legal-client": "Legal client",
+      "natural-general-data": "General data Natural",
+      "legal-general-data": "General data Legal",
+      "business-data-legal": "Datos del negocio",
+      "dependent-references": "Dependent references",
+      "economic-profile": "Economic profile",
+      "job-references": "Job references",
+      "references-merchants": "References merchants",
+      "providers-references": "Providers references",
+      "representative": "Representative",
+      "additional-data": "Additional data",
+      "documents-presented": "Documents presented",
+      "update-name": "Cambiar Name",
+      "client": "Client",
+      "general-data": "General Data",
+      "fixed-term": "Fixed Term",
+      "administration-interests": "Administration Interests",
+      "beneficiaries": "Beneficiaries",
+      "reprint-form": "Reprint Form"
+    }
+  },
+  "create-account": {
+    "title": "Create Account",
+    "product-selection": {
+      "title": "Product Selection"
+    },
+    "data-customer": {
+      "title": "Data Customer"
+    },
+    "administration-interests": {
+      "title": "Administration Interests",
+      "subtitles":{
+        "method-payment": "Method Payment",
+        "account-payment": "Account for Interest Payment",
+        "frequency": "Frequency"
+      }
+    },
+    "beneficiaries": {
+      "title": "Beneficiaries",
+      "subtitles": {
+        "document": "Document",
+        "noDocument": "No. Document",
+        "firstName": "First Name",
+        "secondName": "Second Name",
+        "firstSurname": "First Surname",
+        "secondSurname": "Second Surname",
+        "marriedSurname": "Married Surname",
+        "address": "Address",
+        "phonenumber": "Phone Number",
+        "relationship": "Relationship",
+        "percentage": "Percentage"
+      },
+      "heading": {
+        "document-type": "Document Type",
+        "noDocument": "No. Document",
+        "name": "Name",
+        "relationship": "Relationship",
+        "mode": "Mode"
+      },
+      "messages": {
+        "title": {
+          "invalid-percentage": "Invalid Percentage",
+          "repeated-beneficiary": "Beneficiary Repeated",
+          "successful-update": "Beneficiaries"
+        },
+        "body": {
+          "invalid-percentage": "The value will exceed the 100%",
+          "invalid-zero": "The beneficiary percentage to add cant be 0.",
+          "repeated-beneficiary": "The document number already exists in the beneficiaries",
+          "successful-update": "Has been updated successfully"
+        }
+      },
+      "restore": "Restore Beneficiary",
+      "total": "Total"
+    },
+    "beneficiaries-final": {
+      "title": "Final Beneficiary",
+      "subtitles": {
+        "document": "Document",
+        "noDocument": "No. Document",
+        "nationality": "Nationality",
+        "rtn": "RTN",
+        "firstName": "First Name",
+        "secondName": "Second Name",
+        "firstSurname": "First Surname",
+        "secondSurname": "Second Surname",
+        "marriedSurname": "Married Surname",
+        "address": "Address",
+        "department": "Department",
+        "municipality": "Municipality",
+        "cellphone": "Cellphone ",
+        "phonenumber": "Phone Number",
+        "email": "Personal Email",
+        "percentage": "Percentage"
+      },
+      "heading": {
+        "document-type": "Document Type",
+        "noDocument": "No. Document",
+        "name": "Name",
+        "nationality": "Nationality",
+        "mode": "Mode"
+      },
+      "placeholder": {
+        "email": "DIRECTION@DOMAIN.COM",
+        "address": "ADDRESS",
+        "department": "DEPARTMENT",
+        "municipality": "MUNICIPALITY"
+      },
+      "total": "Total"
+    }
+  },
+  "messages": {
+    "required": "Field Required",
+    "error-mask-email": "The mail is not valid"
+  },
+  "footer": {
+    "version": "Version"
+  }
+}

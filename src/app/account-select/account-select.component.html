@@ -1,0 +1,7 @@
+<div [formGroup]="formGroup">
+  <select id="accountSelect" [(ngModel)]="account" [formControlName]="controlName" (ngModelChange)="onChangeObj($event)" class="form-control" [disabled]="modeView || modeDelete || disabled" required *ngIf="!autocomplete">
+    <option *ngFor="let a of accounts" [ngValue]="a">{{a.numeroCuenta + " - " + a.nombre}}</option>
+  </select>
+
+  <input auto-complete [(ngModel)]="account" [formControlName]="controlName" select-value-of="sector" max-num-List="20" [source]="accounts" class="form-control" required *ngIf="autocomplete" list-formatter="numeroCuenta" (valueChanged)="onChangeObj($event)"/>
+</div>

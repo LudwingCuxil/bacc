@@ -1,0 +1,299 @@
+<div [ngBusy]="busy"></div>
+<form name="merchant-reference-form" autocomplete="off" [formGroup]="formGroup" (ngSubmit)="validateForm()">
+  <div class="container-fluid animated fadeIn">
+    <div class="panel panel-custom">
+      <div class="panel-heading">
+        <h2>{{'references.merchant.title' | translate}}</h2>
+      </div>
+      <div class="panel-body">
+        <div *ngIf="client?.tipoPersona == 'N'" class="panel panel-custom">
+          <div class="panel-heading">
+            <h4 class="control-label" [translate]="'references.merchant.title'">{{'references.merchant.title' |
+              translate}}</h4>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-lg-12">
+                <label class="control-label" [translate]="'references.merchant.business.name'">{{'references.merchant.business.name'
+                  | translate}}</label>
+                <div class="form-group required"
+                     [ngClass]="{ 'has-error': businessName.touched && businessName.invalid}">
+                  <input formControlName="businessName" type="text" [(uppercase)]='merchantReference.nombreNegocio'
+                         class="form-control"
+                         name="nombre" [(ngModel)]="merchantReference.nombreNegocio" [maxLength]="60"/>
+                  <pl-errors-message [control]="businessName"></pl-errors-message>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <label class="control-label" [translate]="'references.merchant.business.business-turn'">{{'references.merchant.business.business-turn'
+                  | translate}}</label>
+                <div class="form-group required"
+                     [ngClass]="{ 'has-error': businessActivity.touched && businessActivity.invalid}">
+                  <input formControlName="businessActivity" type="text" class="form-control" name="actividad"
+                         [(ngModel)]="merchantReference.actividadNegocios"
+                         [maxLength]="60" [(uppercase)]='merchantReference.actividadNegocios'/>
+                  <pl-errors-message [control]="businessActivity"></pl-errors-message>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6 required">
+                <label class="control-label">{{'references.merchant.business.start-operation' | translate}}</label>
+                <div class="form-group form-inline">
+                  <div class="input-group required"
+                       [ngClass]="{'has-error': startOperation.touched && startOperation.invalid}">
+                    <sa-datepicker [(ngModel)]="startOperationModel" (ngModelChange)="changeStartOperation($event)"
+                                   name="startOperation"
+                                   formControlName="startOperation" [minDate]="minDate"
+                                   [maxDate]="maxDate"></sa-datepicker>
+                  </div>
+                  <pl-errors-message [control]="startOperation"></pl-errors-message>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label class="control-label">{{'references.merchant.business.business-income' | translate}}</label>
+                <div class="form-group required"
+                     [ngClass]="{ 'has-error': businessIncome.touched && businessIncome.invalid}">
+                  <input onblur="applyMoneyPattern(this, '');" formControlName="businessIncome" type="text"
+                         class="form-control text-right" min="0" name="ingreso"
+                         [(ngModel)]="merchantReference.ingresosDeNegocioPropio"
+                         [maxLength]="11" onkeydown="numbersOnlyWithDecimal(this, event);"/>
+                  <pl-errors-message [control]="businessIncome"></pl-errors-message>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-custom">
+          <div class="panel-heading">
+          
+            <div class="form-group">
+             <label class="control control--checkbox">
+               <input type="checkbox" [checked]="contadorRequerido"  type="checkbox" (change)="changeRequired()">
+               <label [translate]="'references.merchant.accountant.accountant-required'" for="useRepresentative">{{'references.merchant.accountant.accountant-required' | translate}}</label>
+               <div class="control__indicator"></div>
+             </label>
+            </div>
+          
+          </div>
+          <div class="panel-body">
+          <div class="row">
+           
+          </div>
+          <div [hidden]="!contadorRequerido" >
+            <div class="row">
+              <div class="col-lg-12">
+                <label class="control-label" [translate]="'references.merchant.accountant.name'">{{'references.merchant.accountant.name'
+                  | translate}}</label>
+                <div class="form-group required" [ngClass]="{ 'has-error': nameCounter.touched && nameCounter.invalid}">
+                  <input formControlName="nameCounter" [(ngModel)]="merchantReference.contador.nombre" type="text"
+                         class="form-control"
+                         name="nombre" [maxLength]="60" [(uppercase)]='merchantReference.contador.nombre'/>
+                  <pl-errors-message [control]="nameCounter"></pl-errors-message>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <label class="control-label" [translate]="'references.merchant.accountant.identification-type'">{{'references.merchant.accountant.identification-type'
+                  | translate}}</label>
+              </div>
+              <div class="col-lg-6">
+                <label class="control-label" [translate]="'references.merchant.accountant.nationality'">{{'references.merchant.accountant.nationality'
+                  | translate}}</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-2">
+                <div class="form-group required">
+                  <!--                <ba-core-typedoc-select #docType id="typedocId" [autocomplete]="true"
+                                    (changeTypedoc)="selectTypedoc($event)" [modeView]="modeView"
+                                    [modeDelete]="modeDelete"
+                                    [disabled]="childDocument || (modeView || modeDelete)" required></ba-core-typedoc-select>-->
+                  <pl-type-document-select id="typedocId" #docType [controlName]="'documentIdentification'"
+                                           [formGroup]="formGroup" 
+                                           [documentIdentification]="tempTipoIdentificacion"
+                                           (changeTypeDocument)="selectTypedoc($event)" [autocomplete]="false"
+                                           [modeView]="modeView"></pl-type-document-select>
+                  <pl-errors-message [control]="documentIdentification"></pl-errors-message>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group required margin-reset"
+                     [ngClass]="{'has-error': identification.touched && identification.invalid}">
+                  <input style="text-transform: uppercase;" *ngIf="!serviceData"
+                         [textMask]="{mask: tipeDoc.mascara , guide: true, modelClean: true,placeholderChar : tipeDoc.maskCharacter}"
+                         id="identification" class="form-control"
+                         name="identification" formControlName="identification"
+                         (ngModelChange)="valuechange($event,guide)"
+                         [(ngModel)]="tempIdentificiacion"
+                         (blur)="onBlurIdentification($event)"
+                         placeholder="{{tipeDoc.placeHolder}}" model-view-value="true"
+                         aria-describedby="identificacion-validator-help"/>
+
+
+                  <pl-errors-message [control]="identification" [customPatter]="true">
+                    <div *ngIf="identification?.hasError('pattern')"><span>{{'messages.error-mask' | translate}}</span>
+                    </div>
+                  </pl-errors-message>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <!--                <label class="control-label" [translate]="'generaldatalegal.coutry-origin'">t</label>-->
+
+                <div class="form-group required" [ngClass]="{'has-error': nationality.touched && nationality.invalid}">
+                  <pl-country-select id="originCountry" [formGroup]="formGroup" [showNationality]="true"
+                                     [country]="nacionalidad" [controlName]="'nationality'"
+                                     (changeCountry)="selectNationality($event)"
+                                     [autocomplete]="true"></pl-country-select>
+                  <pl-errors-message [control]="nationality"></pl-errors-message>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <label class="control-label" [translate]="'references.merchant.accountant.address'">{{'references.merchant.accountant.address'
+                  | translate}}</label>
+                <div class="form-group" [ngClass]="{ 'has-error': address.touched && address.invalid}">
+                  <input formControlName="address" type="text" name="direccion"
+                         [(uppercase)]='merchantReference.contador.direccion'
+                         class="form-control" name="direccion" [(ngModel)]="merchantReference.contador.direccion"
+                         [maxLength]="300"/>
+                  <pl-errors-message [control]="address"></pl-errors-message>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <label class="control-label" [translate]="'references.merchant.accountant.phone'">{{'references.merchant.accountant.phone'
+                  | translate}}</label>
+                <div class="form-group required" [ngClass]="{ 'has-error': phone.touched && phone.invalid}">
+                  <input formControlName="phone" type="text" class="form-control" name="telefono"
+                         [(ngModel)]="merchantReference.contador.telefono1" [maxLength]="12"
+                         onkeydown="numbersOnlyWithDecimal(this, event);"/>
+                  <pl-errors-message [control]="phone"></pl-errors-message>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <label class="control-label" [translate]="'references.merchant.accountant.phone2'">{{'references.merchant.accountant.phone2'
+                  | translate}}</label>
+                <div class="form-group">
+                  <input formControlName="phone2" type="text" class="form-control" name="telefono2"
+                         [(ngModel)]="merchantReference.contador.telefono2" [maxLength]="12"
+                         onkeydown="numbersOnlyWithDecimal(this, event);"/>
+                  <pl-errors-message [control]="phone2"></pl-errors-message>
+                </div>
+              </div>
+            </div>
+            </div>
+            <div class="row panel-buttons">
+              <div class="col-lg-12 text-right">
+              
+                <button type="button" [disabled]="edit && formGroup.valid ? isValidChange() : !formGroup.valid"
+                        [ngClass]="edit ? 'btn btn-primary btn-radio' : 'btn btn-success btn-radio'"
+                        (click)="addReferencia(merchantReference)" data-toggle="tooltip" data-placement="left"
+                        attr.data-original-title="{{'tooltip.agregar-datos' | translate}}">
+                  <i class="material-icons md-18">{{edit? 'done' : 'add'}}</i>{{edit? ('buttons.accept' | translate) :
+                  ('buttons.add' | translate)}}
+                  <div class="ripple-container"></div>
+                </button>
+                <button type="button" [disabled]="!formGroup.valid" class="btn btn-danger btn-radio"
+                        (click)="removeReferencia(merchantReference)"
+                        *ngIf="modifying" data-toggle="tooltip" data-placement="left"
+                        attr.data-original-title="{{'tooltip.eliminar-datos' | translate}}">
+                  <i class="material-icons md-18">delete</i> {{'buttons.delete' | translate}}
+                  <div class="ripple-container"></div>
+                </button>
+                <button type="button" class="btn btn-danger btn-radio" *ngIf="modifying" (click)="clean()"
+                        data-toggle="tooltip" data-placement="left"
+                        attr.data-original-title="{{'tooltip.cancelar' | translate}}">
+                  <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+                  <div class="ripple-container"></div>
+                </button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="table-responsive">
+                  <ng-template #actionsTemplate let-item="item">
+
+                    <div class="btn-group-md">
+                      <a id="delete-button-value" [ngClass]="item.modalidad == mode.I? 'btn btn-fab btn-fab-mini btn-primary btn-raised' :
+                                               item.modalidad == mode.U? 'btn btn-fab btn-fab-mini btn-warning btn-raised' :
+                                               item.modalidad == mode.D? 'btn btn-fab btn-fab-mini btn-danger btn-raised' :
+                                               'btn btn-fab btn-fab-mini btn-info btn-raised'" [popover]="optionPopover"
+                         *ngIf="item.modalidad != null">
+                        <i class="material-icons md-18">
+                          {{item.modalidad == mode.I? 'add' : item.modalidad == mode.U? 'mode_edit' : item.modalidad ==
+                          mode.D? 'delete' : 'add'}}
+                        </i>
+                        {{'table.restore-title' | translate}}
+                        <div class="ripple-container"></div>
+                      </a>
+                    </div>
+                    <popover-content #optionPopover
+                                     title="{{'references.dependent.restore-title' | translate}}"
+                                     placement="right"
+                                     [animation]="true"
+                                     [closeOnClickOutside]="true">
+                      <button type="button" class="btn btn-primary btn-raised" [disabled]="item.modalidad == mode.I"
+                              (click)="restoreDependent(item)">
+                        <i class="material-icons md-18">delete</i> {{'buttons.accept' | translate}}
+                        <div class="ripple-container"></div>
+                      </button>
+                    </popover-content>
+                  </ng-template>
+                  <sa-data-table [data]="client?.referencias?.referenciasComerciante"
+                                 [heading]="editMode ? headingUpdate: heading" [values]="values"
+                                 [pager]="undefined" [actionTemplate]="editMode ? actionsTemplate : undefined" [useTableTemplate]="true"
+                                 [useServicePager]="false" (rowSelected)="modify($event)"></sa-data-table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer text-right col-lg-10">
+        <div class="row">
+          <button type="button" class="btn btn-warning btn-raised btn-fab" *ngIf="editMode && !this.disabledField"
+                  (click)="change()">
+            <i class="material-icons md-18">create</i> {{'buttons.update'| translate}}
+          </button>
+          <button type=button (click)="editMode? cancelReference() : cancel()"
+                  class="btn btn-danger btn-radio animated bounceIn" *ngIf="this.disabledField"
+                  data-toggle="tooltip" data-placement="top" translate
+                  translate-attr-data-original-title="buttons.cancel">
+            <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+            <div class="ripple-container"></div>
+          </button>
+          <button type="submit"
+                  [disabled]="client?.referencias?.referenciasComerciante.length > tamanio ? isValidCancel() : true"
+                  class="btn btn-success btn-radio animated bounceIn"
+                  data-toggle="tooltip" data-placement="top" translate *ngIf="this.disabledField"
+                  translate-attr-data-original-title="buttons.continue">
+            {{editMode ? 'buttons.accept' : 'buttons.continue' | translate}} <i class="material-icons md-18">chevron_right</i>
+            <div class="ripple-container"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="modal fade" id="authorizationModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><i
+          class="material-icons md-18">check_circle</i>
+          {{'authorization.title' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <pl-authorization [authorization]="authorization"
+                          (changeAuthorization)="changeAuthorization($event)"></pl-authorization>
+      </div>
+    </div>
+  </div>
+</div>
+<simple-notifications [options]="optionsm"></simple-notifications>

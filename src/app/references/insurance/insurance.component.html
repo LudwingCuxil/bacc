@@ -1,0 +1,210 @@
+<div [ngBusy]="busy">
+  <form [formGroup]="formGroup" id="formGroup" name="formGroup" autocomplete="off">
+    <div class="row">
+      <div class="col-lg-6">
+        <label class="control-label">{{'referencias-seguro.tipo-institucion' | translate}}</label>
+        <div class="form-group required" [ngClass]="{ 'has-error': typeSelect.touched && typeSelect.invalid}">
+          <pl-type-institution-select
+            [typeInstitution]="type" [formGroup]="formGroup"
+            [autocomplete]="false" [controlName]="'typeSelect'"
+            (changeTypeInstitution)="selectSector($event)"></pl-type-institution-select>
+          <pl-errors-message [control]="typeSelect"></pl-errors-message>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <label class="control-label">{{'referencias-seguro.codigo-aseguradora' | translate}}</label>
+        <div class="form-group required" [ngClass]="{ 'has-error': subTypeSelect.touched && subTypeSelect.invalid}">
+          <pl-institution-select
+            [institution]="subType" [formGroup]="formGroup"
+            [institutionType]="type"
+            [autocomplete]="true" [controlName]="'subTypeSelect'"
+            (changeInstitution)="selectSubSector($event)">
+          </pl-institution-select>
+          <pl-errors-message [control]="subTypeSelect"></pl-errors-message>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <label class="control-label">{{'referencias-seguro.poliza' | translate}}</label>
+        <div class="form-group">
+          <div class="form-group required" [ngClass]="{ 'has-error': policy.touched && policy.invalid}">
+            <input type="text" class="form-control" [(uppercase)]="insurance.poliza" name="policy"
+                   formControlName="policy" [(ngModel)]="insurance.poliza" [maxLength]="20"/>
+            <pl-errors-message [control]="policy">
+              <div *ngIf="policy.hasError('minlength')"><span>{{'messages.minlength' | translate}}</span> 20</div>
+              <div *ngIf="policy.hasError('maxlength')"><span>{{'messages.maxlength' | translate}}</span> 20</div>
+            </pl-errors-message>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <label class="control-label">{{'referencias-seguro.tipoPoliza' | translate}}</label>
+        <div class="form-group">
+          <div class="form-group required" [ngClass]="{ 'has-error': policyType.touched && policyType.invalid}">
+            <input type="text" class="form-control" [(uppercase)]="insurance.tipoDePoliza" name="policyType"
+                   formControlName="policyType" [(ngModel)]="insurance.tipoDePoliza" [maxLength]="10"/>
+            <pl-errors-message [control]="policyType">
+              <div *ngIf="policyType.hasError('minlength')"><span>{{'messages.minlength' | translate}}</span> 10</div>
+              <div *ngIf="policyType.hasError('maxlength')"><span>{{'messages.maxlength' | translate}}</span> 10</div>
+            </pl-errors-message>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-4">
+        <label class="control-label">{{'referencias-seguro.endoso'| translate}}</label>
+        <div class="form-group" [ngClass]="{ 'has-error': endorsement.touched && endorsement.invalid}">
+          <input type="text" class="form-control" [(uppercase)]="insurance.endoso" name="endorsement"
+                 formControlName="endorsement" [(ngModel)]="insurance.endoso" [maxLength]="10"/>
+          <pl-errors-message [control]="endorsement">
+            <div *ngIf="endorsement.hasError('minlength')"><span>{{'messages.minlength' | translate}}</span> 10</div>
+            <div *ngIf="endorsement.hasError('maxlength')"><span>{{'messages.maxlength' | translate}}</span> 10</div>
+          </pl-errors-message>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="form-group">
+          <label class="control-label">{{'referencias-seguro.certificado' | translate}}</label>
+          <div class="form-group required" [ngClass]="{ 'has-error': certificate.touched && certificate.invalid}">
+            <input type="text" class="form-control" [(uppercase)]="insurance.certificado" name="certificate"
+                   [(ngModel)]="insurance.certificado" [maxLength]="10" formControlName="certificate"/>
+            <pl-errors-message [control]="certificate">
+              <div *ngIf="certificate.hasError('minlength')"><span>{{'messages.minlength' | translate}}</span> 10</div>
+              <div *ngIf="certificate.hasError('maxlength')"><span>{{'messages.maxlength' | translate}}</span> 10</div>
+            </pl-errors-message>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4" [ngClass]="{ 'has-error': currency.touched && currency.invalid}">
+        <label class="control-label">{{'referencias-seguro.moneda' | translate}}</label>
+        <div class="form-group required">
+          <pl-currency-select [autocomplete]="false" [controlName]="'currency'" [formGroup]="formGroup"
+                              [currency]="insurance.moneda"
+                              (currencyUpdated)="onCurrencyChange($event)"></pl-currency-select>
+          <pl-errors-message [control]="currency"></pl-errors-message>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-3">
+        <label class="control-label">{{'referencias-seguro.cobertura' | translate}}</label>
+        <div class="form-group required" [ngClass]="{ 'has-error': coverage.touched && coverage.invalid}">
+          <input type="text" class="form-control" name="coverage" formControlName="coverage"
+                 [(ngModel)]="insurance.cobertura" [maxLength]="11" min="0"
+                 onkeydown="numbersOnlyWithDecimal(this, event);" onblur="applyMoneyPattern(this, '');"
+                 onfocus="removeMoneyMask(this);"/>
+          <pl-errors-message [control]="coverage">
+            <div *ngIf="coverage.hasError('minlength')"><span>{{'messages.minlength' | translate}}</span> 13</div>
+            <div *ngIf="coverage.hasError('maxlength')"><span>{{'messages.maxlength' | translate}}</span> 13</div>
+          </pl-errors-message>
+        </div>
+      </div>
+      <div class="col-lg-4 required">
+        <label class="control-label">{{'referencias-seguro.fecha-vencimiento' | translate}}</label>
+        <div class="form-group form-inline" [ngClass]="{'has-error': expireDate.touched && expireDate.invalid}">
+          <div class="input-group">
+            <sa-datepicker [(ngModel)]="expire" (ngModelChange)="changeDateExpire($event)" name="expireDate"
+                           formControlName="expireDate" [maxDate]="maxDateExpire"
+                           [minDate]="minDate"></sa-datepicker>
+          </div>
+          <pl-errors-message [control]="expireDate">
+            <div *ngIf="expireDate?.hasError('maxDate')"><span>{{'messages.max-date' | translate}} {{maxDateExpire.day + '/' + maxDateExpire.month + '/' + maxDateExpire.year}}</span></div>
+            <div *ngIf="expireDate?.hasError('minDate')"><span>{{'messages.min-date' | translate}} {{minDate.day + '/' + minDate.month + '/' + minDate.year}}</span></div>
+          </pl-errors-message>
+        </div>
+      </div>
+    </div>
+
+    <div class="row panel-buttons">
+      <div class="col-lg-12 text-right">
+        <button type="button" [disabled]="edit && formGroup.valid? isInvalidChange() : !formGroup.valid"
+                [ngClass]="edit ? 'btn btn-primary btn-radio' : 'btn btn-success btn-radio'"
+                (click)="addReference()" data-toggle="tooltip" data-placement="left"
+                attr.data-original-title="{{'tooltip.agregar-datos' | translate}}">
+          <i class="material-icons md-18">{{edit? 'done' : 'add'}}</i>{{'buttons.accept' | translate}}
+          <div class="ripple-container"></div>
+        </button>
+        <button type="button" [disabled]="!formGroup.valid" class="btn btn-danger btn-radio"
+                (click)="removeReference()"
+                *ngIf="edit" data-toggle="tooltip" data-placement="left"
+                attr.data-original-title="{{'tooltip.eliminar-datos' | translate}}">
+          <i class="material-icons md-18">delete</i> {{'buttons.delete' | translate}}
+          <div class="ripple-container"></div>
+        </button>
+        <button type="button" class="btn btn-danger btn-radio" *ngIf="edit" (click)="clean()"
+                data-toggle="tooltip"
+                data-placement="left"
+                attr.data-original-title="{{'tooltip.cancelar' | translate}}">
+          <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+          <div class="ripple-container"></div>
+        </button>
+      </div>
+    </div>
+    <div class="row panel-buttons">
+      <div class="col-lg-12">
+        <ng-template #actionsTemplate let-item="item">
+          <div class="btn-group-md">
+            <a id="delete-button-value" [ngClass]="item.modalidad == mode.I? 'btn btn-fab btn-fab-mini btn-primary btn-raised' :
+                                                item.modalidad == mode.U? 'btn btn-fab btn-fab-mini btn-warning btn-raised' :
+                                                item.modalidad == mode.D? 'btn btn-fab btn-fab-mini btn-danger btn-raised' :
+                                                'btn btn-fab btn-fab-mini btn-info btn-raised'"
+               [popover]="optionPopover" *ngIf="item.modalidad != null">
+              <i class="material-icons md-18">
+                {{item.modalidad == mode.I? 'add' : item.modalidad == mode.U? 'mode_edit' : item.modalidad ==
+                mode.D?
+                'delete' : 'add'}}
+              </i>
+              {{'table.restore-title' | translate}}
+              <div class="ripple-container"></div>
+            </a>
+          </div>
+          <popover-content #optionPopover
+                           title="{{'table.restore-title' | translate}}"
+                           placement="right"
+                           [animation]="true"
+                           [closeOnClickOutside]="true">
+            <button type="button" class="btn btn-primary btn-raised" [disabled]="item.modalidad == mode.I"
+                    (click)="restoreReference(item)">
+              <i class="material-icons md-18">delete</i> {{'buttons.accept' | translate}}
+              <div class="ripple-container"></div>
+            </button>
+          </popover-content>
+        </ng-template>
+        <sa-data-table [pager]="undefined" [actionTemplate]="editMode ? actionsTemplate : undefined"
+                       [data]="client.referencias.referenciasSeguros" [useTableTemplate]="true"
+                       [heading]="editMode? headingEdit: heading" [values]="values" [useServicePager]="false"
+                       (rowSelected)="selectRecord($event)">
+        </sa-data-table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="panel-footer text-right col-lg-12">
+        <button type="button" [disabled]="false" class="btn btn-success btn-radio" *ngIf="!editMode"
+                (click)="validateForm()"
+                data-toggle="tooltip" data-placement="left">
+          <i class="material-icons md-18">check</i> {{'buttons.accept' | translate}}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal fade" id="authorizationModalInsurance" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><i class="material-icons md-18">check_circle</i>
+          {{'authorization.title' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <pl-authorization [authorization]="authorization"
+                          (changeAuthorization)="changeAuthorization($event)"></pl-authorization>
+      </div>
+    </div>
+  </div>
+</div>
+
+<simple-notifications [options]="options"></simple-notifications>

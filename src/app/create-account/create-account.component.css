@@ -1,0 +1,19 @@
+.create-component {
+  margin-bottom: 60px;
+  padding-top: 60px;
+  width: 100%;
+  height: 100%;
+}
+
+.create-component .container form:nth-child(2) {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px rgba(0,0,0,.05);
+  padding: 15px;
+  margin-bottom: 30px;
+}
+
+.content-client-search {
+  overflow-y: scroll;
+}

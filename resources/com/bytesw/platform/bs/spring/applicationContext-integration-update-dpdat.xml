@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:int="http://www.springframework.org/schema/integration" 
+	xmlns:int-jdbc="http://www.springframework.org/schema/integration/jdbc"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" 
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/integration/jdbc http://www.springframework.org/schema/integration/jdbc/spring-integration-jdbc.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- ############## CAMBIO ############## -->
+	
+	<!-- CAMBIO DE NOMBRE -->
+	
+	<int:channel id="updateNombreCuentaRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateNombreCuentaAdapter" data-source="dataSource" channel="updateNombreCuentaRequestChannel" query="#{sqlUpdateNombreCuenta}" />
+	<bean id="sqlUpdateNombreCuenta" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{DPDAT}.DPCTAS
+				SET CTNOM = :payload.datoGeneral.nombreRecortado
+				WHERE PRTIPO = :payload.digitoIdentificador AND DPAGEN = :payload.agencia AND DPCORR = :payload.correlativo AND DPDIVE = :payload.digitoVerificador
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- DATO GENERAL -->
+	
+	<int:channel id="updateDatoGeneralRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateDatoGeneralAdapter" data-source="dataSource" channel="updateDatoGeneralRequestChannel" query="#{sqlUpdateDatoGeneral}" />
+	<bean id="sqlUpdateDatoGeneral" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{DPDAT}.DPCTAS
+				SET DPCODC = :payload.datoGeneral.direccion.codigo,
+					CTTIPO = :payload.datoGeneral.valorTipoCuenta,
+					DPSECO = :payload.datoGeneral.sectorEconomico.codigo,
+					DPACTE = :payload.datoGeneral.actividadEconomica.codigo,
+					DPAISR = :payload.datoGeneral.stringAfectaIsr,
+					CTAGRE = :payload.datoGeneral.agenciaRetencion,
+					DPCAPM = :payload.datoGeneral.stringCargoPorManejoCuenta,
+					CLRESA = :payload.datoGeneral.funcionarioResponsable.id.codigo,
+					CLRESP = :payload.datoGeneral.oficialCuentas.id.codigo,
+					CTCTGR = :payload.datoGeneral.grupoEconomico.id.tipoGrupo,
+					CTGRCO = :payload.datoGeneral.grupoEconomico.id.grupo
+				WHERE PRTIPO = :payload.digitoIdentificador AND DPAGEN = :payload.agencia AND DPCORR = :payload.correlativo AND DPDIVE = :payload.digitoVerificador
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- DATO GENERAL ADICIONAL -->
+	
+	<int:channel id="updateDatoGeneralAdicionalRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateDatoGeneralAdicionalAdapter" data-source="dataSource" channel="updateDatoGeneralAdicionalRequestChannel" query="#{sqlUpdateDatoGeneralAdicional}" />
+	<bean id="sqlUpdateDatoGeneralAdicional" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{DPDAT}.DPCTAAD
+				SET CDFOAP = :payload.datoGeneral.abrirLaCuenta.codigo,
+					PRFOAP = :payload.datoGeneral.abrirLaCuenta.descripcion,
+					CDFOUT = :payload.datoGeneral.utilizarEnCuenta.codigo,
+					PRFOUT = :payload.datoGeneral.utilizarEnCuenta.descripcion,
+					MOESDE = :payload.datoGeneral.montoDepositos
+				WHERE PRTIPO = :payload.digitoIdentificador AND DPAGEN = :payload.agencia AND DPCORR = :payload.correlativo AND DPDIVE = :payload.digitoVerificador
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- DATO CHEQUERA -->
+	
+	<int:channel id="updateCuentaInfoChequeraRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateCuentaInfoChequeraAdapter" data-source="dataSource" channel="updateCuentaInfoChequeraRequestChannel" query="#{sqlUpdateCuentaInfoChequera}" />
+	<bean id="sqlUpdateCuentaInfoChequera" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{DPDAT}.DPINFCHE
+				SET DPNOCH = :payload.datoChequera.nombre
+				WHERE PRTIPO = :payload.digitoIdentificador AND DPAGEN = :payload.agencia AND DPCORR = :payload.correlativo AND DPDIVE = :payload.digitoVerificador
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- PERSONA CHEQUERA -->
+	
+	<int:channel id="updateCuentaPersonaChequeraRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateCuentaPersonaChequeraAdapter" data-source="dataSource" channel="updateCuentaPersonaChequeraRequestChannel" query="#{sqlUpdateCuentaPersonaChequera}" />
+	<bean id="sqlUpdateCuentaPersonaChequera" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{DPDAT}.DPFRCH
+				SET FCHTDO = :payload.tipoDocumento.codigo, 
+				    FCHDOC = :payload.numeroDocumento,
+					FCHNOM = :payload.nombreRecortado
+				WHERE PRTIPO = :payload.digitoIdentificador AND DPAGEN = :payload.agencia AND DPCORR = :payload.correlativo AND DPDIVE = :payload.digitoVerificador AND FCHTDO = :payload.valorTipoDocumento AND FCHDOC = :payload.valorNumeroDocumento
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- DATO INTERES -->
+	
+	<int:channel id="updateDatoInteresRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateDatoInteresAdapter" data-source="dataSource" channel="updateDatoInteresRequestChannel" query="#{sqlUpdateDatoInteres}" />
+	<bean id="sqlUpdateDatoInteres" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{DPDAT}.DPCTAS
+				SET TFCODI = :payload.datoInteres.valorFormaPago,
+					PRTIAI = :payload.datoInteres.aiDigitoIdentificador, 
+					DPAGAI = :payload.datoInteres.aiAgencia, 
+					DPCOAI = :payload.datoInteres.aiCorrelativo,
+					DPDIAI = :payload.datoInteres.aiDigitoVerificador
+				WHERE PRTIPO = :payload.digitoIdentificador AND DPAGEN = :payload.agencia AND DPCORR = :payload.correlativo AND DPDIVE = :payload.digitoVerificador
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- BENEFICIARIO -->
+	
+	<int:channel id="updateBeneficiarioRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateBeneficiarioAdapter" data-source="dataSource" channel="updateBeneficiarioRequestChannel" query="#{sqlUpdateBeneficiario}" />
+	<bean id="sqlUpdateBeneficiario" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{DPDAT}.DPBNAC
+				SET BEIAP1 = :payload.primerApellido,
+				    BEIAP2 = :payload.segundoApellido,
+				    BEIAP3 = :payload.apellidoCasada, 
+				    BEINO1 = :payload.primerNombre,
+					BEINO2 = :payload.segundoNombre,
+					BENOMB = :payload.nombreCompleto,
+					BEDIRE = :payload.direccion,
+					BETELE = :payload.telefono,
+					BENUID = :payload.numeroDocumento,
+					BEPARE = :payload.parentesco.codigo,
+					BEPORC = :payload.porcentaje,
+					BETDOC = :payload.tipoDocumento.codigo,
+					BEDOCT = :payload.numeroDocumento
+				WHERE PRTIPO = :payload.digitoIdentificador AND DPAGEN = :payload.agencia AND DPCORR = :payload.correlativo AND DPDIVE = :payload.digitoVerificador AND BECORR = :payload.correlativoBeneficiario
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- BENEFICIARIO FINAL -->
+	
+	<int:channel id="updateBeneficiarioFinalRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateBeneficiarioFinalAdapter" data-source="dataSource" channel="updateBeneficiarioFinalRequestChannel" query="#{sqlUpdateBeneficiarioFinal}" />
+	<bean id="sqlUpdateBeneficiarioFinal" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{DPDAT}.DPBFIN
+				SET BFTIDE = :payload.tipoDocumento.codigo,
+		   			BFNOID = :payload.numeroDocumento,
+		   			BFIDTR = :payload.rtn,
+		   			BFIAP1 = :payload.primerApellido,
+				    BFIAP2 = :payload.segundoApellido,
+				    BFIAP3 = :payload.apellidoCasada,
+				    BFINO1 = :payload.primerNombre,
+					BFINO2 = :payload.segundoNombre,
+					BFNOMB = :payload.nombreCompleto,
+					BFFNAC = :payload.nacionalidad.codigo,
+					BFDIRE = :payload.direccion,
+					BFEMAI = :payload.correo,
+					BFDPTO = :payload.departamento,
+					BFDMUN = :payload.municipio,
+					BFTEL1 = :payload.telefono,
+					BFTEL2 = :payload.celular,
+					BFTEL3 = :payload.celular2,
+					BFPORC = :payload.porcentaje
+				WHERE PRTIPO = :payload.digitoIdentificador AND DPAGEN = :payload.agencia AND DPCORR = :payload.correlativo AND DPDIVE = :payload.digitoVerificador AND BFCORR = :payload.correlativoBeneficiarioFinal
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- FIRMA ENCABEZADO -->
+	
+	<int:channel id="updateFirmaEncabezadoRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateFirmaEncabezadoAdapter" data-source="dataSource" channel="updateFirmaEncabezadoRequestChannel" query="#{sqlUpdateFirmaEncabezado}" />
+	<bean id="sqlUpdateFirmaEncabezado" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{DPDAT}.DPCTAS
+				SET CTFIRM = :payload.firma.firmasRegistradas,
+					CTCFRE = :payload.firma.firmasParaGirar
+				WHERE PRTIPO = :payload.digitoIdentificador AND DPAGEN = :payload.agencia AND DPCORR = :payload.correlativo AND DPDIVE = :payload.digitoVerificador
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- FIRMA -->
+	
+	<int:channel id="updateFirmaRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateFirmaAdapter" data-source="dataSource" channel="updateFirmaRequestChannel" query="#{sqlUpdateFirma}" />
+	<bean id="sqlUpdateFirma" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{DPDAT}.DPFIRMA
+				SET FIRTDO = :payload.cliente.tipoDeIdentificacion,
+					FIRNID = :payload.cliente.numeroIdentificacion,
+					DPIAP1 = :payload.individual.primerApellido, 
+					DPIAP2 = :payload.individual.segundoApellido,
+					DPIAP3 = :payload.individual.apellidoCasada, 
+					DPINO1 = :payload.individual.primerNombre, 
+					DPINO2 = :payload.individual.segundoNombre,
+					FIROBS = :payload.observacion
+				WHERE PRTIPO = :payload.digitoIdentificador AND DPAGEN = :payload.agencia AND DPCORR = :payload.correlativo AND DPDIVE = :payload.digitoVerificador AND FIRCOR = :payload.correlativoFirma
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- INFORMACION ADICIONAL -->
+	
+	<int:channel id="updateCuentaInfoAdicionalRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateCuentaInfoAdicionalAdapter" data-source="dataSource" channel="updateCuentaInfoAdicionalRequestChannel" query="#{sqlUpdateCuentaInfoAdicional}" />
+	<bean id="sqlUpdateCuentaInfoAdicional" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{DPDAT}.DPCTAAD
+				SET OSBER1 = :payload.firma.condiciones1,
+					OSBER2 = :payload.firma.condiciones2,
+					OSBER3 = :payload.firma.condiciones3,
+					OSBER4 = :payload.firma.condiciones4,
+					OSBER5 = :payload.firma.condiciones5,
+					OSBER6 = :payload.firma.condiciones6
+				WHERE PRTIPO = :payload.digitoIdentificador AND DPAGEN = :payload.agencia AND DPCORR = :payload.correlativo AND DPDIVE = :payload.digitoVerificador
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- MANCOMUNADA -->
+	
+	<int:channel id="updateCuentaMancomunadaRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="updateCuentaMancomunadaAdapter" data-source="dataSource" channel="updateCuentaMancomunadaRequestChannel" query="#{sqlUpdateCuentaMancomunada}" />
+	<bean id="sqlUpdateCuentaMancomunada" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+				UPDATE #{DPDAT}.DPCTAM
+				SET CLTDO1 = :payload.cliente.id.tipoIdentificacion, 
+				    CLDO1  = :payload.cliente.id.identificacion,
+					CTMREL = :payload.valorRelacionIncluyente
+				WHERE PRTIPO = :payload.digitoIdentificador AND DPAGEN = :payload.agencia AND DPCORR = :payload.correlativo AND DPDIVE = :payload.digitoVerificador AND CLTDO1 = :payload.tipoIdentificacion AND CLDO1 = :payload.identificacion 
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+</beans>

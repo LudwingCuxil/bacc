@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2016-07-13T09:14:04 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="proveedores" pageWidth="572" pageHeight="752" columnWidth="572" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="8da0da65-7424-4b6e-84e4-e5e0cfb928ba">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PRUEBA.xml"/>
+	<queryString language="json">
+		<![CDATA[solicitud.personaNatural.proveedores]]>
+	</queryString>
+	<field name="id" class="java.lang.String">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[nombre]]></fieldDescription>
+	</field>
+	<field name="actividadEconomica" class="java.lang.String">
+		<fieldDescription><![CDATA[actividadEconomica]]></fieldDescription>
+	</field>
+	<field name="idd" class="java.lang.String">
+		<fieldDescription><![CDATA[idd]]></fieldDescription>
+	</field>
+	<field name="nombred" class="java.lang.String">
+		<fieldDescription><![CDATA[nombred]]></fieldDescription>
+	</field>
+	<field name="actividadEconomicad" class="java.lang.String">
+		<fieldDescription><![CDATA[actividadEconomicad]]></fieldDescription>
+	</field>
+	<field name="idt" class="java.lang.String">
+		<fieldDescription><![CDATA[idt]]></fieldDescription>
+	</field>
+	<field name="nombret" class="java.lang.String">
+		<fieldDescription><![CDATA[nombret]]></fieldDescription>
+	</field>
+	<field name="actividadEconomicat" class="java.lang.String">
+		<fieldDescription><![CDATA[actividadEconomicat]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="80" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="180" height="20" uuid="9e8d86d9-7ecc-455d-a83e-dfde7aa18bc9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="60" y="20" width="120" height="20" forecolor="#0F253F" uuid="4ad8db54-4e57-4f07-b9bd-6aab81f9ca7a"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[.-Nombre]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="20" width="60" height="20" forecolor="#0F253F" uuid="937e5120-7119-48a5-b133-51d0ec5e8521"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="40" width="180" height="20" uuid="874dc5b9-4429-449b-a3d1-244bc953209b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{actividadEconomica}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="60" width="180" height="20" forecolor="#0F253F" uuid="70528a05-c33a-4446-9d7f-c72c84d63e0e"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Actividad Económica]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="180" y="20" width="80" height="20" forecolor="#0F253F" uuid="abf45556-0922-410a-8f51-8ed206cd14cc"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{idd}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="0" width="200" height="20" uuid="64ce73f1-0d59-4c39-9301-9af7b4da86c6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nombred}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="260" y="20" width="120" height="20" forecolor="#0F253F" uuid="207f5f3e-bf7b-4358-b6d7-a30f7828dcb7"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[.-Nombre]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="180" y="40" width="200" height="20" uuid="ab62eb3d-78d3-4e31-8b24-d2a48c3ea18e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{actividadEconomicad}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="180" y="60" width="200" height="20" forecolor="#0F253F" uuid="e6a15038-e8fa-4382-9b1f-35c17721380b"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Actividad Económica]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="380" y="20" width="80" height="20" forecolor="#0F253F" uuid="6ab9ef80-070d-4026-9f0e-166c43fa3416"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{idt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="0" width="190" height="20" uuid="84aad126-548b-4355-94cf-0969786baccf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nombret}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="40" width="190" height="20" uuid="8a304460-00d2-41ee-bbca-8063604d8aa9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{actividadEconomicat}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="380" y="60" width="190" height="20" forecolor="#0F253F" uuid="a0c425b3-0a90-4225-a0bc-aee575810ff2"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Actividad Económica]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="20" width="110" height="20" forecolor="#0F253F" uuid="67a6499d-0e7c-4e99-b3c3-669438dc11b3"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[.-Nombre]]></text>
+			</staticText>
+			<line>
+				<reportElement x="571" y="0" width="1" height="80" uuid="89620c13-c7e7-4f0a-9067-e52939879333"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="80" uuid="c55e7c5d-72a6-40a0-895e-be951980fca2"/>
+			</line>
+		</band>
+	</detail>
+</jasperReport>

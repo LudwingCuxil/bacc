@@ -1,0 +1,34 @@
+/**
+ * Created by elioth010 on 5/31/17.
+ */
+export enum Section {
+  personType,
+  naturalGeneralData,
+  legalGeneralData,
+  economicProfile,
+  businessDataLegal,
+  providerReference,
+  legalRepresentative,
+  additionalData,
+  documents,
+  addressInformation,
+  customerCreated,
+  customerCreatedRefernce,
+  dependentReference,
+  laboralReference,
+  productSelection,
+  dataCustomer,
+  reference,
+  administrationInterests,
+  administrationCheckbooks,
+  signature,
+  electronicService,
+  jointAccount,
+  fixedTerm,
+  accountCreated,
+  beneficiaries,
+  beneficiariesFinal,
+  fingerReader,
+  faceReader,
+  transferAccount
+}

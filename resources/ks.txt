@@ -1,0 +1,5 @@
+keytool -genkeypair -keystore plataforma.jks -storepass PLATAFORMA -alias plataforma-alias -keypass PLATAFORMA-ALIAS -keyalg RSA -keysize 1024 -validity 18250 -dname "CN=PLATAFORMA, OU=BANTRAB, O=Byte\, S.A., L=Km. 17.5 Carretera San Jose Pinula, ST=Guatemala, C=GT"
+
+keytool -exportcert -keystore plataforma.jks -storepass PLATAFORMA -alias plataforma-alias -file plataforma-public.cer
+
+openssl x509 -inform der -in plataforma-public.cer -pubkey -noout > plataforma-public-key.txt

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_Letter" pageWidth="572" pageHeight="752" columnWidth="572" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="84328ceb-cd18-4617-bfe3-71754cecc8a4">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
+	<queryString language="JSON">
+		<![CDATA[solicitud.anexoDosV.dependientes]]>
+	</queryString>
+	<field name="idPar" class="java.lang.String">
+		<fieldDescription><![CDATA[idPar]]></fieldDescription>
+	</field>
+	<field name="nombreDepPar" class="java.lang.String">
+		<fieldDescription><![CDATA[nombreDepPar]]></fieldDescription>
+	</field>
+	<field name="parentescoPar" class="java.lang.String">
+		<fieldDescription><![CDATA[parentescoPar]]></fieldDescription>
+	</field>
+	<field name="idImp" class="java.lang.String">
+		<fieldDescription><![CDATA[idImp]]></fieldDescription>
+	</field>
+	<field name="nombreDepImp" class="java.lang.String">
+		<fieldDescription><![CDATA[nombreDepImp]]></fieldDescription>
+	</field>
+	<field name="parentescoImp" class="java.lang.String">
+		<fieldDescription><![CDATA[parentescoImp]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="40" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<textField>
+				<reportElement x="280" y="0" width="200" height="20" uuid="12e0162b-3afc-4068-a3ec-c0eb5d3c3119"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreDepImp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="480" y="0" width="91" height="20" uuid="078b8340-28a0-4497-ad97-eb9309870d10">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{parentescoImp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="20" width="50" height="20" forecolor="#0F253F" uuid="17f6de06-339a-4891-b539-c4cbc82a7ebe"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{idPar}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="50" y="20" width="130" height="20" forecolor="#0F253F" uuid="34ddcc6f-7e57-48f4-81ba-4034219fb79b"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[.-Nombre del dependiente]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="280" y="20" width="50" height="20" forecolor="#0F253F" uuid="0719ed90-9a7f-481c-b0e6-2840fd529a69"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{idImp}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="330" y="20" width="150" height="20" forecolor="#0F253F" uuid="82053ff6-ede8-4c48-8665-bd2ed7b14688"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[.-Nombre del dependiente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="20" width="91" height="20" forecolor="#0F253F" uuid="77ab0488-09ac-46fe-b4ee-86434d36e6f8">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Parentesco]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="20" width="100" height="20" forecolor="#0F253F" uuid="d88a9035-0a34-48c7-920a-314b61d507df"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Parentesco]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="0" width="180" height="20" uuid="94f4362d-8185-4f8b-b2e7-105235ab5752"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreDepPar}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="0" width="100" height="20" uuid="961595ed-5402-4c55-a7f6-4bcadf95d3d0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{parentescoPar}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

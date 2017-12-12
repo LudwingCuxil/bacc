@@ -1,0 +1,191 @@
+<div [ngBusy]="busy"></div>
+<form name="laboral-reference-form" autocomplete="off" role="form" (ngSubmit)="validateForm()" [formGroup]="formGroup">
+  <div class="container-fluid animated fadeIn">
+    <div class="panel panel-custom">
+      <div class="panel-heading">
+        <h2 [translate]="'references.laboral.title'">{{'references.laboral.title' | translate}}</h2>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <label class="control-label" [translate]="'references.laboral.name'">{{'references.laboral.name' |
+              translate}}</label>
+            <div class="form-group required" [ngClass]="{ 'has-error': name.touched && name.invalid}">
+              <input formControlName="name" type="text" [(uppercase)]='laboralReference.nombre' name="nombre"
+                     class="form-control" [(ngModel)]="laboralReference.nombre"
+                     [maxLength]="50"/>
+              <pl-errors-message [control]="name"></pl-errors-message>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <label class="control-label" [translate]="'references.laboral.position'">{{'references.laboral.position' |
+              translate}}</label>
+            <div class="form-group required" [ngClass]="{ 'has-error': position.touched && position.invalid}">
+              <input formControlName="position" type="text" [(uppercase)]='laboralReference.cargo' name="cargo"
+                     class="form-control"
+                     [(ngModel)]="laboralReference.cargo" [maxLength]="30"/>
+              <pl-errors-message [control]="position"></pl-errors-message>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <label class="control-label" [translate]="'references.laboral.salary'">{{'references.laboral.salary' |
+              translate}}</label>
+            <div class="form-group required" [ngClass]="{ 'has-error': salary.touched && salary.invalid}">
+              <pl-salary-select id="salarySelected" [formGroup]="formGroup"
+                                [salary]="laboralReference.salario"
+                                (changeSalary)="selectSalary($event)" [autocomplete]="false"></pl-salary-select>
+              <pl-errors-message [control]="salary"></pl-errors-message>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <label class="control-label" [translate]="'references.laboral.payday'">{{'references.laboral.payday' |
+              translate}}</label>
+            <div class="form-group" [ngClass]="{ 'has-error': payday.touched && payday.invalid}">
+              <input formControlName="payday" type="number" name="diaPago" class="form-control"
+                     [(ngModel)]="laboralReference.diaPago" />
+              <pl-errors-message [control]="payday">
+                <div *ngIf="payday?.hasError('max')"><span>{{'messages.max' | translate}}</span> 31</div>
+                <div *ngIf="payday?.hasError('min')"><span>{{'messages.min' | translate}}</span> 0</div>
+              </pl-errors-message>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6 required">
+            <label class="control-label">{{'references.laboral.admission-date' | translate}}</label>
+            <div class="form-group form-inline" [ngClass]="{'has-error': admissionDate.touched && admissionDate.invalid}">
+              <div class="input-group">
+                <sa-datepicker [(ngModel)]="admissionDateModel" (ngModelChange)="changeDateAdmission($event)"
+                               name="admissionDate"
+                               formControlName="admissionDate" [minDate]="minDate" [maxDate]="maxDate"></sa-datepicker>
+              </div>
+              <pl-errors-message [control]="admissionDate">
+                <div *ngIf="admissionDate?.hasError('maxDate')"><span>{{'messages.max-date' | translate}} {{maxDate | json}}</span></div>
+                <div *ngIf="admissionDate?.hasError('minDate')"><span>{{'messages.min-date' | translate}} {{minDate | json}}</span></div>
+              </pl-errors-message>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <label class="control-label">{{'references.laboral.exit-date' | translate}}</label>
+            <div class="form-group form-inline" [ngClass]="{'has-error': exitDate.touched && exitDate.invalid}">
+              <div class="input-group">
+                <sa-datepicker [(ngModel)]="exitDateModel" (ngModelChange)="changeDateExit($event)" name="exitDate"
+                               formControlName="exitDate" [minDate]="minDateExit" [maxDate]="maxDate"></sa-datepicker>
+                <pl-errors-message [control]="exitDate">
+                  <div *ngIf="exitDate?.hasError('maxDate')"><span>{{'messages.max-date' | translate}} {{maxDate | json}}</span></div>
+                  <div *ngIf="exitDate?.hasError('minDate')"><span>{{'messages.min-date' | translate}} {{exitDate | json}}</span></div>
+                </pl-errors-message>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row panel-buttons">
+          <div class="col-lg-12 text-right">
+            <button type="button" [disabled]="edit && formGroup.valid? isValidChange() : !formGroup.valid"
+                    [ngClass]="edit ? 'btn btn-primary btn-radio' : 'btn btn-success btn-radio'"
+                    (click)="addReferencia(laboralReference)" data-toggle="tooltip" data-placement="left"
+                    attr.data-original-title="{{'tooltip.agregar-datos' | translate}}">
+              <i class="material-icons md-18">{{edit? 'done' : 'add'}}</i>{{'buttons.accept' | translate}}
+              <div class="ripple-container"></div>
+            </button>
+            <button type="button" [disabled]="!formGroup.valid" class="btn btn-danger btn-radio"
+                    (click)="removeReferencia(laboralReference)"
+                    *ngIf="modifying" data-toggle="tooltip" data-placement="left"
+                    attr.data-original-title="{{'tooltip.eliminar-datos' | translate}}">
+              <i class="material-icons md-18">delete</i> {{'buttons.delete' | translate}}
+              <div class="ripple-container"></div>
+            </button>
+            <button type="button" class="btn btn-danger btn-radio" *ngIf="modifying" (click)="clean()"
+                    data-toggle="tooltip" data-placement="left"
+                    attr.data-original-title="{{'tooltip.cancelar' | translate}}">
+              <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+              <div class="ripple-container"></div>
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="table-responsive">
+              <ng-template #actionsTemplate let-item="item">
+                <div class="btn-group-md">
+                  <a id="delete-button-value" [ngClass]="item.modalidad == mode.I? 'btn btn-fab btn-fab-mini btn-primary btn-raised' :
+                                                    item.modalidad == mode.U? 'btn btn-fab btn-fab-mini btn-warning btn-raised' :
+                                                    item.modalidad == mode.D? 'btn btn-fab btn-fab-mini btn-danger btn-raised' :
+                                                    'btn btn-fab btn-fab-mini btn-info btn-raised'" [popover]="optionPopover" *ngIf="item.modalidad != null">
+                    <i class="material-icons md-18">
+                      {{item.modalidad == mode.I? 'add' : item.modalidad == mode.U? 'mode_edit' : item.modalidad == mode.D? 'delete' : 'add'}}
+                    </i>
+                    {{'table.restore-title' | translate}}
+                    <div class="ripple-container"></div>
+                  </a>
+                </div>
+                <popover-content #optionPopover
+                                 title="{{'table.restore-title' | translate}}"
+                                 placement="right"
+                                 [animation]="true"
+                                 [closeOnClickOutside]="true">
+                  <!--                                                 <label class="control-label">{{'references.dependent.restore' | translate}}</label> -->
+                  <button type="button" class="btn btn-primary btn-raised"
+                          [disabled]="item.modalidad == mode.I" (click)="restoreLaboral(item)">
+                    <i class="material-icons md-18">delete</i> {{'buttons.accept' | translate}}
+                    <div class="ripple-container"></div>
+                  </button>
+                </popover-content>
+              </ng-template>
+              <sa-data-table [data]="client.referencias?.referenciasLaborales" [heading]="editMode? headingUpdate: heading" [values]="values"
+                [pager]="undefined" [actionTemplate]="editMode ? actionsTemplate : undefined" [useTableTemplate]="true" [useServicePager]="false" (rowSelected)="modify($event)"></sa-data-table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer text-right col-lg-10">
+        <div class="row">
+          <button type=button (click)="editMode? cancelProviders() : cancel()"
+                  *ngIf="name.enabled"
+                  class="btn btn-danger btn-radio animated bounceIn"
+                  data-toggle="tooltip" data-placement="top" translate
+                  translate-attr-data-original-title="buttons.cancel">
+            <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+            <div class="ripple-container"></div>
+          </button>
+          <button type="button" (click)="changeControl()"
+           class="btn btn-warning btn-radio animated bounceIn" *ngIf="name.disabled">
+              <i class="material-icons md-18">create</i> {{'buttons.update' | translate}}
+              <div class="ripple-container"></div>
+          </button>
+          <button type="submit"
+                  [disabled]="client.referencias?.referenciasLaborales?.length > 0 ? isValidCancel() : min == 0 ? false : true"
+                  *ngIf="name.enabled"
+                  class="btn btn-success btn-radio animated bounceIn"
+                  data-toggle="tooltip" data-placement="top" translate
+                  translate-attr-data-original-title="buttons.continue">
+            <i class="material-icons md-18">check</i> {{'buttons.continue' | translate}}
+            <div class="ripple-container"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="modal fade" id="authorizationModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><i class="material-icons md-18">check_circle</i>
+          {{'authorization.title' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <pl-authorization [authorization]="authorization"
+                          (changeAuthorization)="changeAuthorization($event)"></pl-authorization>
+      </div>
+    </div>
+  </div>
+</div>
+<simple-notifications [options]="options"></simple-notifications>
+<cancel-confirmation></cancel-confirmation>

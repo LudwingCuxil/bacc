@@ -1,0 +1,26 @@
+<div class="modal fade" id="pendingForm" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel" [translate]="'messages.pending-form.title'"><i class="material-icons md-18">cached</i>
+          {{'messages.pending-form.title' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <h3 class="modal-title" [translate]="'messages.pending-form.description'">
+          {{'messages.pending-form.description' | translate}}</h3>
+      </div>
+      <div class="modal-footer"> 
+        <button type="button" class="btn btn-danger btn-radio animated bounceIn"
+                    data-toggle="tooltip" data-placement="top" translate data-dismiss="modal" (click)="close()"
+                    translate-attr-data-original-title="tooltip.buscar">
+         <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+        </button>
+        <button type="button" class="btn btn-primary btn-radio animated bounceIn" data-dismiss="modal" (click)="check()"
+                    data-toggle="tooltip" data-placement="top" translate
+                    translate-attr-data-original-title="tooltip.buscar">
+          <i class="material-icons md-18">check</i> {{'buttons.accept' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

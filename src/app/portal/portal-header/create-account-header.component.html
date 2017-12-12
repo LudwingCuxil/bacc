@@ -1,0 +1,56 @@
+<div class="jumbotron">
+  <div class="row portal-header">
+
+    <div class="col-lg-2 col-md-2 source-client text-center">
+      <div class="col-lg-12">
+        <span>
+          <span class="img-source-client client-natural"></span>
+        </span>
+        <!--<i class="material-icons md-24 account-header">account_balance_wallet</i>-->
+        <i class="material-icons md-24 status-client">check_circle</i>
+      </div>
+    </div>
+
+    <!--HEADER CLIENT-->
+    <div class="col-lg-offset-2 col-lg-10 col-md-10 data-client">
+      <div class="col-lg-12 col-md-12 client-name">
+        <h1>{{account?.cliente?.identificacion}} {{account?.cliente?.nombre}}</h1>
+      </div>
+
+      <div class="col-lg-3 col-md-3">
+        <small>
+          <div>Tipo Producto</div>
+        </small>
+        <h3>
+          <div>{{account?.tipoProducto?.descripcion}}</div>
+        </h3>
+      </div>
+      <div class="col-lg-6 col-md-6">
+        <small>
+          <div>Producto</div>
+        </small>
+        <h3>
+          <div>{{account?.producto?.descripcion}}</div>
+        </h3>
+      </div>
+      <div class="col-lg-3 col-md-3">
+        <small>
+          <div>Apertura</div>
+        </small>
+        <h3>
+          <div>{{fechaAlta | date:'dd/MM/yyyy'}}</div>
+        </h3>
+      </div>
+    </div>
+
+
+    <a class="btn navbar-left btn-cancel" data-toggle="modal" (click)="goBack()">
+      {{'buttons.exit' | translate}} <i class="material-icons md-36">clear</i>
+    </a>
+
+    <!--<a class="btn btn-danger navbar-left btn-cancel" data-toggle="modal" (click)="goBack()">
+    <i class="material-icons md-18">chevron_left</i> {{'buttons.exit' | translate}}
+    </a>-->
+  </div>
+</div>
+<cancel-confirmation [account]="true"></cancel-confirmation>

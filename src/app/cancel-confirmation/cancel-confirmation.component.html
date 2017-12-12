@@ -1,0 +1,24 @@
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelConfirm()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel" [translate]="'messages.confirm-cancel'"><i class="material-icons md-18">check_circle</i>
+          {{'messages.confirm-cancel' | translate}}</h4>
+      </div>
+      <div class="modal-body text-right">
+       <button type="button" class="btn btn-danger btn-radio animated bounceIn"
+                    data-toggle="tooltip" data-placement="top" translate (click)="cancelConfirm()"
+                    translate-attr-data-original-title="tooltip.buscar">
+         <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+        </button>
+        <button type="button" class="btn btn-success btn-radio animated bounceIn" (click)="acceptConfirm()"
+                    data-toggle="tooltip" data-placement="top" translate
+                    translate-attr-data-original-title="tooltip.buscar">
+          <i class="material-icons md-18">check</i> {{'buttons.accept' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

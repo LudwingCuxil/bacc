@@ -1,0 +1,70 @@
+<div [ngBusy]="busy"></div>
+<form name="webform" autocomplete="off" novalidate="" role="form" (submit)="next()">
+  <div class="container-fluid animated fadeIn">
+    <div class="panel panel-custom">
+      <div class="panel-heading">
+        <h2>Cliente Creado Satisfactoriamente</h2>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="form-group">
+              <label class="control-label">{{'client.code' | translate}}</label>
+              <input type="text" class="form-control" value="{{client.clienteResumen.id.identificacion}}" disabled>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="form-group">
+              <label class="control-label">{{'client.personType' | translate}}</label>
+              <input type="text" class="form-control" value="{{client.clienteResumen.tipoPersona === 'N'? ('type-person.natural' | translate) : ('type-person.legal' | translate)}}" disabled>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="form-group">
+              <label class="control-label">{{'client.identificationType' | translate}}</label>
+              <input type="text" class="form-control" value="{{client.tipoIdentificacion.descripcion}}" disabled>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="form-group">
+              <input type="text" class="form-control" value="{{client.clienteResumen.numeroIdentificacion}}" disabled>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="form-group">
+              <label class="control-label">{{'client.name' | translate}}</label>
+              <input type="text" class="form-control" value="{{client.clienteResumen.nombre}}" disabled>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer text-right col-lg-10">
+        <div class="row">
+          <button type="button" class="btn btn-warning btn-radio animated bounceIn" *ngIf="showPhoto"
+                  data-toggle="tooltip" data-placement="top" translate (click)="face()" 
+                  translate-attr-data-original-title="tooltip.buscar">
+            {{'photoprint.photo-capture' | translate}} <i class="material-icons md-18">camera_enhance</i>
+          </button>
+           <button type="button" class="btn btn-primary btn-radio animated bounceIn" *ngIf="showFinger"
+                  data-toggle="tooltip" data-placement="top" translate  (click)="finger()"
+                  translate-attr-data-original-title="tooltip.buscar">
+            {{'fingerprint.finger-capture' | translate}} <i class="material-icons md-18">fingerprint</i>
+          </button>
+           <button type="submit" class="btn btn-success btn-radio animated bounceIn"
+                  data-toggle="tooltip" data-placement="top" translate
+                  translate-attr-data-original-title="tooltip.buscar">
+            {{'buttons.continue' | translate}} <i class="material-icons md-18">chevron_right</i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,37 @@
+<ng-template #aditionalActionTemplate let-item="item">
+  <a class="btn btn-danger btn-raised" (click) = "setRefenciasCliente(item)" >
+    <i class="material-icons md-18">group</i>
+    <div class="ripple-container"></div>
+  </a>
+</ng-template>
+
+<bt-basic-maintenance
+  [name]="settings.name"
+  [tableHeading]="settings.table.header"
+  [tableBodyValues]="settings.table.values"
+  [searchDataTypeFields]="settings.search.dataTypes"
+  [searchFields]="settings.search.fields"
+  [searchPlaceHolder]="settings.search.placeholder"
+  [formSchema]="settings.schema"
+  [resourcePath]="resourcePath"
+  [aditionalActionTemplate]="aditionalActionTemplate"
+  (stateOperation)="onNotify($event)">
+</bt-basic-maintenance>
+
+<div class="modal fade" id="associateReferenciasClienteDetalleModal"  tabindex="-1" role="dialog" aria-labelledby="myModalRefencesClientDetailLabel" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Detalle</h4>
+      </div>
+      <div class="modal-body" *ngIf="referenciasCliente!=null && referenciasCliente.id!=undefinded">
+        <ng2-smart-table [attr.class]="'table-smart-custom'" [settings]="settingsHeader" [source]="source" (deleteConfirm)="onDeleteConfirm($event)" (editConfirm)="onSaveConfirm($event)" (createConfirm)="onCreateConfirm($event)">
+        </ng2-smart-table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="reset()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

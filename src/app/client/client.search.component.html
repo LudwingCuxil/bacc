@@ -1,0 +1,127 @@
+<div [ngBusy]="busy"></div>
+<blockquote>
+  <h2 [translate]="'client.title'">{{'client.title' | translate}}</h2>
+</blockquote>
+<div class="content-client-search">
+  <form name="webformBusquedaCliente" autocomplete="off" novalidate="" role="form" ng-submit="partialSave()"
+        show-validation>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <label class="control-label" [translate]="'client.name'">{{'client.name' | translate}}</label>
+          </div>
+          <div class="form-group col-lg-3"
+               ng-class="{ 'has-error': webformBusquedaCliente.primerNombre.$touched && webformBusquedaCliente.primerNombre.$invalid}">
+            <input type="text" class="form-control input-busqueda-cliente" name="primerNombre" focus-on="focusMe"
+                   [(ngModel)]="primerNombre" uppercase
+                   byte-max-length="" [maxLength]="15" aria-describedby="primerNombre-validator-help"
+                   data-toggle="tooltip" data-placement="left" translate
+                   translate-attr-data-original-title="busqueda-cliente.busqueda-nombre"/>
+          </div>
+          <div class="form-group col-lg-3"
+               ng-class="{ 'has-error': webformBusquedaCliente.segundoNombre.$touched && webformBusquedaCliente.segundoNombre.$invalid}">
+            <input type="text" capitalize="" class="form-control" name="segundoNombre"
+                   [(ngModel)]="segundoNombre" uppercase byte-max-length="" [maxLength]="15"
+                   aria-describedby="segundoNombre-validator-help"/>
+          </div>
+          <div class="form-group col-lg-3"
+               ng-class="{ 'has-error': webformBusquedaCliente.primerApellido.$touched && webformBusquedaCliente.primerApellido.$invalid}">
+            <input type="text" capitalize="" class="form-control" name="primerApellido"
+                   [(ngModel)]="primerApellido" uppercase byte-max-length="" [maxLength]="15"
+                   aria-describedby="primerApellido-validator-help"/>
+          </div>
+          <div class="form-group col-lg-3"
+               ng-class="{ 'has-error': webformBusquedaCliente.segundoApellido.$touched && webformBusquedaCliente.segundoApellido.$invalid}">
+            <input type="text" capitalize="" uppercase class="form-control" name="segundoApellido"
+                   [(ngModel)]="segundoApellido" byte-max-length="" [maxLength]="15"
+                   aria-describedby="segundoApellido-validator-help"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="row">
+              <div class="col-lg-12">
+                <label class="control-label" [translate]="'client.identification'">{{'client.identification' |
+                  translate}}</label>
+              </div>
+              <div class="form-group col-lg-3">
+                <pl-core-typedoc-select id="typedocId" [hidden]="patternValitator" [autocomplete]="true"
+                                        (changeTypedoc)="selectTypedoc($event)" [modeView]="modeView"
+                                        [modeDelete]="modeDelete" [disabled]="childDocument || (modeView || modeDelete)"
+                                        required></pl-core-typedoc-select>
+              </div>
+              <div class="form-group col-lg-3">
+                <input type="text" [textMask]="{mask: mask}" id="identificacion" class="form-control"
+                       name="identificacion"
+                       [(ngModel)]="identificacion" model-view-value="true" byte-max-length="" ng-maxlength="19"
+                       aria-describedby="identificacion-validator-help"/>
+              </div>
+              <div class="col-lg-6"></div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <label class="control-label" [translate]="'client.code'">{{'client.code' | translate}}</label>
+          </div>
+          <div class="form-group col-lg-3">
+            <input type="text" capitalize="" class="form-control" name="codigoCliente" [(ngModel)]="codigoCliente"
+                   byte-max-length="" [maxLength]="18" aria-describedby="codigoCliente-validator-help"/>
+          </div>
+          <div class="col-lg-12">
+            <label class="control-label" [translate]="'client.nit'">{{'client.nit' | translate}}</label>
+          </div>
+          <div class="form-group col-lg-3">
+            <input type="text" capitalize="" class="form-control" name="nitCliente" [(ngModel)]="nitCliente"
+                   byte-max-length="" [maxLength]="18" aria-describedby="nitCliente-validator-help"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12 btn-align-center">
+            <button type="submit" class="btn btn-primary btn-radio animated bounceIn" (click)="search()"
+                    data-toggle="tooltip" data-placement="top" translate
+                    translate-attr-data-original-title="tooltip.buscar">
+              <span class="glyphicon glyphicon-search"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <form>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+              <th [translate]="'client.name'">{{'client.name' | translate}}</th>
+              <th [translate]="'client.personType'">{{'client.personType' | translate}}</th>
+              <th [translate]="'client.identificationType'">{{'client.identificationType' | translate}}</th>
+              <th [translate]="'client.identificationNumber'">{{'client.identificationNumber' | translate}}</th>
+              <th [translate]="'client.nit'">{{'client.nit' | translate}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let cln of clients; let i = index" (click)="setClickedRow(cln,i)"
+                [class.active]="i == selectedRow">
+              <td>{{ cln.nombre }}</td>
+              <td>{{cln.tipoPersona}}</td>
+              <td>{{ cln.tipoDeIdentificacion}}</td>
+              <td>{{ cln.numeroIdentificacion}}</td>
+              <td>{{ cln.identificacionTributaria}}</td>
+            </tr>
+            </tbody>
+          </table>
+          <sa-data-table [(pager)]="pager" (updatePagination)="updateTable($event)"></sa-data-table>
+        </div>
+      </div>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="text-right btn-group-md">
+
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

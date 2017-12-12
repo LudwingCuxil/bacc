@@ -1,0 +1,13 @@
+<div [formGroup]="formGroup">
+  <select id="deadlineSelected" [formControlName]="controlName" [(ngModel)]="deadline" (ngModelChange)="onChangeObj($event)" class="form-control" required *ngIf="!autocomplete">
+    <option *ngFor="let p of deadlines" [ngValue]="p">{{p.valor}}</option>
+  </select>
+
+  <ng-template #rt let-r="result" let-t="term" style="width: 96%">
+    {{ r.valor }}
+  </ng-template>
+
+  <input (focus)="openAll($event)" [(ngModel)]="deadline" [formControlName]="controlName" [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="formatter"
+         class="form-control" style="text-transform: uppercase" required *ngIf="autocomplete"
+         (selectItem)="onChangeObj($event)" />
+</div>

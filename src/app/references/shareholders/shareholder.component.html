@@ -1,0 +1,237 @@
+<div [ngBusy]="busy">
+  <form [formGroup]="formGroup" id="formGroup" name="formGroup" autocomplete="off">
+    <div class="row">
+      <div class="col-lg-6">
+        <label class="control-label">{{'referencias-accionistas.apellidos' | translate}}</label>
+        <div class="form-group required" [ngClass]="{ 'has-error': lastName.touched && lastName.invalid}">
+          <input type="text" class="form-control" [(uppercase)]="shareholder.apellidos" formControlName="lastName"
+                 name="lastName" [(ngModel)]="shareholder.apellidos" [maxLength]="50"/>
+          <pl-errors-message [control]="lastName">
+            <span *ngIf="lastName.hasError('maxlength')">{{'messages.maxlength' | translate}} 50</span>
+          </pl-errors-message>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <label class="control-label">{{'referencias-accionistas.nombres' | translate}}</label>
+        <div class="form-group required" [ngClass]="{ 'has-error': firstName.touched && firstName.invalid}">
+          <input type="text" class="form-control" [(uppercase)]="shareholder.nombres" name="firstName"
+                 formControlName="firstName" [(ngModel)]="shareholder.nombres" [maxLength]="50"/>
+          <pl-errors-message [control]="firstName">
+            <span *ngIf="firstName.hasError('maxlength')">{{'messages.maxlength' | translate}} 50</span>
+          </pl-errors-message>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-7">
+        <label class="control-label">{{'referencias-accionistas.documentos-identificacion'| translate}}</label>
+        <div class="" [ngClass]="{ 'has-error': documentType.touched && documentType.invalid}">
+          <div class="row">
+            <div class="col-lg-5 form-group required"
+                 [ngClass]="{ 'has-error': documentType.touched && documentType.invalid}">
+              <pl-type-document-select id="documentType" #docType [controlName]="'documentType'"
+                                       [formGroup]="formGroup"
+                                       [documentIdentificationSelected]="documentSelected"
+                                       (changeTypeDocument)="changeDocumentType($event)"
+                                       [autocomplete]="false"></pl-type-document-select>
+              <pl-errors-message [control]="documentType"></pl-errors-message>
+            </div>
+            <div class="col-lg-7 form-group required"
+                 [ngClass]="{ 'has-error': identificationInput.touched && identificationInput.invalid}">
+              <input style="text-transform: uppercase;"
+                     [textMask]="{mask: typeDoc.mascara , guide: true, modelClean: true,placeholderChar : typeDoc.maskCharacter}"
+                     id="identificationInput" class="form-control"
+                     name="identificationInput" formControlName="identificationInput"
+                     (blur)="onBlurIdentification($event)"
+                     (ngModelChange)="shareholder.identificacion = $event?.toString().toUpperCase()"
+                     [(ngModel)]="shareholder.identificacion"
+                     placeholder="{{typeDoc.placeHolder}}"/>
+
+              <pl-errors-message [control]="identificationInput" [customPatter]="true">
+                <div *ngIf="identificationInput?.hasError('pattern')">
+                  <span>{{'messages.error-mask' | translate}}</span></div>
+              </pl-errors-message>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <label class="control-label">{{'referencias-accionistas.nacionalidad' | translate}}</label>
+        <div class="form-group required" [ngClass]="{ 'has-error': country.touched && country.invalid}">
+          <pl-country-select id="originCountry" *ngIf="shareholder.nacionalidad" [formGroup]="formGroup"
+                             [country]="shareholder.nacionalidad"
+                             [showNationality]="true"
+                             (changeCountry)="selectCountry($event)" [autocomplete]="true"
+                             [setDefaultValues]="true"></pl-country-select>
+          <pl-errors-message [control]="country"></pl-errors-message>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-7">
+        <label class="control-label">{{'referencias-accionistas.cargo' | translate}}</label>
+        <div class="form-group required" [ngClass]="{ 'has-error': charge.touched && charge.invalid}">
+          <input type="text" class="form-control" name="charge" formControlName="charge"
+                 [(uppercase)]="shareholder.cargo" [(ngModel)]="shareholder.cargo" [maxLength]="30">
+          <pl-errors-message [control]="charge">
+            <span *ngIf="charge.hasError('maxlength')">{{'messages.maxlength' | translate}} 30</span>
+          </pl-errors-message>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <label class="control-label">{{'referencias-accionistas.actividad-economica' | translate}}</label>
+        <div class="form-group required"
+             [ngClass]="{ 'has-error': economicActivity.touched && economicActivity.invalid}">
+          <pl-economic-activities-select
+            [economicActivity]="shareholder.actividadEconomica" [formGroup]="formGroup"
+            [autocomplete]="true" [controlName]="'economicActivity'"
+            (changeEconomicActivity)="selectEconomicActivity($event)"></pl-economic-activities-select>
+          <pl-errors-message [control]="economicActivity"></pl-errors-message>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-4">
+        <label class="control-label">{{'referencias-accionistas.tipo-accionista' | translate}}</label>
+        <div class="form-group required" [ngClass]="{ 'has-error': shareholderType.touched && shareholderType.invalid}">
+          <input type="text" class="form-control" name="shareholderType" formControlName="shareholderType"
+                 [(ngModel)]="shareholder.tipoAccionista" [maxLength]="1" [(uppercase)]="shareholder.tipoAccionista"/>
+          <pl-errors-message [control]="shareholderType"></pl-errors-message>
+        </div>
+      </div>
+      <div class="col-lg-4 " [ngClass]="{ 'has-error': participation.touched && participation.invalid}">
+        <label class="control-label">{{'referencias-accionistas.porcentaje-participacion' | translate}}</label>
+        <div class="form-grou required">
+          <input type="text" onkeydown="numbersOnly(event)" class="form-control" name="participation"
+                 formControlName="participation" [(ngModel)]="shareholder.porcentajeParticipacion" [maxLength]="2"/>
+          <pl-errors-message [control]="participation">
+            <span *ngIf="participation.hasError('maxlength')">{{'messages.maxlength' | translate}} 2</span>
+            <span *ngIf="participation.hasError('min')">{{'messages.min' | translate}} 0</span>
+          </pl-errors-message>
+        </div>
+      </div>
+      <div class="col-lg-4 required" [ngClass]="{ 'hasError': ingressDateInput.touched && ingressDateInput.invalid}">
+        <label class="control-label">{{'referencias-accionistas.fecha-ingreso' | translate}}</label>
+        <div class="form-group form-inline">
+          <div class="input-group">
+            <sa-datepicker [(ngModel)]="ingressDate" (ngModelChange)="changeDateIngress($event)" name="ingressDateInput"
+                           formControlName="ingressDateInput" [maxDate]="maxDate"
+                           [minDate]="minDate"></sa-datepicker>
+          </div>
+          <pl-errors-message [control]="ingressDateInput">
+            <div *ngIf="ingressDateInput?.hasError('maxDate')"><span>{{'messages.maxDate' | translate}} {{maxDate | json}}</span>
+            </div>
+            <div *ngIf="ingressDateInput?.hasError('minDate')"><span>{{'messages.minDate' | translate}} {{maxDate | json}}</span>
+            </div>
+          </pl-errors-message>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-4 col-lg-offset-8">
+        <label class="control-label">{{'referencias-accionistas.fecha-egreso' | translate}}</label>
+        <div class="form-group form-inline">
+          <div class="input-group">
+            <sa-datepicker [(ngModel)]="egressDate" (ngModelChange)="changeDateEgress($event)" name="egressDateInput"
+                           formControlName="egressDateInput" [maxDate]="maxDate"
+                           [minDate]="ingressDate"></sa-datepicker>
+          </div>
+          <pl-errors-message [control]="egressDateInput">
+            <div *ngIf="egressDateInput?.hasError('maxDate')"><span>{{'messages.maxDate' | translate}} {{maxDate | json}}</span>
+            </div>
+            <div *ngIf="egressDateInput?.hasError('minDate')"><span>{{'messages.minDate' | translate}} {{maxDate | json}}</span>
+            </div>
+          </pl-errors-message>
+        </div>
+      </div>
+    </div>
+    <div class="row panel-buttons">
+      <div class="col-lg-12 text-right">
+        <button type="button" [disabled]="edit && formGroup.valid? isInvalidChange() : !formGroup.valid"
+                [ngClass]="edit ? 'btn btn-primary btn-radio' : 'btn btn-success btn-radio'"
+                (click)="addReference()" data-toggle="tooltip" data-placement="left"
+                attr.data-original-title="{{'tooltip.agregar-datos' | translate}}">
+          <i class="material-icons md-18">{{edit? 'done' : 'add'}}</i>{{'buttons.accept' | translate}}
+          <div class="ripple-container"></div>
+        </button>
+        <button type="button" [disabled]="!formGroup.valid" class="btn btn-danger btn-radio"
+                (click)="removeReference()"
+                *ngIf="edit" data-toggle="tooltip" data-placement="left"
+                attr.data-original-title="{{'tooltip.eliminar-datos' | translate}}">
+          <i class="material-icons md-18">delete</i> {{'buttons.delete' | translate}}
+          <div class="ripple-container"></div>
+        </button>
+        <button type="button" class="btn btn-danger btn-radio" *ngIf="edit" (click)="clean()"
+                data-toggle="tooltip"
+                data-placement="left"
+                attr.data-original-title="{{'tooltip.cancelar' | translate}}">
+          <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+          <div class="ripple-container"></div>
+        </button>
+      </div>
+    </div>
+    <div class="row panel-buttons">
+      <div class="col-lg-12">
+        <ng-template #actionsTemplate let-item="item">
+          <div class="btn-group-md">
+            <a id="delete-button-value" [ngClass]="item.modalidad == mode.I? 'btn btn-fab btn-fab-mini btn-primary btn-raised' :
+                                                item.modalidad == mode.U? 'btn btn-fab btn-fab-mini btn-warning btn-raised' :
+                                                item.modalidad == mode.D? 'btn btn-fab btn-fab-mini btn-danger btn-raised' :
+                                                'btn btn-fab btn-fab-mini btn-info btn-raised'"
+               [popover]="optionPopover" *ngIf="item.modalidad != null">
+              <i class="material-icons md-18">
+                {{item.modalidad == mode.I? 'add' : item.modalidad == mode.U? 'mode_edit' : item.modalidad ==
+                mode.D?
+                'delete' : 'add'}}
+              </i>
+              {{'table.restore-title' | translate}}
+              <div class="ripple-container"></div>
+            </a>
+          </div>
+          <popover-content #optionPopover
+                           title="{{'table.restore-title' | translate}}"
+                           placement="right"
+                           [animation]="true"
+                           [closeOnClickOutside]="true">
+            <button type="button" class="btn btn-primary btn-raised" [disabled]="item.modalidad == mode.I"
+                    (click)="restoreReference(item)">
+              <i class="material-icons md-18">delete</i> {{'buttons.accept' | translate}}
+              <div class="ripple-container"></div>
+            </button>
+          </popover-content>
+        </ng-template>
+        <sa-data-table [pager]="undefined" [actionTemplate]="editMode ? actionsTemplate : undefined"
+                       [data]="client.referencias.referenciasAccionistas" [useTableTemplate]="true"
+                       [heading]="editMode? headingEdit: heading" [values]="values" [useServicePager]="false"
+                       (rowSelected)="selectRecord($event)">
+        </sa-data-table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="panel-footer text-right col-lg-12">
+        <button type="button" [disabled]="false" class="btn btn-success btn-radio" (click)="validateForm()"
+                data-toggle="tooltip" data-placement="left">
+          <i class="material-icons md-18">check</i> {{'buttons.accept' | translate}}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal fade" id="authorizationModalShareholder" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><i class="material-icons md-18">check_circle</i>
+          {{'authorization.title' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <pl-authorization [authorization]="authorization"
+                          (changeAuthorization)="changeAuthorization($event)"></pl-authorization>
+      </div>
+    </div>
+  </div>
+</div>
+<simple-notifications [options]="options"></simple-notifications>

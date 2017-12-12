@@ -1,0 +1,170 @@
+/*  /////////////////  GENERICAS  ////////////////////*/
+
+.nav-pills {
+  width: 16.66666667%;
+  float: left;
+  background-color: #fff;
+}
+
+div.tab-content .content-data {
+  background-color: #f1f6fa;
+  overflow-y: auto;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+/*  //////////////////  CONTENT ///////////////// */
+
+div.tab-content .content-data .card{
+  background: transparent;
+  box-shadow: none;
+}
+
+div.tab-content .content-data .card .card-header a {
+  text-decoration: none;
+}
+
+div.tab-content .content-data .card .card-header h3 {
+  color: #2D3F46;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding: 10px;
+}
+
+div.tab-content .content-data .card .card-header.active h3 {
+  font-weight: 500;
+}
+
+div.tab-content .content-data .card .card-body {
+  height: 30%;
+  padding: 0px;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0px 2px 6px -4px rgba(0, 0, 0, 0.50);
+  margin-bottom: 20px;
+}
+
+div.tab-content .content-data .card .card-body .label{
+  -webkit-border-radius: 100px;
+  -moz-border-radius: 100px;
+  border-radius: 100px;
+  font-size: 90%;
+  padding: .3em 1em;
+}
+
+div.tab-content .content-data .card .card-body .label.label-default{
+  background-color: rgba(119, 119, 119, 0.80);
+}
+
+div.tab-content .content-data .card .card-body tbody tr td {
+  font-size: 14px;
+  color: #456E7B;
+  font-weight: 500;
+  border-color: #ececec;
+}
+
+div.tab-content .content-data .card .card-body tbody tr td:last-child,
+div.tab-content .content-data .card .card-body tbody tr td:first-child {
+  text-align: center;
+}
+
+.accordion-account .card-header {
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  cursor: pointer;
+}
+
+.accordion-account .card-header.active h3 {
+  color: #204f81 !important;
+  margin-bottom: 0px;
+}
+
+.accordion-account .card-header.active h3:first-letter {
+  font-size: 26px;
+}
+
+.accordion-account .card-header.active {
+  background-color: #d8e5f1;
+}
+
+.accordion-account .card-header:hover a:after,
+.accordion-account .card-header.active a:after{
+  transform: rotate(0deg);
+  -webkit-transition: transform 500ms;
+  -moz-transition: transform 500ms;
+  -ms-transition: transform 500ms;
+  -o-transition: transform 500ms;
+  transition: transform 500ms;
+}
+
+.accordion-account .card-header a:after,
+.accordion-account .card-header.active:hover a:after {
+  transform: rotate(180deg);
+  -webkit-transition: transform 500ms;
+  -moz-transition: transform 500ms;
+  -ms-transition: transform 500ms;
+  -o-transition: transform 500ms;
+  transition: transform 500ms;
+}
+
+.accordion-account .card-header.active:hover a:after,
+.card-header.active:hover a:after,
+.accordion-account .card-header:hover a:after,
+.card-header:hover a:after{
+  background-color: rgba(32, 79, 129, 1);
+}
+
+.accordion-account .card-header.active a:after,
+.card-header a:after {
+  display: block;
+  height: 30px;
+  font-family: Material Icons;
+  width: 25px;
+  height: 25px;
+  font-size: 1.6em;
+  position: absolute;
+  left: 93%;
+  margin-top: -36px;
+  background-color: rgba(32, 79, 129, 0.6);
+  border-radius: 100px;
+  color: #fff;
+  text-align: center;
+  padding: 0px;
+  line-height: 25px;
+}
+.accordion-account .card-header a:after {
+  content: "\e313";
+}
+
+/*  TABLES  */
+
+/*STATUS*/
+.status { /*PENDIENTE ACTIVACION*/
+  text-shadow: 2px 2px 4px rgba(49, 112, 143, 0.3);
+  color: #31708f;
+}
+.status.E {  /*EMBARGADA*/
+  text-shadow: 2px 2px 4px rgba(138, 109, 59, 0.3);
+  background-color: #FCF8E3;
+  color: #8a6d3b;
+}
+.status.A {  /*ACTIVA*/
+  text-shadow: 2px 2px 4px rgba(60, 118, 61, 0.3);
+  color: #3c763d;
+}
+.status.A i {
+  border: 2px solid #3c763d;
+  border-radius: 100px;
+  font-size: 14px;
+  margin-left: 2px;
+  font-weight: bold;
+  padding: 1px;
+}
+.status.I {  /*INACTIVA*/
+  text-shadow: 2px 2px 4px rgba(138, 109, 59, 0.3);
+  color: #8a6d3b;
+}
+.status.C {  /*CANCELADA*/
+  text-shadow: 2px 2px 4px rgba(169, 68, 66, 0.3);
+  color: #a94442;
+}

@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SolicitudApertura" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4f38bee1-93d5-4591-b3c0-1e12b80eb481">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<subDataset name="Dataset1" uuid="8eee3b16-c750-44fb-a6b6-b4aa9ea2ee4c">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PRUEBA.xml"/>
+		<queryString language="json">
+			<![CDATA[solicitud.anexoDosV]]>
+		</queryString>
+		<field name="corr" class="java.lang.String">
+			<fieldDescription><![CDATA[corr]]></fieldDescription>
+		</field>
+	</subDataset>
+	<parameter name="imagen" class="java.lang.String"/>
+	<parameter name="anulado" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/btf/developer/Desktop/anulado.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="url" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<queryString language="json">
+		<![CDATA[solicitud]]>
+	</queryString>
+	<field name="perfil" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="perfil"/>
+		<fieldDescription><![CDATA[perfil]]></fieldDescription>
+	</field>
+	<field name="idPerfil" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="idPerfil"/>
+		<fieldDescription><![CDATA[idPerfil]]></fieldDescription>
+	</field>
+	<field name="producto" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="producto"/>
+		<fieldDescription><![CDATA[producto]]></fieldDescription>
+	</field>
+	<field name="subProducto" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="subProducto"/>
+		<fieldDescription><![CDATA[subProducto]]></fieldDescription>
+	</field>
+	<field name="prtipo" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="prtipo"/>
+		<fieldDescription><![CDATA[prtipo]]></fieldDescription>
+	</field>
+	<field name="agen" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="agen"/>
+		<fieldDescription><![CDATA[agen]]></fieldDescription>
+	</field>
+	<field name="corr" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="corr"/>
+		<fieldDescription><![CDATA[corr]]></fieldDescription>
+	</field>
+	<field name="dive" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="dive"/>
+		<fieldDescription><![CDATA[dive]]></fieldDescription>
+	</field>
+	<field name="cldoc" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="cldoc"/>
+		<fieldDescription><![CDATA[cldoc]]></fieldDescription>
+	</field>
+	<field name="cltdoc" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="cltdoc"/>
+		<fieldDescription><![CDATA[cltdoc]]></fieldDescription>
+	</field>
+	<field name="tipoSolicitud" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="tipoSolicitud"/>
+		<fieldDescription><![CDATA[tipoSolicitud]]></fieldDescription>
+	</field>
+	<field name="fecha" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="fecha"/>
+		<fieldDescription><![CDATA[fecha]]></fieldDescription>
+	</field>
+	<field name="deposito" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="deposito"/>
+		<fieldDescription><![CDATA[deposito]]></fieldDescription>
+	</field>
+	<field name="moneda" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="moneda"/>
+		<fieldDescription><![CDATA[moneda]]></fieldDescription>
+	</field>
+	<field name="numeroCuenta" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="numeroCuenta"/>
+		<fieldDescription><![CDATA[numeroCuenta]]></fieldDescription>
+	</field>
+	<field name="tipo" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="tipo"/>
+		<fieldDescription><![CDATA[tipo]]></fieldDescription>
+	</field>
+	<field name="mancomunada" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="mancomunada"/>
+		<fieldDescription><![CDATA[mancomunada]]></fieldDescription>
+	</field>
+	<field name="agencia" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="agencia"/>
+		<fieldDescription><![CDATA[agencia]]></fieldDescription>
+	</field>
+	<field name="personaNatural" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="personaNatural"/>
+		<fieldDescription><![CDATA[personaNatural]]></fieldDescription>
+	</field>
+	<field name="personasMancomunadas" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="personasMancomunadas"/>
+		<fieldDescription><![CDATA[personasMancomunadas]]></fieldDescription>
+	</field>
+	<field name="personaJuridica" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="personaJuridica"/>
+		<fieldDescription><![CDATA[personaJuridica]]></fieldDescription>
+	</field>
+	<field name="anexoDosV" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="anexoDosV"/>
+		<fieldDescription><![CDATA[anexoDosV]]></fieldDescription>
+	</field>
+	<field name="firmasAutorizadas" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="firmasAutorizadas"/>
+		<fieldDescription><![CDATA[firmasAutorizadas]]></fieldDescription>
+	</field>
+	<field name="registroFirmas" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="registroFirmas"/>
+		<fieldDescription><![CDATA[registroFirmas]]></fieldDescription>
+	</field>
+	<field name="registroFirmasCuentaAhorro" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="registroFirmasCuentaAhorro"/>
+		<fieldDescription><![CDATA[registroFirmasCuentaAhorro]]></fieldDescription>
+	</field>
+	<field name="futuroCrece" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="futuroCrece"/>
+		<fieldDescription><![CDATA[futuroCrece]]></fieldDescription>
+	</field>
+	<field name="declaracion" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="declaracion"/>
+		<fieldDescription><![CDATA[declaracion]]></fieldDescription>
+	</field>
+	<field name="reporteBeneficiarioFinal" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="reporteBeneficiarioFinal"/>
+		<fieldDescription><![CDATA[reporteBeneficiarioFinal]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="192">
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="0" y="12" width="150" height="60" uuid="24a2aad5-d5b8-4266-a448-07b4e1b1c071">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="10" y="102" width="80" height="20" forecolor="#0F253F" uuid="a404ec35-517a-4521-8454-32ef63d92719"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Fecha : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="132" width="130" height="15" forecolor="#0F253F" backcolor="#2C7BDB" uuid="9c752d78-f161-44c6-ac4f-e5eb0c6691dc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NÚMERO DE CUENTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="132" width="300" height="15" forecolor="#0F253F" backcolor="#C1C4C7" uuid="8786c88a-8d0d-4041-b636-a6fdfd74f44b">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OFICINA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="132" width="110" height="15" forecolor="#0F253F" backcolor="#C1C4C7" uuid="1d6d33ee-adf8-4d16-b89d-8e16ebbc1955">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MONEDA]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="10" y="147" width="110" height="30" forecolor="#17375D" backcolor="#A7BED6" uuid="e64f1089-0396-4c69-acb0-e4a1bb7da556"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[TRIM($F{moneda} )]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement mode="Opaque" x="130" y="147" width="300" height="30" forecolor="#17375D" backcolor="#A7BED6" uuid="8e9f2df1-dcee-46a5-9c92-0f0976fefb1c"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[TRIM($F{agencia})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="440" y="147" width="130" height="30" forecolor="#17375D" backcolor="#A7BED6" uuid="89b3f830-250f-4b2f-aec1-02f8822b8dec"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[TRIM($F{numeroCuenta})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="72" width="571" height="30" forecolor="#0F253F" uuid="6bd4abe0-70b2-480b-8426-3792bb133eab"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipoSolicitud}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="60" y="52" width="511" height="20" forecolor="#0F253F" uuid="20e73636-2c66-4a92-94b1-bbb0fb45db23"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[      Creando Oportunidades Para Ti]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="90" y="102" width="220" height="20" forecolor="#0F253F" uuid="071af84d-1ff3-4387-a6e1-24299d911f53"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="60" y="12" width="511" height="60" forecolor="#0F253F" uuid="0f6fdd65-dc31-4c1c-ad65-89c38612fc8d"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[      BANCO DE LOS TRABAJADORES S.A.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="400" y="102" width="70" height="20" forecolor="#0F253F" uuid="d521eb91-6504-4f81-9f82-8705fc6ac121"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{moneda}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="470" y="102" width="100" height="20" forecolor="#0F253F" uuid="8a25dbe7-040e-425b-aa2b-924af9f3606f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{deposito}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="320" y="102" width="80" height="20" forecolor="#0F253F" uuid="a1ddb91c-a538-488b-92ed-d0989e9d0f55"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Depósito:]]></text>
+			</staticText>
+		</band>
+		<band height="71">
+			<printWhenExpression><![CDATA[EQUALS("natural",$F{tipo})]]></printWhenExpression>
+			<subreport>
+				<reportElement key="" x="0" y="5" width="570" height="65" uuid="555bf9c8-2f1f-4e84-99c2-2b3a75e49bf9"/>
+				<subreportParameter name="imagen">
+					<subreportParameterExpression><![CDATA[$P{imagen}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="url">
+					<subreportParameterExpression><![CDATA[$P{url}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JsonDataSource)$P{REPORT_DATA_SOURCE}).subDataSource("personaNatural")]]></dataSourceExpression>
+				<subreportExpression><![CDATA["/btf/TOOLS/tomcat/apache-tomcat-8.0.37/temp/personaNatural.jasper"]]></subreportExpression>
+			</subreport>
+			<break>
+				<reportElement x="0" y="70" width="571" height="1" uuid="6fd0cee9-c670-48ac-8662-a379c8de0166"/>
+			</break>
+		</band>
+		<band height="81">
+			<printWhenExpression><![CDATA[!EQUALS($F{personasMancomunadas},null)]]></printWhenExpression>
+			<subreport>
+				<reportElement x="0" y="2" width="572" height="78" uuid="e26369b0-50e6-4447-a19f-8f8f0d952107"/>
+				<subreportParameter name="moneda">
+					<subreportParameterExpression><![CDATA[$F{moneda}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="imagen">
+					<subreportParameterExpression><![CDATA[$P{imagen}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="anulado">
+					<subreportParameterExpression><![CDATA[$P{anulado}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="url">
+					<subreportParameterExpression><![CDATA[$P{url}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="agencia">
+					<subreportParameterExpression><![CDATA[$F{agencia}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="deposito">
+					<subreportParameterExpression><![CDATA[$F{deposito}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fecha">
+					<subreportParameterExpression><![CDATA[$F{fecha}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="numeroCuenta">
+					<subreportParameterExpression><![CDATA[$F{numeroCuenta}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tipoSolicitud">
+					<subreportParameterExpression><![CDATA[$F{tipoSolicitud}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JsonDataSource)$P{REPORT_DATA_SOURCE}).subDataSource("personasMancomunadas")]]></dataSourceExpression>
+				<subreportExpression><![CDATA["/btf/TOOLS/tomcat/apache-tomcat-8.0.37/temp/personasMancomunadas.jasper"]]></subreportExpression>
+			</subreport>
+			<break>
+				<reportElement x="0" y="80" width="570" height="1" uuid="2989740d-2978-47c1-b882-6f839775e5b4"/>
+			</break>
+		</band>
+		<band height="81">
+			<printWhenExpression><![CDATA[EQUALS("juridica",$F{tipo})]]></printWhenExpression>
+			<subreport>
+				<reportElement x="0" y="0" width="570" height="80" uuid="4af06d6f-b427-45d7-8d9f-8f83e51ba4b1"/>
+				<subreportParameter name="imagen">
+					<subreportParameterExpression><![CDATA[$P{imagen}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="url">
+					<subreportParameterExpression><![CDATA[$P{url}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JsonDataSource)$P{REPORT_DATA_SOURCE}).subDataSource("personaJuridica")]]></dataSourceExpression>
+				<subreportExpression><![CDATA["/btf/TOOLS/tomcat/apache-tomcat-8.0.37/temp/personaJuridica.jasper"]]></subreportExpression>
+			</subreport>
+			<break>
+				<reportElement x="0" y="80" width="571" height="1" uuid="0c81d13b-5420-489e-9cc5-ec237bcd559a"/>
+			</break>
+		</band>
+		<band height="71">
+			<printWhenExpression><![CDATA[!EQUALS($F{reporteBeneficiarioFinal},null)]]></printWhenExpression>
+			<subreport>
+				<reportElement x="0" y="2" width="570" height="68" isRemoveLineWhenBlank="true" uuid="e20f52a1-1f4e-4d98-92cf-6e3902df391d"/>
+				<subreportParameter name="imagen">
+					<subreportParameterExpression><![CDATA[$P{imagen}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JsonDataSource)$P{REPORT_DATA_SOURCE}).subDataSource("reporteBeneficiarioFinal")]]></dataSourceExpression>
+				<subreportExpression><![CDATA["/btf/TOOLS/tomcat/apache-tomcat-8.0.37/temp/anexoTres.jasper"]]></subreportExpression>
+			</subreport>
+			<break>
+				<reportElement key="" x="0" y="70" width="570" height="1" uuid="10336e88-94ca-4f8b-9249-8068fb53ba96">
+					<printWhenExpression><![CDATA[!EQUALS($F{reporteBeneficiarioFinal},null)]]></printWhenExpression>
+				</reportElement>
+			</break>
+		</band>
+		<band height="51">
+			<printWhenExpression><![CDATA[!EQUALS($F{firmasAutorizadas},null)]]></printWhenExpression>
+			<subreport>
+				<reportElement x="1" y="0" width="570" height="50" uuid="93678702-48c7-484c-b63e-6eb786af759a">
+					<printWhenExpression><![CDATA[!EQUALS($F{firmasAutorizadas},null)]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="imagen">
+					<subreportParameterExpression><![CDATA[$P{imagen}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="anulado">
+					<subreportParameterExpression><![CDATA[$P{anulado}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JsonDataSource)$P{REPORT_DATA_SOURCE}).subDataSource("firmasAutorizadas")]]></dataSourceExpression>
+				<subreportExpression><![CDATA["/btf/TOOLS/tomcat/apache-tomcat-8.0.37/temp/anexoSiete.jasper"]]></subreportExpression>
+			</subreport>
+			<break>
+				<reportElement x="0" y="50" width="570" height="1" uuid="c3e1933f-c652-4bd2-bbf0-59041404d0d9"/>
+			</break>
+		</band>
+		<band height="50">
+			<printWhenExpression><![CDATA[!EQUALS($F{registroFirmasCuentaAhorro},null)]]></printWhenExpression>
+			<subreport>
+				<reportElement x="0" y="0" width="570" height="50" uuid="e453c5fa-800e-478e-8ad5-d954c6c5a8df">
+					<printWhenExpression><![CDATA[!EQUALS($F{registroFirmasCuentaAhorro},null)]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="imagen">
+					<subreportParameterExpression><![CDATA[$P{imagen}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JsonDataSource)$P{REPORT_DATA_SOURCE}).subDataSource("registroFirmasCuentaAhorro")]]></dataSourceExpression>
+				<subreportExpression><![CDATA["/btf/TOOLS/tomcat/apache-tomcat-8.0.37/temp/anexoOcho.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="50">
+			<printWhenExpression><![CDATA[!EQUALS($F{futuroCrece},null)]]></printWhenExpression>
+			<subreport>
+				<reportElement key="" stretchType="RelativeToTallestObject" x="0" y="0" width="571" height="50" uuid="02f2ed5d-4555-48fe-ac51-1bff8b0c9f62">
+					<printWhenExpression><![CDATA[!EQUALS($F{futuroCrece},null)]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="image">
+					<subreportParameterExpression><![CDATA[$P{imagen}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JsonDataSource)$P{REPORT_DATA_SOURCE}).subDataSource("futuroCrece")]]></dataSourceExpression>
+				<subreportExpression><![CDATA["/btf/TOOLS/tomcat/apache-tomcat-8.0.37/temp/reporteFuturoCrece.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="40">
+			<subreport overflowType="Stretch">
+				<reportElement key="" stretchType="RelativeToTallestObject" x="1" y="0" width="571" height="40" uuid="a92b2770-f695-44d4-98be-1c39761d614b"/>
+				<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JsonDataSource)$P{REPORT_DATA_SOURCE}).subDataSource("anexoDosV")]]></dataSourceExpression>
+				<subreportExpression><![CDATA["/btf/TOOLS/tomcat/apache-tomcat-8.0.37/temp/anexoDos.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

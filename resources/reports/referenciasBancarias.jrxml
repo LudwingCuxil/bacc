@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="referenciasBancarias" pageWidth="612" pageHeight="1008" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="15bc23b9-a4d4-4358-8ff6-a7c78739334e">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<queryString language="json">
+		<![CDATA[solicitud.personaNatural.referenciasBancarias]]>
+	</queryString>
+	<field name="id" class="java.lang.String">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[nombre]]></fieldDescription>
+	</field>
+	<field name="telefono" class="java.lang.String">
+		<fieldDescription><![CDATA[telefono]]></fieldDescription>
+	</field>
+	<field name="idd" class="java.lang.String">
+		<fieldDescription><![CDATA[idd]]></fieldDescription>
+	</field>
+	<field name="nombred" class="java.lang.String">
+		<fieldDescription><![CDATA[nombred]]></fieldDescription>
+	</field>
+	<field name="telefonod" class="java.lang.String">
+		<fieldDescription><![CDATA[telefonod]]></fieldDescription>
+	</field>
+	<field name="idt" class="java.lang.String">
+		<fieldDescription><![CDATA[idt]]></fieldDescription>
+	</field>
+	<field name="nombret" class="java.lang.String">
+		<fieldDescription><![CDATA[nombret]]></fieldDescription>
+	</field>
+	<field name="telefonot" class="java.lang.String">
+		<fieldDescription><![CDATA[telefonot]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="40" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="130" height="20" uuid="351f6a78-7ee7-4a0b-8be7-4727f314c4c1"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="20" width="96" height="20" forecolor="#0F253F" uuid="116ad8cb-c767-441c-b1c8-dfec2706dd9e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Bancarias]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="130" y="0" width="150" height="20" uuid="f8ac5326-1edb-462e-b8ad-33e3ae06bb4b"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{telefono}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="130" y="20" width="150" height="20" forecolor="#0F253F" uuid="e3afd03a-3532-42ad-b564-7e334295f039"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Teléfono]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="280" y="0" width="150" height="20" uuid="e803ea20-adf3-498d-bb96-55fefa3115de"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nombred}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="280" y="20" width="120" height="20" forecolor="#0F253F" uuid="80663ae3-b51d-415a-a472-e1b7814441ef"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Bancarias]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="430" y="0" width="140" height="20" uuid="2d8540ff-2ea0-4796-921b-f55b9bcdc247"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{telefonod}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="430" y="20" width="140" height="20" forecolor="#0F253F" uuid="ff399ae4-1526-4e17-8cce-955eab9fdd19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Teléfono]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="96" y="20" width="34" height="20" forecolor="#0F253F" uuid="a27629a3-d039-4c7f-90ed-1a15e8b49cf4"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="400" y="20" width="30" height="20" forecolor="#0F253F" uuid="b83dab5d-4577-470b-ad05-b2542aecf25d"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{idd}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="571" y="0" width="1" height="40" uuid="c1d0e689-ceb3-4e8f-9b6b-d1a3fcbce95b"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="40" uuid="dd34d48a-98d4-44bc-a5e8-163142e6efd0"/>
+			</line>
+		</band>
+	</detail>
+</jasperReport>

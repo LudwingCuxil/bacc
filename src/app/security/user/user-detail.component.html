@@ -1,0 +1,104 @@
+<form name="user-form" autocomplete="off" role="form" [formGroup]="formGroup">
+	<div class="inputs" *ngIf="user">
+	  <fieldset>
+	    <div class="form-group">
+	      <div class="col-md-12">
+	        <label for="username" class="control-label" [translate]="'user.username'">{{'user.username' | translate}}:</label>
+	        <input formControlName="username" [(ngModel)]="user.username" name="username" class="form-control" id="username"/>
+          <pl-errors-message [control]="username"></pl-errors-message>
+	      </div>
+	    </div>
+	    <div class="form-group">
+	      <div class="col-md-12">
+	        <label for="primerNombre" class="control-label" [translate]="'user.first-name'">{{'user.first-name' | translate}}:</label>
+	        <input formControlName="firstName" [(ngModel)]="user.primerNombre" name="primerNombre" id="primerNombre" class="form-control"/>
+          <pl-errors-message [control]="firstName"></pl-errors-message>
+	      </div>
+	    </div>
+	    <div class="form-group">
+	      <div class="col-md-12">
+	        <label for="segundoNombre" class="control-label" [translate]="'user.second-name'">{{'user.second-name' | translate}}:</label>
+	        <input formControlName="secondName" [(ngModel)]="user.segundoNombre" name="segundoNombre" id="segundoNombre" class="form-control"/>
+          <pl-errors-message [control]="secondName"></pl-errors-message>
+	      </div>
+	    </div>
+	    <div class="form-group">
+	      <div class="col-md-12">
+          <label for="primerApellido" class="control-label" [translate]="'user.surname'">{{'user.surname' | translate}}:</label>
+          <input formControlName="surname" [(ngModel)]="user.primerApellido" name="primerApellido" id="primerApellido" class="form-control"/>
+          <pl-errors-message [control]="surname"></pl-errors-message>
+	      </div>
+	    </div>
+	    <div class="form-group">
+	      <div class="col-md-12">
+	        <label form="segundoApellido" class="control-label" [translate]="'user.second-surname'">{{'user.second-surname' | translate}}:</label>
+	        <input formControlName="secondSurname" [(ngModel)]="user.segundoApellido" name="segundoApellido" id="segundoApellido" class="form-control" />
+          <pl-errors-message [control]="secondSurname"></pl-errors-message>
+	      </div>
+	    </div>
+	    <div class="form-group">
+	      <div class="col-md-12">
+	        <label for="email" class="control-label" [translate]="'user.email'">{{'user.email' | translate}}:</label>
+	        <input formControlName="email" [(ngModel)]="user.email" placeholder="example@example.com" type="email" name="email" id="email" class="form-control" />
+          <pl-errors-message [control]="email"></pl-errors-message>
+	      </div>
+	    </div>
+	    <div class="form-group" *ngIf="modeCreate">
+	      <div class="col-md-12">
+	        <label for="password" class="control-label" [translate]="'user.password'">{{'user.password' | translate}}:</label>
+	        <input formControlName="password" [(ngModel)]="user.password" type="password" name="password" id="password" class="form-control" />
+          <pl-errors-message [control]="password"></pl-errors-message>
+	      </div>
+	    </div>
+	    <div class="form-group"> <!-- inline style is just to demo custom css to put checkbox below input above -->
+	      <div class="col-md-12">
+	        <label for="habilitado" class="control-label" [translate]="'user.enabled'">{{'user.enabled' | translate}}:</label>
+	        <div class="checkbox">
+	          <label>
+	            <input formControlName="status" [(ngModel)]="user.habilitado" type="checkbox" name="habilitado" id="habilitado" />
+	          </label>
+	        </div>
+	      </div>
+	    </div>
+<!-- 	    <div class="form-group" *ngIf="false"> -->
+<!-- 	      <div class="col-md-12"> -->
+<!-- 	        <label for="cuentaBloqueada" class="control-label">Cuenta Bloqueada:</label> -->
+<!-- 	        <div class="checkbox"> -->
+<!-- 	          <label> -->
+<!-- 	            <input formControlName="firstName" [(ngModel)]="user.cuentaBloqueada" name="cuentaBloqueada" id="cuentaBloqueada" type="checkbox" /><span class="checkbox-material"><span class="check"></span></span> -->
+<!-- 	          </label> -->
+<!-- 	        </div> -->
+<!-- 	      </div> -->
+<!-- 	    </div> -->
+<!-- 	    <div class="form-group" *ngIf="false"> -->
+<!-- 	      <div class="col-md-12"> -->
+<!-- 	        <label for="passwordExpirado" class="control-label">Password Expirado:</label> -->
+<!-- 	        <div class="checkbox"> -->
+<!-- 	          <label> -->
+<!-- 	            <input formControlName="firstName" [(ngModel)]="user.passwordExpirado" name="passwordExpirado" id="passwordExpirado" type="checkbox" /><span class="checkbox-material"><span class="check"></span></span> -->
+<!-- 	          </label> -->
+<!-- 	        </div> -->
+<!-- 	      </div> -->
+<!-- 	    </div> -->
+	    <div class="form-group">
+	      <div class="col-md-12">
+	        <label for="profileSelected" class="control-label" [translate]="'user.profile'">{{'user.profile' | translate}}:</label>
+	        <pl-profile-select id="profileSelected" [formGroup]="formGroup" [controlName]="'profile'" [profileSelected]="user.defaultProfileName"
+	          (changeProfile)="selectProfile($event)" [autocomplete]="true"></pl-profile-select>
+	       </div>
+	    </div>
+<!-- 	    <div class="form-group" *ngIf="false"> -->
+<!-- 	      <div class="col-md-12"> -->
+<!-- 	        <label for="perfilId" class="control-label">Perfil ID:</label> -->
+<!-- 	        <input [(ngModel)]="user.perfilId" id="perfilId" name="perfilId" class="form-control" type="number" /> -->
+<!-- 	      </div> -->
+<!-- 	    </div> -->
+	    <div class="form-group">
+	      <button (click)="goBack()" *ngIf="individual" [translate]="'buttons.back'">{{'buttons.back' | translate}}</button>
+	      <button *ngIf="individual && !modeCreate" [translate]="'buttons.create'">{{'buttons.create' | translate}}</button>
+	      <button *ngIf="individual && !modeUpdate" [translate]="'buttons.update'">{{'buttons.update' | translate}}</button>
+	      <button *ngIf="individual && !modeDelete" [translate]="'buttons.delete'">{{'buttons.delete' | translate}}</button>
+	    </div>
+	  </fieldset>
+	</div>
+</form>

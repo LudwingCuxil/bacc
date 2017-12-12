@@ -1,0 +1,41 @@
+<div class="inputs" *ngIf="profile || modeCreate" [formGroup]="formGroup">
+  <fieldset>
+    <div class="form-group" *ngIf="false">
+      <div class="col-md-12">
+        <label for="id" class="control-label">Id:</label>
+        <input [(ngModel)]="profile.id" class="form-control" name="id" id="id" placeholder="Id" [disabled]="modeView || modeDelete" />
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-12">
+        <label for="nombre" class="control-label" [translate]="'profile.name'">{{'profile.name' | translate}}:</label>
+        <input [(ngModel)]="profile.nombre" name="nombre" class="form-control" id="nombre" formControlName="name"/>
+        <pl-errors-message [control]="name"></pl-errors-message>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-12">
+        <label for="descripcion" class="control-label" [translate]="'profile.description'">{{'profile.description' | translate}}:</label>
+        <input [(ngModel)]="profile.descripcion" name="descripcion" id="descripcion" class="form-control" formControlName="description"/>
+        <pl-errors-message [control]="description"></pl-errors-message>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-12">
+        <label for="activo" class="control-label" [translate]="'profile.activo'">{{'profile.activo' | translate}}:</label>
+        <div class="checkbox" *ngIf="profile !== undefined && profile.activo !==undefined">
+          <label>
+            <input [(ngModel)]="profile.activo" type="checkbox" name="activo" id="activo" formControlName="active"/> <content *ngIf="profile.activo">{{'profile.activo' | translate}}</content> <content *ngIf="!profile.activo">{{'profile.inactivo' | translate}}</content>
+          </label>
+        </div>
+        <pl-errors-message [control]="active"></pl-errors-message>
+      </div>
+    </div>
+    <div class="form-group">
+      <button (click)="goBack()" *ngIf="individual" [translate]="'buttons.back'">{{'buttons.back' | translate}}</button>
+      <button *ngIf="individual && !modeCreate" [translate]="'buttons.create'">{{'buttons.create' | translate}}</button>
+      <button *ngIf="individual && !modeUpdate" [translate]="'buttons.update'">{{'buttons.update' | translate}}</button>
+      <button *ngIf="individual && !modeDelete" [translate]="'buttons.delete'">{{'buttons.delete' | translate}}</button>
+    </div>
+  </fieldset>
+</div>

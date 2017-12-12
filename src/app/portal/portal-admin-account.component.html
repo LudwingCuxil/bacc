@@ -1,0 +1,5 @@
+<div [ngBusy]="busy"></div>
+<div class="account-component">
+  <pl-portal-header [accountInformation]="accountInformation" ></pl-portal-header>
+  <pl-portal-content [accountInformation]="accountInformation" [validClientInformation]="validClientInformation" *ngIf="_partialPersistServce.data"></pl-portal-content>
+</div>

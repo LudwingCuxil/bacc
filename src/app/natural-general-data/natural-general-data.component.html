@@ -1,0 +1,379 @@
+<div [ngBusy]="busy"></div>
+<form [formGroup]="formGroup" id="formGroup" name="formGroup" autocomplete="off" (ngSubmit)="validateForm()">
+  <div class="container-fluid animated fadeIn">
+    <div class="panel panel-custom">
+      <div class="panel-heading">
+        <h2>{{'general-data-natural.title' | translate}}</h2>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-12">
+
+            <div class="col-lg-6">
+              <label class="control-label">{{'general-data-natural.genre.title' | translate}}</label>
+              <div class="panel panel-custom panel--radio-check required"
+                   [ngClass]="{ 'has-error': gender.invalid && gender.touched }">
+                <div class="panel-body">
+                  <div class="col-lg-6 text-center">
+                    <label class="control control--radio">
+                      <input formControlName="gender" [disabled]="gender.disabled" type="radio" id="female"
+                             class="radio" name="gender" [value]="'F'"
+                             [(ngModel)]="client.datosGeneralesPersonaNatural.genero"
+                             [checked]="client.datosGeneralesPersonaNatural.genero === 'F'"/>
+                      {{'general-data-natural.genre.female' | translate}}
+                      <div class="control__indicator"></div>
+                    </label>
+                  </div>
+                  <div class="col-lg-6 divider-left text-center">
+                    <label class="control control--radio">
+                      <input formControlName="gender" [disabled]="gender.disabled" type="radio" id="male" class="radio"
+                             name="gender" [value]="'M'"
+                             [(ngModel)]="client.datosGeneralesPersonaNatural.genero"
+                             [checked]="client.datosGeneralesPersonaNatural.genero === 'M'"/>
+                      {{'general-data-natural.genre.male' | translate}}
+                      <div class="control__indicator"></div>
+                    </label>
+                  </div>
+                </div>
+                <pl-errors-message [control]="gender"></pl-errors-message>
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <label class="control-label">{{'general-data-natural.civil-status' | translate}}</label>
+              <div class="form-group required" [ngClass]="{ 'has-error': civilStatus.touched && civilStatus.invalid}">
+                <pl-civil-status-select id="civilStatus" [autocomplete]="false"
+                                        [civilStatusSelected]="client.datosGeneralesPersonaNatural.estadoCivil"
+                                        [formGroup]="formGroup" [controlName]="'civilStatus'"
+                                        (changeCivilStatus)="selectCivilStatus($event)"></pl-civil-status-select>
+                <pl-errors-message [control]="civilStatus"></pl-errors-message>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="client.tipoIdentificacion.codigo === identityCodeParameter && !editMode">
+          <div class="col-lg-12">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <div class="checkbox">
+                  <label class="control control--checkbox">
+                    <input formControlName="basicAccountProfile" type="checkbox" id="basicAccountProfile"
+                           class="checkbox" name="basicAccountProfile"
+                           [(ngModel)]="client.datosGeneralesPersonaNatural.perfilCuentaBasica"
+                           (ngModelChange)="valueChangeBasicProfile(client.datosGeneralesPersonaNatural.perfilCuentaBasica)"/>
+                    <label for="basicAccountProfile">{{'general-data-natural.basic-account-profile' |
+                      translate}}</label>
+                    <div class="control__indicator"></div>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="col-lg-12">
+              <div class="row">
+                <div
+                  [ngClass]="{'animated fadeIn col-lg-3': client.datosGeneralesPersonaNatural.genero === 'M' || client.datosGeneralesPersonaNatural.genero === 'F' && (client.datosGeneralesPersonaNatural.estadoCivil === undefined || client.datosGeneralesPersonaNatural.estadoCivil === 'S' || client.datosGeneralesPersonaNatural.estadoCivil === 'V' || client.datosGeneralesPersonaNatural.estadoCivil === 'D'),
+                 'animated fadeIn col-lg-4': client.datosGeneralesPersonaNatural.genero === 'F' && (client.datosGeneralesPersonaNatural.estadoCivil === 'U' || client.datosGeneralesPersonaNatural.estadoCivil === 'C')}">
+                  <label class="control-label">{{'general-data-natural.surname' | translate}}</label>
+                  <div class="form-group required" [ngClass]="{'has-error': surname.invalid && surname.touched}">
+                    <input formControlName="surname" type="text" name="surname" class="form-control"
+                           [(ngModel)]="client.datosGeneralesPersonaNatural.primerApellido"
+                           placeholder="{{'general-data-natural.surname' | translate}}" [maxLength]="15"
+                           [(uppercase)]='client.datosGeneralesPersonaNatural.primerApellido'/>
+                    <pl-errors-message [control]="surname"></pl-errors-message>
+                  </div>
+                </div>
+                <div
+                  [ngClass]="{'animated fadeIn col-lg-3': client.datosGeneralesPersonaNatural.genero === 'M' || client.datosGeneralesPersonaNatural.genero === 'F' && (client.datosGeneralesPersonaNatural.estadoCivil === undefined || client.datosGeneralesPersonaNatural.estadoCivil === 'S' || client.datosGeneralesPersonaNatural.estadoCivil === 'V' || client.datosGeneralesPersonaNatural.estadoCivil === 'D'),
+                 'animated fadeIn col-lg-4': client.datosGeneralesPersonaNatural.genero === 'F' && (client.datosGeneralesPersonaNatural.estadoCivil === 'U' || client.datosGeneralesPersonaNatural.estadoCivil === 'C')}">
+                  <label class="control-label">{{'general-data-natural.second-surname' | translate}}</label>
+                  <div class="form-group"
+                       [ngClass]="{'has-error': secondSurname.touched && secondSurname.invalid}">
+                    <input formControlName="secondSurname" type="text" name="secondSurname" class="form-control"
+                           [(ngModel)]="client.datosGeneralesPersonaNatural.segundoApellido"
+                           placeholder="{{'general-data-natural.second-surname' | translate}}"
+                           [maxLength]="15" [(uppercase)]='client.datosGeneralesPersonaNatural.segundoApellido'/>
+                    <pl-errors-message [control]="secondSurname"></pl-errors-message>
+                  </div>
+                </div>
+                <div
+                  [ngClass]="{'animated fadeIn col-lg-3': client.datosGeneralesPersonaNatural.genero === 'M' || client.datosGeneralesPersonaNatural.genero === 'F' && (client.datosGeneralesPersonaNatural.estadoCivil === undefined || client.datosGeneralesPersonaNatural.estadoCivil === 'S' || client.datosGeneralesPersonaNatural.estadoCivil === 'V' || client.datosGeneralesPersonaNatural.estadoCivil === 'D'),
+                 'animated fadeIn col-lg-4': client.datosGeneralesPersonaNatural.genero === 'F' && (client.datosGeneralesPersonaNatural.estadoCivil === 'U' || client.datosGeneralesPersonaNatural.estadoCivil === 'C')}"
+                  *ngIf="client.datosGeneralesPersonaNatural.genero == 'F' && (client.datosGeneralesPersonaNatural.estadoCivil === 'C' || client.datosGeneralesPersonaNatural.estadoCivil === 'U')">
+                  <label class="control-label">{{'general-data-natural.married-surname' | translate}}</label>
+                  <div class="form-group"
+                       [ngClass]="{'has-error': marriedSurname.touched && marriedSurname.invalid}">
+                    <input formControlName="marriedSurname" type="text" name="marriedSurname" class="form-control"
+                           [(ngModel)]="client.datosGeneralesPersonaNatural.apellidoCasada"
+                           placeholder="{{'general-data-natural.married-surname' | translate}}"
+                           [maxLength]="15" [(uppercase)]='client.datosGeneralesPersonaNatural.apellidoCasada'/>
+                    <pl-errors-message [control]="marriedSurname"></pl-errors-message>
+                  </div>
+                </div>
+
+                <div *ngIf="client.datosGeneralesPersonaNatural.genero === 'M' || client.datosGeneralesPersonaNatural.genero === 'F' && (client.datosGeneralesPersonaNatural.estadoCivil === undefined || client.datosGeneralesPersonaNatural.estadoCivil === 'S' || client.datosGeneralesPersonaNatural.estadoCivil === 'V' || client.datosGeneralesPersonaNatural.estadoCivil === 'D')"
+                  [ngClass]="{'animated fadeIn col-lg-3': client.datosGeneralesPersonaNatural.genero === 'M' || client.datosGeneralesPersonaNatural.genero === 'F' && (client.datosGeneralesPersonaNatural.estadoCivil === undefined || client.datosGeneralesPersonaNatural.estadoCivil === 'S' || client.datosGeneralesPersonaNatural.estadoCivil === 'V' || client.datosGeneralesPersonaNatural.estadoCivil === 'D'),
+                 'animated fadeIn col-lg-4': client.datosGeneralesPersonaNatural.genero === 'F' && (client.datosGeneralesPersonaNatural.estadoCivil === 'U' || client.datosGeneralesPersonaNatural.estadoCivil === 'C')}">
+                  <label class="control-label">{{'general-data-natural.first-name' | translate}}</label>
+                  <div class="form-group required" [ngClass]="{'has-error': firstName.touched && firstName.invalid}">
+                    <input formControlName="firstName" type="text" name="firstName" class="form-control"
+                           [(ngModel)]="client.datosGeneralesPersonaNatural.primerNombre"
+                           placeholder="{{'general-data-natural.first-name' | translate}}"
+                           [maxLength]="15" [(uppercase)]='client.datosGeneralesPersonaNatural.primerNombre'/>
+                    <pl-errors-message [control]="firstName"></pl-errors-message>
+                  </div>
+                </div>
+                <div *ngIf="client.datosGeneralesPersonaNatural.genero === 'M' || client.datosGeneralesPersonaNatural.genero === 'F' && (client.datosGeneralesPersonaNatural.estadoCivil === undefined || client.datosGeneralesPersonaNatural.estadoCivil === 'S' || client.datosGeneralesPersonaNatural.estadoCivil === 'V' || client.datosGeneralesPersonaNatural.estadoCivil === 'D')"
+                  [ngClass]="{'animated fadeIn col-lg-3': client.datosGeneralesPersonaNatural.genero === 'M' || client.datosGeneralesPersonaNatural.genero === 'F' && (client.datosGeneralesPersonaNatural.estadoCivil === undefined || client.datosGeneralesPersonaNatural.estadoCivil === 'S' || client.datosGeneralesPersonaNatural.estadoCivil === 'V' || client.datosGeneralesPersonaNatural.estadoCivil === 'D'),
+                 'animated fadeIn col-lg-4': client.datosGeneralesPersonaNatural.genero === 'F' && (client.datosGeneralesPersonaNatural.estadoCivil === 'U' || client.datosGeneralesPersonaNatural.estadoCivil === 'C')}">
+                  <label class="control-label">{{'general-data-natural.second-name' | translate}}</label>
+                  <div class="form-group" [ngClass]="{'has-error': secondName.touched && secondName.invalid}">
+                    <input formControlName="secondName" type="text" name="secondName" class="form-control"
+                           [(ngModel)]="client.datosGeneralesPersonaNatural.segundoNombre"
+                           placeholder="{{'general-data-natural.second-name' | translate}}"
+                           [maxLength]="15" [(uppercase)]='client.datosGeneralesPersonaNatural.segundoNombre'/>
+                    <pl-errors-message [control]="secondName"></pl-errors-message>
+                  </div>
+                </div>
+              </div>
+              <div class="row" *ngIf="client.datosGeneralesPersonaNatural.genero === 'F' && (client.datosGeneralesPersonaNatural.estadoCivil === 'U' || client.datosGeneralesPersonaNatural.estadoCivil === 'C')">
+                <div
+                     [ngClass]="{'animated fadeIn col-lg-3': client.datosGeneralesPersonaNatural.genero === 'M' || client.datosGeneralesPersonaNatural.genero === 'F' && (client.datosGeneralesPersonaNatural.estadoCivil === undefined || client.datosGeneralesPersonaNatural.estadoCivil === 'S' || client.datosGeneralesPersonaNatural.estadoCivil === 'V' || client.datosGeneralesPersonaNatural.estadoCivil === 'D'),
+                 'animated fadeIn col-lg-4': client.datosGeneralesPersonaNatural.genero === 'F' && (client.datosGeneralesPersonaNatural.estadoCivil === 'U' || client.datosGeneralesPersonaNatural.estadoCivil === 'C')}">
+                  <label class="control-label">{{'general-data-natural.first-name' | translate}}</label>
+                  <div class="form-group required" [ngClass]="{'has-error': firstName.touched && firstName.invalid}">
+                    <input formControlName="firstName" type="text" name="firstName" class="form-control"
+                           [(ngModel)]="client.datosGeneralesPersonaNatural.primerNombre"
+                           placeholder="{{'general-data-natural.first-name' | translate}}"
+                           [maxLength]="15" [(uppercase)]='client.datosGeneralesPersonaNatural.primerNombre'/>
+                    <pl-errors-message [control]="firstName"></pl-errors-message>
+                  </div>
+                </div>
+                <div
+                     [ngClass]="{'animated fadeIn col-lg-3': client.datosGeneralesPersonaNatural.genero === 'M' || client.datosGeneralesPersonaNatural.genero === 'F' && (client.datosGeneralesPersonaNatural.estadoCivil === undefined || client.datosGeneralesPersonaNatural.estadoCivil === 'S' || client.datosGeneralesPersonaNatural.estadoCivil === 'V' || client.datosGeneralesPersonaNatural.estadoCivil === 'D'),
+                 'animated fadeIn col-lg-4': client.datosGeneralesPersonaNatural.genero === 'F' && (client.datosGeneralesPersonaNatural.estadoCivil === 'U' || client.datosGeneralesPersonaNatural.estadoCivil === 'C')}">
+                  <label class="control-label">{{'general-data-natural.second-name' | translate}}</label>
+                  <div class="form-group" [ngClass]="{'has-error': secondName.touched && secondName.invalid}">
+                    <input formControlName="secondName" type="text" name="secondName" class="form-control"
+                           [(ngModel)]="client.datosGeneralesPersonaNatural.segundoNombre"
+                           placeholder="{{'general-data-natural.second-name' | translate}}"
+                           [maxLength]="15" [(uppercase)]='client.datosGeneralesPersonaNatural.segundoNombre'/>
+                    <pl-errors-message [control]="secondName"></pl-errors-message>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="row">
+                <div class="col-lg-6"
+                     *ngIf="client.datosGeneralesPersonaNatural.estadoCivil === 'C' || client.datosGeneralesPersonaNatural.estadoCivil =='U'">
+                  <label class="control-label">{{'general-data-natural.spouse' | translate}}</label>
+                  <div class="form-group required" [ngClass]="{'has-error': spouse.touched && spouse.invalid}">
+                    <input formControlName="spouse" type="text" name="spouse"
+                           [(uppercase)]='client.datosGeneralesPersonaNatural.conyuge' class="form-control"
+                           placeholder="{{'general-data-natural.spouse' | translate}}"
+                           [(ngModel)]="client.datosGeneralesPersonaNatural.conyuge"
+                           [maxLength]="40"/>
+                    <pl-errors-message [control]="spouse"></pl-errors-message>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="row">
+                <div class="col-lg-6 required" [ngClass]="{'has-error': birthdate.invalid && birthdate.touched}">
+                  <label class="control-label">{{'general-data-natural.birthdate' | translate}}</label>
+                  <div class="form-group form-inline">
+                    <div class="input-group">
+                      <sa-datepicker [(ngModel)]="bornDate" (ngModelChange)="changeDate($event)" name="birthdate"
+                                     formControlName="birthdate" [maxDate]="maxDate"
+                                     [minDate]="minDate"></sa-datepicker>
+                    </div>
+                    <pl-errors-message [control]="birthdate">
+                      <div *ngIf="birthdate?.hasError('maxDate')"><span>{{'messages.max-date' | translate}} {{maxDate | json}}</span>
+                      </div>
+                      <div *ngIf="birthdate?.hasError('minDate')"><span>{{'messages.min-date' | translate}} {{maxDate | json}}</span>
+                      </div>
+                    </pl-errors-message>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <label class="control-label">{{'general-data-natural.profession' | translate}}</label>
+                  <div class="form-group required">
+                    <pl-profession-select id="professionSelected" [formGroup]="formGroup"
+                                          [profession]="client.datosGeneralesPersonaNatural.profesion"
+                                          (changeProfession)="selectProfession($event)"
+                                          [autocomplete]="true"></pl-profession-select>
+                    <pl-errors-message [control]="profession"></pl-errors-message>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="row">
+                <div class="col-lg-6">
+                  <label class="control-label">{{'general-data-natural.origin-country' | translate}}</label>
+                  <div class="form-group required">
+                    <pl-country-select id="originCountry" *ngIf="client.paisOrigen" [formGroup]="formGroup"
+                                       [country]="client.paisOrigen"
+                                       [setDefaultValues]="true"
+                                       (changeCountry)="selectCountry($event)"
+                                       [autocomplete]="true"></pl-country-select>
+                    <pl-errors-message [control]="country"></pl-errors-message>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <label class="control-label">{{'general-data-natural.nationality'|translate}}</label>
+                  <div class="form-group required">
+                    <pl-country-select id="nationality" *ngIf="client.datosGeneralesPersonaNatural.nacionalidad"
+                                       [showNationality]="true" [autocomplete]="true"
+                                       [country]="client.datosGeneralesPersonaNatural.nacionalidad"
+                                       [setDefaultValues]="true"
+                                       (changeCountry)="selectNationality($event)" [formGroup]="formGroup"
+                                       [controlName]="'nationality'"></pl-country-select>
+                    <pl-errors-message [control]="nationality"></pl-errors-message>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <label class="control-label">{{'general-data-natural.residence-country'|translate}}</label>
+                      <div class="form-group required">
+                        <pl-country-select id="residence" *ngIf="client.datosGeneralesPersonaNatural.paisResidencia"
+                                           [autocomplete]="true" [controlName]="'residence'"
+                                           [country]="client.datosGeneralesPersonaNatural.paisResidencia"
+                                           [setDefaultValues]="true"
+                                           [formGroup]="formGroup"
+                                           (changeCountry)="selectResidence($event)"></pl-country-select>
+                        <pl-errors-message [control]="residence"></pl-errors-message>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-12">
+              <div class="row">
+                <div class="col-lg-6">
+                  <label class="control-label">{{'general-data-natural.licence'|translate}}</label>
+                  <div class="form-group" [ngClass]="{'has-error': licence.touched && licence.invalid}">
+                    <input formControlName="licence" type="text" name="licence"
+                           [(uppercase)]='client.datosGeneralesPersonaNatural.numeroLicencia' class="form-control"
+                           [(ngModel)]="client.datosGeneralesPersonaNatural.numeroLicencia" [maxLength]="15"/>
+                    <pl-errors-message [control]="licence"></pl-errors-message>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <label class="control-label">{{'general-data-natural.official-account'|translate}}</label>
+                  <div class="form-group required">
+                    <pl-account-officer id="accountOfficer" class="input-field"
+                                        [autocomplete]="true"
+                                        [formGroup]="formGroup"
+                                        [controlName]="'accountOfficer'"
+                                        [accountOfficer]="client.oficialDeCuentas"
+                                        (changeOficialDeCuentas)="selectAccountOfficer($event)"></pl-account-officer>
+                    <pl-errors-message [control]="accountOfficer"></pl-errors-message>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer text-right col-lg-10">
+        <div class="row">
+          <span data-toggle="tooltip" data-placement="left" title=""
+                attr.data-original-title="{{'buttons.update' | translate}}" *ngIf="editMode && disabledField">
+            <a class="btn btn-warning btn-raised btn-fab" (click)="change()">
+                <i class="material-icons md-18">create</i> {{'buttons.update' | translate}}
+                <div class="ripple-container"></div>
+            </a>
+          </span>
+          <span data-toggle="tooltip" data-placement="left" title="" *ngIf="editMode && !disabledField"
+                attr.data-original-title="{{'buttons.cancel' | translate}}">
+            <a class="btn btn-danger btn-raised btn-fab" (click)="change(true)">
+                <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+                <div class="ripple-container"></div>
+            </a>
+          </span>
+          <button type="button" class="btn btn-warning btn-raised btn-fab"
+                  attr.data-original-title="{{'buttons.update' | translate}}" [disabled]="allowEditPersonRegistry"
+                  *ngIf="existsInPersonRegistry" (click)="requestEditPersonRegistry()">
+            <i class="material-icons md-18">create</i> {{'buttons.update' | translate}}
+            <div class="ripple-container"></div>
+          </button>
+          <span data-toggle="tooltip" data-placement="left" title="" *ngIf="!editMode"
+                attr.data-original-title="{{'buttons.cancel' | translate}}">
+            <a class="btn btn-danger btn-raised btn-fab" (click)="cancel()">
+                <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+                <div class="ripple-container"></div>
+            </a>
+          </span>
+          <button type="submit" class="btn btn-success" [disabled]="!formGroup.valid"
+                  data-toggle="tooltip" data-placement="left" *ngIf="!disabledField"
+                  attr.data-original-title="{{'buttons.continue' | translate}}">
+            {{'buttons.continue' | translate}} <i class="material-icons md-18">chevron_right</i>
+            <div class="ripple-container"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="modal fade" id="authorizationModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><i class="material-icons md-18">check_circle</i>{{'authorization.title'
+          | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <pl-authorization [authorization]="authorization"
+                          (changeAuthorization)="changeAuthorization($event)"></pl-authorization>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="continueModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="continueModalLabel"><i class="material-icons md-18">check_circle</i>{{'modal.continuar-proceso'
+          | translate}}</h4>
+      </div>
+      <div class="modal-body text-center">
+        <div class="row">
+          <div class="text-center">
+            <div class="panel panel-default solicitudes">
+              <div class="panel-body">
+                {{'exceptionace.core.clientes.exception.0100153' | translate}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <span data-toggle="tooltip" data-placement="left" title=""
+              attr.data-original-title="{{'buttons.cancel' | translate}}">
+          <a class="btn btn-danger" data-dismiss="modal">
+            <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+            <div class="ripple-container"></div>
+          </a>
+        </span>
+        <button type="button" class="btn btn-primary" (click)="partialSave(true)" data-dismiss="modal">
+          {{'buttons.accept' | translate}}
+          <i class="material-icons md-18">check</i>
+          <div class="ripple-container"></div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<simple-notifications [options]="options"></simple-notifications>
+<cancel-confirmation></cancel-confirmation>

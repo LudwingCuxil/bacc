@@ -1,0 +1,43 @@
+<div [ngBusy]="busy"></div>
+
+<ng-template #aditionalActionTemplate let-item="item">
+  <a class="btn btn-danger btn-raised" (click)="getDetail(item)" data-toggle="modal" data-target="#associateRolesModal">
+    <i class="material-icons md-18">group</i>
+    <div class="ripple-container"></div>
+  </a>
+</ng-template>
+
+<bt-basic-maintenance
+[name]="settings.name"
+[tableHeading]="settings.table.header"
+[tableBodyValues]="settings.table.values"
+[searchDataTypeFields]="settings.search.dataTypes"
+[searchFields]="settings.search.fields"
+[searchPlaceHolder]="settings.search.placeholder"
+[formSchema]="settings.schema"
+[resourcePath]="resourcePath"
+[aditionalActionTemplate]="aditionalActionTemplate"
+(stateOperation)="onNotify($event)"
+>
+</bt-basic-maintenance>
+
+<div class="modal fade" id="associateRolesModal"  tabindex="-1" role="dialog" aria-labelledby="myModalAssociateRoleLabel" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reset()"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Asociar</h4>
+      </div>
+      <form>
+        <div class="modal-body" *ngIf="profile!=null && profile.id!=undefinded">
+          <pl-role-dual-list [asigned]="associatedRoles" (onAdd)="onRoleAdded($event)" (onRemove)="onRoleRemoved($event)"></pl-role-dual-list>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal" (click)="reset()">Cerrar</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" *ngIf="!updateSucessful" (click)="associateRoles()">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

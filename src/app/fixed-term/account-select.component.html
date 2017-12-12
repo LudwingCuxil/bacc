@@ -1,0 +1,13 @@
+<div [formGroup]="formGroup">
+  <select id="accountSummarySelected" [formControlName]="controlName" [(ngModel)]="accountSummary" (ngModelChange)="onChangeObj($event)" class="form-control" required *ngIf="!autocomplete">
+    <option *ngFor="let p of accountSummaries" [ngValue]="p">{{p.numeroCuenta}}  -  {{p.nombre}}</option>
+  </select>
+
+  <ng-template #rt let-r="result" let-t="term" style="width: 96%">
+    {{ r.numeroCuenta }}  -  {{ r.nombre }}
+  </ng-template>
+
+  <input (focus)="openAll($event)" [(ngModel)]="accountSummary" [formControlName]="controlName" [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="formatter"
+         class="form-control" style="text-transform: uppercase" required *ngIf="autocomplete"
+         (selectItem)="onChangeObj($event)" />
+</div>

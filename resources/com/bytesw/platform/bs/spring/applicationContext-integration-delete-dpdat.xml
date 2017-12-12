@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:int="http://www.springframework.org/schema/integration" 
+	xmlns:int-jdbc="http://www.springframework.org/schema/integration/jdbc"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" 
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/integration/jdbc http://www.springframework.org/schema/integration/jdbc/spring-integration-jdbc.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- ############## ELIMINA ############## -->
+	
+	<!-- PERSONA CHEQUERA -->
+	
+	<int:channel id="deleteCuentaPersonaChequeraRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="deleteCuentaPersonaChequeraAdapter" data-source="dataSource" channel="deleteCuentaPersonaChequeraRequestChannel" query="#{sqlDeleteCuentaPersonaChequera}" />
+	<bean id="sqlDeleteCuentaPersonaChequera" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+					DELETE FROM #{DPDAT}.DPFRCH
+					WHERE PRTIPO = :payload.digitoIdentificador AND DPAGEN = :payload.agencia AND DPCORR = :payload.correlativo AND DPDIVE = :payload.digitoVerificador AND FCHTDO = :payload.tipoDocumento.codigo AND FCHDOC = :payload.numeroDocumento
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- BENEFICIARIO -->
+	
+	<int:channel id="deleteBeneficiarioRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="deleteBeneficiarioAdapter" data-source="dataSource" channel="deleteBeneficiarioRequestChannel" query="#{sqlDeleteBeneficiario}" />
+	<bean id="sqlDeleteBeneficiario" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+					DELETE FROM #{DPDAT}.DPBNAC
+					WHERE PRTIPO = :payload.digitoIdentificador AND DPAGEN = :payload.agencia AND DPCORR = :payload.correlativo AND DPDIVE = :payload.digitoVerificador AND BECORR = :payload.correlativoBeneficiario
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- BENEFICIARIO FINAL -->
+	
+	<int:channel id="deleteBeneficiarioFinalRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="deleteBeneficiarioFinalAdapter" data-source="dataSource" channel="deleteBeneficiarioFinalRequestChannel" query="#{sqlDeleteBeneficiarioFinal}" />
+	<bean id="sqlDeleteBeneficiarioFinal" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+					DELETE FROM #{DPDAT}.DPBFIN
+					WHERE PRTIPO = :payload.digitoIdentificador AND DPAGEN = :payload.agencia AND DPCORR = :payload.correlativo AND DPDIVE = :payload.digitoVerificador AND BFCORR = :payload.correlativoBeneficiarioFinal
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- FIRMA -->
+	
+	<int:channel id="deleteFirmaRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="deleteFirmaAdapter" data-source="dataSource" channel="deleteFirmaRequestChannel" query="#{sqlDeleteFirma}" />
+	<bean id="sqlDeleteFirma" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+					DELETE FROM #{DPDAT}.DPFIRMA
+					WHERE PRTIPO = :payload.digitoIdentificador AND DPAGEN = :payload.agencia AND DPCORR = :payload.correlativo AND DPDIVE = :payload.digitoVerificador AND FIRCOR = :payload.correlativoFirma
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- SERVICIO ELECTRONICO -->
+	
+	<int:channel id="deleteServicioElectronicoRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="deleteServicioElectronicoAdapter" data-source="dataSource" channel="deleteServicioElectronicoRequestChannel" query="#{sqlDeleteServicioElectronico}" />
+	<bean id="sqlDeleteServicioElectronico" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+					DELETE FROM #{DPDAT}.PLSRVE
+					WHERE PRTIPO = :payload.digitoIdentificador AND DPAGEN = :payload.agencia AND DPCORR = :payload.correlativo AND DPDIVE = :payload.digitoVerificador
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- MANCOMUNADO -->
+	
+	<int:channel id="deleteCuentaMancomunadaRequestChannel" />
+	
+	<int-jdbc:outbound-channel-adapter id="deleteCuentaMancomunadaAdapter" data-source="dataSource" channel="deleteCuentaMancomunadaRequestChannel" query="#{sqlDeleteCuentaMancomunada}" />
+	<bean id="sqlDeleteCuentaMancomunada" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+					DELETE FROM #{DPDAT}.DPCTAM
+					WHERE PRTIPO = :payload.digitoIdentificador AND DPAGEN = :payload.agencia AND DPCORR = :payload.correlativo AND DPDIVE = :payload.digitoVerificador AND CLTDO1 = :payload.cliente.id.tipoIdentificacion AND CLDO1 = :payload.cliente.id.identificacion
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+
+	<!-- CUENTAS DE TRASLADOS -->
+
+	<int:channel id="deleteCuentasTrasladosRequestChannel" />
+
+	<int-jdbc:outbound-channel-adapter id="deleteCuentasTrasladosAdapter" data-source="dataSource" channel="deleteCuentasTrasladosRequestChannel" query="#{sqlDeleteCuentasTraslados}" />
+	<bean id="sqlDeleteCuentasTraslados" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				<![CDATA[
+					DELETE FROM #{DPDAT}.DPCTAT
+					WHERE PRTIPO = :payload.digitoIdentificador AND DPAGEN = :payload.agencia AND DPCORR = :payload.correlativo AND DPDIVE = :payload.digitoVerificador
+				]]>
+			</value>
+		</constructor-arg>
+	</bean>
+	
+</beans>

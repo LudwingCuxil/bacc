@@ -1,0 +1,46 @@
+<div class="create-component">
+  <ba-core-client-search #buscador (clientSelection)="clientSelection($event)"
+                         (tableEmpty)="tableEmpty($event)"></ba-core-client-search>
+  <div class="container" *ngIf="clientsEmpty">
+    <div class="text-right">
+      <button type="submit" class="btn btn-success animated bounceIn" (click)="toCreateClient()" data-toggle="tooltip"
+              data-placement="top" translate
+              translate-attr-data-original-title="tooltip.buscar">
+        <i class="material-icons md-18">add</i> {{'buttons.create' | translate}}
+      </button>
+    </div>
+  </div>
+  <div class="modal fade" id="loadPartialModal" tabindex="-1" role="dialog" data-backdrop="static"
+       data-keyboard="false">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="deletePartial()"><span
+            aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="loadPartialModalLabel" [translate]="'modal.cargar-title'"><i
+            class="material-icons md-18">check_circle</i>
+            {{'modal.cargar-title' | translate}}</h4>
+        </div>
+        <div class="modal-body text-right">
+          <div class="row">
+            <div class="col-lg-6 col-lg-offset-3" ng-if="init">
+              <div class="panel panel-default solicitudes">
+                <div class="panel-body">
+                  {{'autorizacion.cancelar-formulario-cuenta' | translate}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-danger btn-radio animated bounceIn"
+                  data-toggle="tooltip" data-placement="top" data-dismiss="modal" (click)="deletePartial()">
+            <i class="material-icons md-18">clear</i> {{'buttons.cancel' | translate}}
+          </button>
+          <button type="button" class="btn btn-success btn-radio animated bounceIn" (click)="loadPartial()"
+                  data-toggle="tooltip" data-placement="top" data-dismiss="modal">
+            <i class="material-icons md-18">check</i> {{'buttons.accept' | translate}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

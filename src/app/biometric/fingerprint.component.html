@@ -1,0 +1,149 @@
+<!-- <div class="container bs-docs-section"> -->
+<!--     <div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 menu" style="margin-top: 500px;"> -->
+<!--         <span width="500px" class="logos"></span> -->
+<!--     </div> -->
+<!-- </div> -->
+<div class="container bs-docs-section">
+  <div class="well infobox">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2>{{'fingerprint.user-info' | translate}}</h2>
+      </div>
+    </div>
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="inputs">
+            <fieldset>
+              <div class="form-group">
+                <div class="col-md-12">
+                  <label for="codigo" class="control-label">{{'fingerprint.code' | translate}}:</label>
+                  <input [(ngModel)]="fingerprint.codigo" name="codigo" class="form-control" id="codigo" [disabled]="true" />
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-12">
+                  <label for="nombre" class="control-label">{{'fingerprint.name' | translate}}:</label>
+                  <input [(ngModel)]="fingerprint.nombre" name="nombre" class="form-control" id="nombre" [disabled]="true" />
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-12">
+                  <label for="agencia" class="control-label">{{'fingerprint.agency' | translate}}:</label>
+                  <input [(ngModel)]="fingerprint.agencia" name="agencia" class="form-control" id="agencia" [disabled]="true" />
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-12">
+                  <label for="jornada" class="control-label">{{'fingerprint.working' | translate}}:</label>
+                  <input [(ngModel)]="fingerprint.jornada" name="jornada" class="form-control" id="jornada" [disabled]="true" />
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-12">
+                  <label for="nivel" class="control-label">{{'fingerprint.level' | translate}}:</label>
+                  <input [(ngModel)]="fingerprint.nivel" name="nivel" id="nivel" class="form-control" [disabled]="true"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-12">
+                  <label for="tipo" class="control-label">{{'fingerprint.type' | translate}}:</label>
+                  <input [(ngModel)]="fingerprint.tipo" name="tipo" id="tipo" class="form-control" [disabled]="true"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-12">
+                    <label for="estado" class="control-label" [translate]="'fingerprint.status'">{{'fingerprint.status' | translate}}:</label>
+                    <div class="togglebutton">
+                      <label>
+                        <input [(ngModel)]="fingerprint.estado" type="checkbox" name="estado" id="estado" [disabled]="true" /><content *ngIf="fingerprint.estado">{{'fingerprint.active' | translate}}</content> <content *ngIf="!fingerprint.estado">{{'fingerprint.inactive' | translate}}</content>
+                      </label>
+                    </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-12">
+                  <label for="modulo" class="control-label">{{'fingerprint.module' | translate}}:</label>
+                  <input [(ngModel)]="fingerprint.modulo" name="modulo" id="modulo" class="form-control" [disabled]="true"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-12">
+                  <label for="departamento" class="control-label">{{'fingerprint.department' | translate}}:</label>
+                  <input [(ngModel)]="fingerprint.departamento" name="departamento" id="departamento" class="form-control" [disabled]="true" />
+                </div>
+              </div>
+              <div class="form-group">
+                <button *ngIf="individual && !modeCreate" [translate]="'buttons.create'">{{'buttons.create' | translate}}</button>
+                <button *ngIf="individual && !modeEdit" [translate]="'buttons.update'">{{'buttons.update' | translate}}</button>
+                <button *ngIf="individual && !modeDelete" [translate]="'buttons.delete'">{{'buttons.delete' | translate}}</button>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="text-right btn-group-md">
+                <span data-toggle="tooltip" data-placement="left" title="" attr.data-original-title="{{'buttons.back' | translate}}">
+                    <a class="btn btn-primary btn-raised btn-fab" data-toggle="modal" (click)="goBack()">
+                        <i class="material-icons">chevron_left</i>
+                        <div class="ripple-container"></div>
+                    </a>
+                </span>
+                <span data-toggle="tooltip" data-placement="left" title="" attr.data-original-title="{{'buttons.photo' | translate}}">
+                    <a class="btn btn-warning btn-raised btn-fab" (click)="changeHeaders()" data-toggle="modal" data-target="#viewReport">
+                        <i class="material-icons">photo</i>
+                        <div class="ripple-container"></div>
+                    </a>
+                </span>
+                <span data-toggle="tooltip" data-placement="left" title="" attr.data-original-title="{{'buttons.fingerprint' | translate}}">
+                    <a class="btn btn-warning btn-raised btn-fab" data-toggle="modal" data-target="#registFinger">
+                        <i class="material-icons">fingerprint</i>
+                        <div class="ripple-container"></div>
+                    </a>
+                </span>
+            </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+<div class="modal" id="registFinger" tabindex="-1" role="dialog" aria-labelledby="myModalUpdateLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel" [translate]="'fingerprint.activate'"></h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <span width="500px" class="redial"></span>
+                    </div>
+                    <div class="col-md-6">
+<!--                         <a class="btn btn-warning btn-raised btn-fab"> -->
+                        <i class="material-icons count">looks_4</i>
+                        <div class="ripple-container"></div>
+<!--                         </a> -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <span width="500px" class="finger" data-toggle="tooltip" data-placement="left" title="" attr.data-original-title="{{'fingerprint.finger-redial' | translate}}"></span>
+<!--                         <label for="statusFingerprint" class="control-label">{{'fingerprint.status-finger' | translate}}:</label> -->
+                        <textarea [(ngModel)]="statusFingerprint" rows="6" cols="50" [disabled]="true" id="statusFingerprint" name="statusFingerprint"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" [translate]="'buttons.close'"></button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="saveFingerprint()" [translate]="'buttons.save'"></button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <simple-notifications [options]="options"></simple-notifications> -->
